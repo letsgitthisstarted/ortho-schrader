@@ -18,19 +18,27 @@
   /* Mobile navigation */
   var toggle = document.getElementById("navToggle");
   var nav = document.getElementById("mainNav");
+  function setMenu(open) {
+    nav.classList.toggle("open", open);
+    toggle.classList.toggle("open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    /* Scroll-Lock auf html UND body — iOS Safari ignoriert body allein */
+    document.documentElement.style.overflow = open ? "hidden" : "";
+    document.body.style.overflow = open ? "hidden" : "";
+  }
   if (toggle && nav) {
     toggle.addEventListener("click", function () {
-      var open = nav.classList.toggle("open");
-      toggle.classList.toggle("open", open);
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      document.body.style.overflow = open ? "hidden" : "";
+      setMenu(!nav.classList.contains("open"));
     });
     nav.querySelectorAll("a").forEach(function (link) {
       link.addEventListener("click", function () {
-        nav.classList.remove("open");
-        toggle.classList.remove("open");
-        document.body.style.overflow = "";
+        setMenu(false);
       });
+    });
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 960 && nav.classList.contains("open")) {
+        setMenu(false);
+      }
     });
   }
 

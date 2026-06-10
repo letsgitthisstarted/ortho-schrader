@@ -48,6 +48,7 @@ HEAD = """<!DOCTYPE html>
           <li><a href="wahlarzt-salzburg.html"@A_WAHLARZT@>Wahlarzt-Vorteile</a></li>
           <li><a href="ordination-anfahrt.html"@A_ORDINATION@>Ordination</a></li>
           <li><a href="kontakt.html"@A_KONTAKT@>Kontakt</a></li>
+          <li class="nav-cta-item"><a href="kontakt.html" class="btn btn-primary">Termin vereinbaren</a></li>
         </ul>
       </nav>
       <a href="kontakt.html" class="btn btn-primary header-cta">Termin vereinbaren</a>
@@ -776,9 +777,9 @@ PAGES.append({
       </div>
     </section>
 
-    <section class="section" style="padding-top:0; padding-bottom:var(--section-pad);">
+    <section class="section">
       <div class="container">
-        <div class="emergency-strip reveal" style="margin-top:var(--section-pad);">
+        <div class="emergency-strip reveal">
           <strong>Bei Notfällen</strong>
           <span>auch am Wochenende und an Feiertagen erreichbar: <a href="tel:+436608574000"><strong>+43 660 8574000</strong></a></span>
         </div>
