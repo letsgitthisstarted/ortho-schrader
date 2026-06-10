@@ -21,9 +21,7 @@ HEAD = """<!DOCTYPE html>
   <meta property="og:type" content="website">
   <meta property="og:locale" content="de_AT">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230F2A43'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='38' fill='%23B59A6B' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/style.css">
 @EXTRA_HEAD@</head>
 <body>
@@ -87,6 +85,8 @@ FOOTER = """  </main>
           <li><a href="wirbelsaeule-schmerztherapie.html">Wirbels&auml;ule &amp; Schmerztherapie</a></li>
           <li><a href="sportmedizin-unfallchirurgie.html">Sportmedizin &amp; Unfallchirurgie</a></li>
           <li><a href="knieschmerzen.html">Ratgeber: Knieschmerzen</a></li>
+          <li><a href="schulterschmerzen.html">Ratgeber: Schulterschmerzen</a></li>
+          <li><a href="hueftschmerzen.html">Ratgeber: H&uuml;ftschmerzen</a></li>
         </ul>
       </div>
       <div>
@@ -240,6 +240,28 @@ FAQ_SPORT = [
      "Nein. Kommen Sie direkt zu mir: Mit klinischer Untersuchung und Sonografie kläre ich die Verletzung sofort beim ersten Termin ab. Ein MRT veranlasse ich gezielt dann, wenn es für die Therapieentscheidung wirklich gebraucht wird — so verlieren Sie keine Zeit."),
     ("Wann darf ich nach einer Verletzung wieder Sport machen?",
      "Nicht nach Kalender, sondern nach Kriterien: Beweglichkeit, Kraft, Stabilität und sportartspezifische Belastbarkeit müssen stimmen. Ich begleite Ihre Rückkehr in klaren Belastungsstufen — das senkt das Risiko einer Wiederverletzung deutlich."),
+]
+
+FAQ_SCHULTER = [
+    ("Schulterschmerzen beim Arm heben — was steckt dahinter?",
+     "Schmerzen in einem bestimmten Bewegungsbogen — etwa beim seitlichen Anheben des Arms — sprechen für ein Engpass-Syndrom (Impingement) oder eine Reizung der Rotatorenmanschette. Mit klinischen Tests und Ultraschall lässt sich die Ursache direkt beim ersten Termin eingrenzen."),
+    ("Was hilft bei einer Kalkschulter?",
+     "In den meisten Fällen eine konservative Behandlung: Die Stoßwellentherapie (ESWT) ist bei Kalkschulter gut belegt und kann den Kalkherd zur Auflösung anregen; ergänzend helfen entzündungshemmende Maßnahmen und gezielte Infiltrationen. Eine Operation ist nur selten nötig."),
+    ("Woran erkenne ich einen Riss der Rotatorenmanschette?",
+     "Typisch sind Kraftverlust beim Heben und Drehen des Arms, nächtliche Schmerzen beim Liegen auf der Schulter und anhaltende Beschwerden nach einem Sturz. Per Ultraschall lässt sich ein Riss rasch darstellen — je früher die Diagnose, desto besser die Behandlungsmöglichkeiten, von der Physiotherapie bis zur Naht."),
+    ("Müssen Schulterschmerzen operiert werden?",
+     "Meist nicht. Die Mehrheit der Schulterbeschwerden bessert sich unter konsequenter konservativer Therapie. Operiert wird gezielt — etwa bei größeren Rissen der Rotatorenmanschette oder anhaltender Instabilität. Als Orthopäde und Chirurg zeige ich Ihnen ehrlich beide Wege auf."),
+]
+
+FAQ_HUEFTE = [
+    ("Hüftschmerzen beim Liegen auf der Seite — was ist das?",
+     "Häufig stecken gereizte Sehnenansätze oder Schleimbeutel am großen Rollhügel (Trochanter) dahinter — nicht das Hüftgelenk selbst. Diese Beschwerden lassen sich konservativ gut behandeln, etwa mit Stoßwellentherapie und gezielten, ultraschallgeführten Infiltrationen."),
+    ("Kommen meine Schmerzen von der Hüfte oder vom Rücken?",
+     "Eine der wichtigsten Fragen bei Hüftbeschwerden: Leistenschmerzen sprechen eher für das Hüftgelenk, Schmerzen im Gesäß mit Ausstrahlung ins Bein eher für die Lendenwirbelsäule. Mit klinischen Tests, Ultraschall und gegebenenfalls einer diagnostischen Infiltration lässt sich das sicher unterscheiden — beide Bereiche liegen in meinem Fachgebiet."),
+    ("Was hilft bei Hüftarthrose ohne Operation?",
+     "Gezielte Bewegungstherapie, entzündungshemmende Behandlung sowie ultraschallgezielte Hyaluron- oder ACP-Injektionen in das Hüftgelenk können Schmerzen deutlich lindern — und die Prothese oft um Jahre hinausschieben."),
+    ("Wann brauche ich eine Hüftprothese?",
+     "Wenn die konservativen Möglichkeiten ausgeschöpft sind und die Schmerzen Ihren Alltag und Schlaf bestimmen. Moderne Hüftprothesen erreichen Standzeiten von 15 bis 20 Jahren und mehr — den richtigen Zeitpunkt finden wir gemeinsam, ohne Drängen."),
 ]
 
 FAQ_KNIE = [
@@ -571,7 +593,7 @@ PAGES.append({
           <h3>Ihr Vorteil bei Dr. Schrader</h3>
           <p>Als Facharzt für Orthopädie <em>und</em> Chirurgie kenne ich beide Seiten — und kann Ihnen deshalb ehrlich sagen, wann konservative Therapie die bessere Wahl ist und wann nicht. Sie erhalten keine Empfehlung „von der Stange", sondern die Behandlung, die Ihr Gelenk wirklich braucht.</p>
         </div>
-        <p class="reveal"><a class="text-link" href="knieschmerzen.html">Ratgeber: Knieschmerzen — Ursachen &amp; Behandlung <span class="arrow">→</span></a></p>
+        <p class="reveal"><a class="text-link" href="knieschmerzen.html">Ratgeber: Knieschmerzen <span class="arrow">→</span></a> &nbsp;&nbsp; <a class="text-link" href="hueftschmerzen.html">Ratgeber: Hüftschmerzen <span class="arrow">→</span></a></p>
       </div>
     </section>
 """ + faq_block(FAQ_ARTHROSE, grey=False) + closer("Lassen Sie Ihre Gelenke abklären — bevor die Arthrose entscheidet.",
@@ -655,7 +677,7 @@ PAGES.append({
           <h3>Ihr Vorteil bei Dr. Schrader</h3>
           <p>Diagnose, Operation und Nachsorge aus einer Hand — durchgängig bei demselben Arzt. Sie wissen jederzeit, wer Sie operiert, wer Sie betreut und wen Sie fragen können. Als TÜV-zertifizierter Wundexperte (ICW) lege ich zudem besonderes Augenmerk auf eine komplikationsfreie Wundheilung.</p>
         </div>
-        <p class="reveal"><a class="text-link" href="knieschmerzen.html">Ratgeber: Knieschmerzen — Ursachen &amp; Behandlung <span class="arrow">→</span></a></p>
+        <p class="reveal"><a class="text-link" href="knieschmerzen.html">Ratgeber: Knieschmerzen <span class="arrow">→</span></a> &nbsp;&nbsp; <a class="text-link" href="schulterschmerzen.html">Ratgeber: Schulterschmerzen <span class="arrow">→</span></a></p>
       </div>
     </section>
 """ + faq_block(FAQ_CHIRURGIE, grey=False) + closer("Operieren oder nicht? Holen Sie sich eine ehrliche Einschätzung.",
@@ -863,6 +885,152 @@ PAGES.append({
 """ + faq_block(FAQ_KNIE) + closer("Knieschmerzen? Lassen Sie sie abklären, bevor sie chronisch werden.",
              "Rasche Termine, exakte Diagnose beim ersten Besuch und ein klarer Behandlungsplan — beim Kniespezialisten in Salzburg.",
              "Knieschmerzen abklären lassen"),
+})
+
+# ============================================================ Ratgeber: Schulterschmerzen
+PAGES.append({
+    "file": "schulterschmerzen.html",
+    "title": "Schulterschmerzen Salzburg | Ursachen & Behandlung – Dr. Schrader",
+    "desc": "Schulterschmerzen beim Arm heben oder nachts? Kalkschulter, Impingement, Rotatorenmanschette: Ursachen, Diagnose und Behandlung beim Spezialisten in Salzburg.",
+    "active": "",
+    "crumbs": [("Startseite", "index.html"), ("Ratgeber: Schulterschmerzen", "schulterschmerzen.html")],
+    "faq": FAQ_SCHULTER,
+    "body": page_header(
+        "<span>Ratgeber: Schulterschmerzen</span>",
+        "Schulterschmerzen: Ursachen, Diagnose &amp; Behandlung",
+        "Die Schulter ist das beweglichste Gelenk des Körpers — und gerade deshalb anfällig für Reizungen, Engpässe und Sehnenverletzungen. Wann und wobei es schmerzt, gibt wichtige Hinweise auf die Ursache. In meiner Ordination in Salzburg kläre ich Ihre Schulter rasch und gründlich ab.") + """
+    <section class="section">
+      <div class="container split" style="align-items:start;">
+        <div class="reveal">
+          <p class="eyebrow">Symptom-Check</p>
+          <h2>Was Ihre Schulter Ihnen sagen will</h2>
+          <p>Eine erste Orientierung — die genaue Diagnose ersetzt sie nicht:</p>
+          <ul class="checklist">
+            <li><span><strong>Schmerzen beim Arm heben</strong> — typisch für ein Engpass-Syndrom (Impingement) oder eine gereizte Rotatorenmanschette</span></li>
+            <li><span><strong>Nächtliche Schmerzen, Liegen auf der Schulter unmöglich</strong> — häufig Kalkschulter oder Sehnenentzündung</span></li>
+            <li><span><strong>Plötzlicher, heftiger Schmerz mit Kraftverlust</strong> — Warnzeichen für einen Riss der Rotatorenmanschette, besonders nach einem Sturz</span></li>
+            <li><span><strong>Zunehmende Steifigkeit</strong> — Hinweis auf eine Schultersteife (Frozen Shoulder)</span></li>
+            <li><span><strong>Ausstrahlung in Nacken oder Arm</strong> — hier muss auch die Halswirbelsäule mitbetrachtet werden</span></li>
+          </ul>
+        </div>
+        <!-- TODO Livegang: Foto Schulteruntersuchung -->
+        <div class="visual visual-grey ratio-45 reveal" aria-hidden="true">
+          <div class="visual-inner"><div class="visual-label">Schulter-Diagnostik</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-grey">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Diagnose</p>
+          <h2>So kläre ich Ihre Schulterschmerzen ab</h2>
+        </div>
+        <div class="steps">
+          <div class="step reveal">
+            <h3>Ausführliches Gespräch</h3>
+            <p>Seit wann, wobei, wie stark — Ihre Geschichte grenzt die Ursache bereits deutlich ein.</p>
+          </div>
+          <div class="step reveal">
+            <h3>Klinische Tests</h3>
+            <p>Gezielte Funktionstests prüfen Rotatorenmanschette, Engpass-Syndrom und Stabilität.</p>
+          </div>
+          <div class="step reveal">
+            <h3>Ultraschall sofort</h3>
+            <p>Sehnen, Kalkherde und Schleimbeutel mache ich per Sonografie direkt beim ersten Termin sichtbar.</p>
+          </div>
+          <div class="step reveal">
+            <h3>Klarer Behandlungsplan</h3>
+            <p>Diagnose und konkreter Plan beim ersten Besuch — vom Heimprogramm bis zur Therapieentscheidung.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Behandlung</p>
+          <h2>Ihre Behandlungswege bei Schulterschmerzen</h2>
+        </div>
+        <div class="card-grid">
+          <article class="card reveal">
+            <h3>Konservativ behandeln</h3>
+            <p>Stoßwellentherapie bei Kalkschulter, gezielte Infiltrationen, ACP-Eigenbluttherapie bei Sehnenreizungen — die meisten Schultern brauchen keine Operation.</p>
+            <a href="wirbelsaeule-schmerztherapie.html" class="text-link">Stoßwelle &amp; Schmerztherapie <span class="arrow">→</span></a>
+          </article>
+          <article class="card reveal">
+            <h3>Operativ, wenn nötig</h3>
+            <p>Arthroskopische Schulterchirurgie und Rotatorenmanschettennaht an der Privatklinik Wehrle-Diakonissen — minimalinvasiv und persönlich begleitet.</p>
+            <a href="gelenkchirurgie-endoprothetik.html" class="text-link">Gelenkchirurgie <span class="arrow">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+""" + faq_block(FAQ_SCHULTER) + closer("Schulterschmerzen? Warten macht es selten besser.",
+             "Unbehandelte Sehnenschäden schreiten fort — eine frühe Diagnose erhält Ihre Behandlungsmöglichkeiten.",
+             "Schulter abklären lassen"),
+})
+
+# ============================================================ Ratgeber: Hüftschmerzen
+PAGES.append({
+    "file": "hueftschmerzen.html",
+    "title": "Hüftschmerzen Salzburg | Ursachen & Behandlung – Dr. Schrader",
+    "desc": "Hüftschmerzen beim Gehen oder Liegen? Von Hüftarthrose bis Sehnenreizung: Ursachen, Diagnose und Behandlung in Salzburg – Hyaluron, ACP & Endoprothetik.",
+    "active": "",
+    "crumbs": [("Startseite", "index.html"), ("Ratgeber: Hüftschmerzen", "hueftschmerzen.html")],
+    "faq": FAQ_HUEFTE,
+    "body": page_header(
+        "<span>Ratgeber: Hüftschmerzen</span>",
+        "Hüftschmerzen: Ursachen, Diagnose &amp; Behandlung",
+        "Hüftschmerzen sind nicht gleich Hüftschmerzen: Ob es in der Leiste zieht, an der Außenseite drückt oder ins Bein ausstrahlt, macht für Diagnose und Therapie einen großen Unterschied. In meiner Ordination in Salzburg finde ich die Ursache — und den passenden Weg.") + """
+    <section class="section">
+      <div class="container split" style="align-items:start;">
+        <div class="reveal">
+          <p class="eyebrow">Symptom-Check</p>
+          <h2>Wo es schmerzt, verrät die Ursache</h2>
+          <p>Eine erste Orientierung — die genaue Diagnose ersetzt sie nicht:</p>
+          <ul class="checklist">
+            <li><span><strong>Schmerzen in der Leiste</strong> — klassisches Zeichen des Hüftgelenks selbst, häufig beginnende Hüftarthrose</span></li>
+            <li><span><strong>Schmerzen an der Außenseite, v.&nbsp;a. beim Liegen</strong> — meist gereizte Sehnenansätze oder Schleimbeutel am Rollhügel</span></li>
+            <li><span><strong>Anlaufschmerz nach dem Sitzen</strong> — typisches Frühzeichen einer Arthrose</span></li>
+            <li><span><strong>Gesäßschmerz mit Ausstrahlung ins Bein</strong> — hier ist oft die Lendenwirbelsäule die wahre Quelle</span></li>
+            <li><span><strong>Schmerzen nach dem Laufen oder Sport</strong> — Überlastung von Sehnen und Muskulatur, abklären statt durchbeißen</span></li>
+          </ul>
+        </div>
+        <!-- TODO Livegang: Foto Hüftuntersuchung -->
+        <div class="visual visual-grey ratio-45 reveal" aria-hidden="true">
+          <div class="visual-inner"><div class="visual-label">Hüft-Diagnostik</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-grey">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Diagnose</p>
+          <h2>Hüfte oder Rücken? Ich finde es heraus.</h2>
+          <p>Kaum eine Region wird so oft verwechselt: Hüftgelenk, Sehnenansätze und Lendenwirbelsäule können sich sehr ähnlich anfühlen. Als Orthopäde mit Schwerpunkt auf Hüfte <em>und</em> Wirbelsäule kläre ich beide Quellen in einer Untersuchung ab — mit klinischen Tests, Sonografie und, wo sinnvoll, einer gezielten diagnostischen Infiltration.</p>
+        </div>
+        <div class="card-grid">
+          <article class="card reveal">
+            <h3>Gelenk erhalten</h3>
+            <p>Hyaluron- und ACP-Injektionen ultraschallgezielt in das Hüftgelenk, Stoßwelle bei Sehnenreizungen — Schmerzen lindern und die Prothese hinausschieben.</p>
+            <a href="arthrose-gelenkerhalt.html" class="text-link">Gelenkerhalt &amp; Arthrosetherapie <span class="arrow">→</span></a>
+          </article>
+          <article class="card reveal">
+            <h3>Hüftprothese, wenn es Zeit ist</h3>
+            <p>Individuell geplanter Hüftgelenkersatz an der Privatklinik Wehrle-Diakonissen — mit persönlicher Begleitung von der Planung bis zur Nachsorge.</p>
+            <a href="gelenkchirurgie-endoprothetik.html" class="text-link">Endoprothetik <span class="arrow">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+""" + faq_block(FAQ_HUEFTE, grey=False) + closer("Hüftschmerzen? Klären wir die Ursache — gemeinsam und gründlich.",
+             "Rasche Termine, exakte Diagnose und ein Behandlungsplan, der zu Ihrem Leben passt.",
+             "Hüfte abklären lassen"),
 })
 
 # ============================================================ Wahlarzt
@@ -1155,7 +1323,7 @@ PAGES.append({
         <p>Im Rahmen der Behandlung verarbeite ich Gesundheitsdaten auf Grundlage von Art. 9 Abs. 2 lit. h DSGVO in Verbindung mit den ärztlichen Dokumentationspflichten nach dem Ärztegesetz 1998. Die gesetzliche Aufbewahrungsfrist für medizinische Dokumentation beträgt 10 Jahre.</p>
 
         <h2 style="margin-top:3rem;">Webfonts</h2>
-        <p>Diese Website verwendet Schriftarten von Google Fonts. Beim Aufruf der Seite wird eine Verbindung zu Servern von Google hergestellt, dabei wird Ihre IP-Adresse übertragen. <em>[EMPFEHLUNG für den Livegang: Fonts lokal einbinden, dann entfällt dieser Abschnitt.]</em></p>
+        <p>Die auf dieser Website verwendeten Schriftarten sind lokal eingebunden. Beim Aufruf der Seite wird keine Verbindung zu Servern von Google oder anderen Drittanbietern hergestellt; es werden dabei keine Daten an Dritte übertragen.</p>
 
         <h2 style="margin-top:3rem;">Ihre Rechte</h2>
         <p>Ihnen stehen grundsätzlich die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch zu. Wenn Sie glauben, dass die Verarbeitung Ihrer Daten gegen das Datenschutzrecht verstößt, können Sie sich bei der Datenschutzbehörde (<a href="https://www.dsb.gv.at" target="_blank" rel="noopener">www.dsb.gv.at</a>) beschweren.</p>
