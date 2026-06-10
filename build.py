@@ -12,6 +12,7 @@ HEAD = """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0F2A43">
   <title>@TITLE@</title>
   <meta name="description" content="@DESC@">
   <link rel="canonical" href="https://www.ortho-schrader.com/@FILE@">
@@ -24,7 +25,7 @@ HEAD = """<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-</head>
+@EXTRA_HEAD@</head>
 <body>
 
   <header class="site-header" id="siteHeader">
@@ -85,6 +86,7 @@ FOOTER = """  </main>
           <li><a href="gelenkchirurgie-endoprothetik.html">Gelenkchirurgie &amp; Endoprothetik</a></li>
           <li><a href="wirbelsaeule-schmerztherapie.html">Wirbels&auml;ule &amp; Schmerztherapie</a></li>
           <li><a href="sportmedizin-unfallchirurgie.html">Sportmedizin &amp; Unfallchirurgie</a></li>
+          <li><a href="knieschmerzen.html">Ratgeber: Knieschmerzen</a></li>
         </ul>
       </div>
       <div>
@@ -140,6 +142,118 @@ def page_header(crumb, h1, lead):
 """
 
 
+import json as _json
+import re as _re
+
+BASE_URL = "https://www.ortho-schrader.com/"
+
+
+def _plain(s):
+    """HTML-Tags für JSON-LD-Texte entfernen."""
+    return _re.sub(r"<[^>]+>", "", s).replace("&amp;", "&")
+
+
+def faq_block(items, grey=True):
+    """Sichtbarer FAQ-Abschnitt (Akkordeon)."""
+    out = ['    <section class="section' + (" section-grey" if grey else "") + '">',
+           '      <div class="container-narrow">',
+           '        <div class="section-head reveal">',
+           '          <p class="eyebrow">Häufige Fragen</p>',
+           '          <h2>Was Patienten mich oft fragen</h2>',
+           '        </div>',
+           '        <div class="faq-list">']
+    for q, a in items:
+        out += ['          <details class="faq-item reveal">',
+                '            <summary>' + q + '</summary>',
+                '            <div class="faq-answer"><p>' + a + '</p></div>',
+                '          </details>']
+    out += ['        </div>', '      </div>', '    </section>', '']
+    return "\n".join(out)
+
+
+def faq_jsonld(items):
+    data = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": _plain(q),
+         "acceptedAnswer": {"@type": "Answer", "text": _plain(a)}} for q, a in items]}
+    return '  <script type="application/ld+json">' + _json.dumps(data, ensure_ascii=False) + '</script>\n'
+
+
+def breadcrumb_jsonld(crumbs):
+    items = [{"@type": "ListItem", "position": i + 1, "name": name, "item": BASE_URL + f}
+             for i, (name, f) in enumerate(crumbs)]
+    data = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": items}
+    return '  <script type="application/ld+json">' + _json.dumps(data, ensure_ascii=False) + '</script>\n'
+
+
+# --- FAQ-Inhalte: beantworten reale Suchanfragen (Google-Autocomplete AT) ---
+
+FAQ_WAHLARZT = [
+    ("Wie viel bekomme ich von der Krankenkasse zurück?",
+     "Als Wahlarztpatient reichen Sie die Honorarnote bei Ihrer Krankenkasse (ÖGK, BVAEB oder SVS) ein und erhalten in der Regel 80&nbsp;% des jeweiligen Kassentarifs rückerstattet. Die Einreichung ist heute bequem online möglich — ich unterstütze Sie gerne dabei."),
+    ("Übernimmt meine private Zusatzversicherung die Kosten?",
+     "In den meisten Tarifen ja: Ambulante Zusatzversicherungen übernehmen Wahlarzthonorare in der Regel zur Gänze. Auch Operationen an der Privatklinik Wehrle-Diakonissen sind über eine Sonderklasse-Versicherung gedeckt. Die Details klären wir vor Behandlungsbeginn."),
+    ("Brauche ich eine Überweisung?",
+     "Nein. Für einen Termin in meiner Wahlarzt-Ordination benötigen Sie keine Überweisung — Sie können sich direkt an mich wenden."),
+    ("Wie schnell bekomme ich einen Termin?",
+     "In der Regel innerhalb weniger Tage — bei akuten Beschwerden auch kurzfristig, am Wochenende und an Feiertagen nach telefonischer Vereinbarung unter +43&nbsp;660&nbsp;8574000."),
+]
+
+FAQ_ARTHROSE = [
+    ("Was hilft bei Kniearthrose ohne Operation?",
+     "Mehr, als viele glauben: gezielte Bewegungstherapie, entzündungshemmende Behandlung, Hyaluron-Injektionen zur Verbesserung der Gelenkschmierung und die ACP-Eigenbluttherapie zur Unterstützung der Regeneration. Welcher Baustein für Sie sinnvoll ist, hängt von Stadium und Befund ab — das kläre ich in einer gründlichen Untersuchung."),
+    ("Wie oft muss eine Hyaluronbehandlung wiederholt werden?",
+     "Je nach Präparat und Arthrose-Stadium besteht eine Behandlung meist aus einer Kur von einer bis fünf Injektionen. Die Wirkung hält häufig sechs bis zwölf Monate an und kann danach aufgefrischt werden."),
+    ("Was ist der Unterschied zwischen ACP- und Hyaluronbehandlung?",
+     "Hyaluronsäure verbessert die Gleitfähigkeit des Gelenks — wie frisches Öl im Getriebe. Bei der ACP-Eigenbluttherapie werden konzentrierte Wachstumsfaktoren aus Ihrem eigenen Blut injiziert, die Reparaturprozesse im Gewebe anregen. Beide Verfahren können sich sinnvoll ergänzen; was zu Ihrem Befund passt, besprechen wir gemeinsam."),
+    ("Was kosten Hyaluron- oder ACP-Behandlungen — und zahlt die Krankenkasse?",
+     "Die Kosten hängen vom behandelten Gelenk, dem Präparat und der Anzahl der Sitzungen ab — Sie erhalten vor Behandlungsbeginn eine transparente Aufstellung. Die gesetzlichen Kassen übernehmen diese Therapien meist nicht oder nur teilweise; viele private Zusatzversicherungen erstatten sie jedoch."),
+]
+
+FAQ_CHIRURGIE = [
+    ("Kreuzbandriss — operieren oder nicht?",
+     "Das hängt von Alter, Aktivitätsniveau, Instabilität und Begleitverletzungen ab. Wer sportlich aktiv bleiben will oder ein instabiles Knie hat, profitiert meist vom Kreuzbandersatz; in anderen Fällen kann eine konservative Behandlung der bessere Weg sein. Ich berate Sie ehrlich — gerne auch als Zweitmeinung."),
+    ("Wie lange dauert die Genesung nach einer Kreuzband-OP?",
+     "Als grobe Orientierung: einige Wochen Krücken, nach etwa sechs Wochen zunehmend normaler Alltag, Lauftraining meist ab dem dritten oder vierten Monat — die Rückkehr in den vollen Sport nach sechs bis neun Monaten, sobald Kraft- und Stabilitätstests es erlauben. Der individuelle Verlauf hängt von Begleitverletzungen und Ihrer Mitarbeit in der Reha ab."),
+    ("Muss ein Meniskusriss immer operiert werden?",
+     "Nein. Viele Meniskusrisse — vor allem degenerative — lassen sich konservativ gut behandeln. Operiert wird gezielt: bei Blockaden, anhaltenden Beschwerden oder Rissformen, die das Gelenk langfristig schädigen würden. Entscheidend ist die exakte Diagnose."),
+    ("Wie lange hält eine Knie- oder Hüftprothese?",
+     "Moderne Implantate erreichen heute häufig Standzeiten von 15 bis 20 Jahren und mehr. Entscheidend sind eine präzise Implantation, die passende Prothesenwahl und eine gute Nachbehandlung — alles Faktoren, die ich persönlich begleite."),
+    ("Wie lange bin ich nach einer Operation im Krankenstand?",
+     "Das hängt stark vom Eingriff und Ihrer Tätigkeit ab — ein Bürojob erlaubt oft schon nach wenigen Wochen die Rückkehr, körperlich fordernde Berufe brauchen länger. Realistische Zeiträume für Ihren Fall besprechen wir vor der Operation, damit Sie planen können."),
+]
+
+FAQ_SPINE = [
+    ("Ist eine Facetteninfiltration schmerzhaft?",
+     "Die Behandlung ist meist deutlich harmloser als befürchtet: ein kurzer Einstich, lokal betäubt, ambulant in wenigen Minuten durchgeführt. Viele Patienten spüren bereits kurz danach eine deutliche Erleichterung."),
+    ("Wie oft kann eine Infiltration wiederholt werden?",
+     "Infiltrationen sind Teil eines Behandlungsplans, keine Dauerlösung. Je nach Wirkdauer und Verlauf können sie in sinnvollen Abständen wiederholt werden — immer kombiniert mit aktiven Maßnahmen, damit die Wirkung nachhaltig bleibt."),
+    ("Wann ist eine Bandscheiben-Operation wirklich nötig?",
+     "Selten — die große Mehrheit der Bandscheibenvorfälle heilt unter konservativer Therapie aus. Operiert werden muss bei Lähmungserscheinungen, neurologischen Ausfällen oder wenn die konservativen Möglichkeiten ausgeschöpft sind. Genau diese ehrliche Abgrenzung ist mir wichtig."),
+    ("Hilft Stoßwellentherapie bei Fersensporn und Kalkschulter?",
+     "Ja — die extrakorporale Stoßwellentherapie (ESWT) ist bei Fersensporn, Kalkschulter und chronischen Sehnenansatz-Reizungen gut belegt. Meist sind mehrere Sitzungen im Abstand von etwa einer Woche nötig, ambulant und ohne Operation."),
+]
+
+FAQ_SPORT = [
+    ("Woran erkenne ich einen Kreuzbandriss?",
+     "Typisch sind ein hörbarer Knall oder ein Reißgefühl im Moment der Verletzung, eine rasche Schwellung des Knies und ein Gefühl der Instabilität. Aber auch ohne diese klassischen Zeichen gilt: Nach einem Verdrehtrauma das Knie rasch abklären lassen — unbehandelte Begleitschäden kosten später Zeit."),
+    ("Brauche ich zuerst ein MRT, bevor ich zu Ihnen komme?",
+     "Nein. Kommen Sie direkt zu mir: Mit klinischer Untersuchung und Sonografie kläre ich die Verletzung sofort beim ersten Termin ab. Ein MRT veranlasse ich gezielt dann, wenn es für die Therapieentscheidung wirklich gebraucht wird — so verlieren Sie keine Zeit."),
+    ("Wann darf ich nach einer Verletzung wieder Sport machen?",
+     "Nicht nach Kalender, sondern nach Kriterien: Beweglichkeit, Kraft, Stabilität und sportartspezifische Belastbarkeit müssen stimmen. Ich begleite Ihre Rückkehr in klaren Belastungsstufen — das senkt das Risiko einer Wiederverletzung deutlich."),
+]
+
+FAQ_KNIE = [
+    ("Knieschmerzen beim Treppensteigen — was steckt dahinter?",
+     "Schmerzen beim Treppab- oder Treppaufgehen deuten häufig auf das Gleitlager der Kniescheibe hin — etwa eine Reizung oder beginnende Abnützung des Knorpels hinter der Patella. Eine gezielte Untersuchung klärt die Ursache und eröffnet meist gute konservative Behandlungsmöglichkeiten."),
+    ("Was bedeuten Knieschmerzen an der Innenseite?",
+     "Die Innenseite ist die häufigste Schmerzregion des Knies: Dahinter können der Innenmeniskus, eine beginnende Arthrose des inneren Gelenkanteils oder gereizte Sehnenansätze stecken. Die Unterscheidung gelingt mit klinischer Untersuchung und Ultraschall — direkt in der Ordination."),
+    ("Wann sollte ich mit Knieschmerzen zum Arzt?",
+     "Spätestens dann, wenn die Schmerzen länger als ein bis zwei Wochen anhalten, das Knie anschwillt, blockiert oder instabil wirkt, Sie nachts Schmerzen haben — und nach jedem Unfall oder Verdrehtrauma sofort. Je früher die Diagnose, desto mehr Behandlungswege stehen offen."),
+    ("Welcher Arzt ist bei Knieschmerzen der richtige?",
+     "Der Facharzt für Orthopädie. Als Orthopäde, Unfallchirurg und Kniespezialist in Salzburg decke ich das gesamte Spektrum ab — von der konservativen Therapie über Hyaluron- und ACP-Behandlungen bis zur Arthroskopie und Knieprothese. Sie brauchen keine Überweisung."),
+]
+
+
 PAGES = []
 
 # ============================================================ Über mich
@@ -148,6 +262,7 @@ PAGES.append({
     "title": "Über mich | Dr. Thomas Schrader – Orthopäde in Salzburg",
     "desc": "Facharzt für Orthopädie, Orthopädische Chirurgie und Unfallchirurgie: Werdegang, Philosophie und Qualifikationen von Dr. Thomas Schrader, Wahlarzt in Salzburg.",
     "active": "UEBER",
+    "crumbs": [("Startseite", "index.html"), ("Über mich", "dr-thomas-schrader.html")],
     "body": page_header(
         "<span>Über mich</span>",
         "Dr. Thomas Schrader",
@@ -294,6 +409,7 @@ PAGES.append({
     "title": "Leistungen | Orthopädie & Chirurgie – Dr. Schrader Salzburg",
     "desc": "Von gelenkerhaltender Arthrosetherapie bis Kreuzband-OP: das gesamte Spektrum moderner Orthopädie in Salzburg – konservativ, wenn möglich. Operativ, wenn nötig.",
     "active": "LEISTUNGEN",
+    "crumbs": [("Startseite", "index.html"), ("Leistungen", "leistungen.html")],
     "body": page_header(
         "<span>Leistungen</span>",
         "Orthopädische Leistungen in Salzburg",
@@ -398,9 +514,11 @@ PAGES.append({
 # ============================================================ Arthrose & Gelenkerhalt
 PAGES.append({
     "file": "arthrose-gelenkerhalt.html",
-    "title": "Arthrose-Behandlung Salzburg | Gelenkerhalt – Dr. Schrader",
+    "title": "Arthrose-Behandlung Salzburg | Hyaluron, ACP & Gelenkerhalt",
     "desc": "Gelenkerhaltende Arthrosetherapie in Salzburg: ACP-Eigenbluttherapie, Hyaluron, konservative Behandlung. Schmerzen lindern, Operationen vermeiden – Wahlarzt Dr. Schrader.",
     "active": "LEISTUNGEN",
+    "crumbs": [("Startseite", "index.html"), ("Leistungen", "leistungen.html"), ("Gelenkerhalt & Arthrosetherapie", "arthrose-gelenkerhalt.html")],
+    "faq": FAQ_ARTHROSE,
     "body": page_header(
         '<a href="leistungen.html">Leistungen</a> <span>/</span> <span>Gelenkerhalt &amp; Arthrosetherapie</span>',
         "Gelenkerhalt &amp; Arthrosetherapie",
@@ -453,9 +571,10 @@ PAGES.append({
           <h3>Ihr Vorteil bei Dr. Schrader</h3>
           <p>Als Facharzt für Orthopädie <em>und</em> Chirurgie kenne ich beide Seiten — und kann Ihnen deshalb ehrlich sagen, wann konservative Therapie die bessere Wahl ist und wann nicht. Sie erhalten keine Empfehlung „von der Stange", sondern die Behandlung, die Ihr Gelenk wirklich braucht.</p>
         </div>
+        <p class="reveal"><a class="text-link" href="knieschmerzen.html">Ratgeber: Knieschmerzen — Ursachen &amp; Behandlung <span class="arrow">→</span></a></p>
       </div>
     </section>
-""" + closer("Lassen Sie Ihre Gelenke abklären — bevor die Arthrose entscheidet.",
+""" + faq_block(FAQ_ARTHROSE, grey=False) + closer("Lassen Sie Ihre Gelenke abklären — bevor die Arthrose entscheidet.",
              "Im Erstgespräch klären wir Ursache, Stadium und Ihre Möglichkeiten. Gründlich, ehrlich und ohne Zeitdruck.",
              "Termin zur Arthrose-Abklärung"),
 })
@@ -466,6 +585,8 @@ PAGES.append({
     "title": "Kniespezialist Salzburg | Gelenkchirurgie & Endoprothetik",
     "desc": "Arthroskopische Gelenkchirurgie, Kreuzband-OP, Knie- und Hüftprothese in Salzburg. Präzise Chirurgie an der Privatklinik Wehrle-Diakonissen – Dr. Thomas Schrader.",
     "active": "LEISTUNGEN",
+    "crumbs": [("Startseite", "index.html"), ("Leistungen", "leistungen.html"), ("Gelenkchirurgie & Endoprothetik", "gelenkchirurgie-endoprothetik.html")],
+    "faq": FAQ_CHIRURGIE,
     "body": page_header(
         '<a href="leistungen.html">Leistungen</a> <span>/</span> <span>Gelenkchirurgie &amp; Endoprothetik</span>',
         "Gelenkchirurgie &amp; Endoprothetik",
@@ -534,9 +655,10 @@ PAGES.append({
           <h3>Ihr Vorteil bei Dr. Schrader</h3>
           <p>Diagnose, Operation und Nachsorge aus einer Hand — durchgängig bei demselben Arzt. Sie wissen jederzeit, wer Sie operiert, wer Sie betreut und wen Sie fragen können. Als TÜV-zertifizierter Wundexperte (ICW) lege ich zudem besonderes Augenmerk auf eine komplikationsfreie Wundheilung.</p>
         </div>
+        <p class="reveal"><a class="text-link" href="knieschmerzen.html">Ratgeber: Knieschmerzen — Ursachen &amp; Behandlung <span class="arrow">→</span></a></p>
       </div>
     </section>
-""" + closer("Operieren oder nicht? Holen Sie sich eine ehrliche Einschätzung.",
+""" + faq_block(FAQ_CHIRURGIE, grey=False) + closer("Operieren oder nicht? Holen Sie sich eine ehrliche Einschätzung.",
              "Gerne auch als Zweitmeinung: Wir besprechen Befunde, Optionen und Risiken — verständlich und ohne Zeitdruck.",
              "Operative Zweitmeinung einholen"),
 })
@@ -547,6 +669,8 @@ PAGES.append({
     "title": "Rückenschmerzen Salzburg | Wirbelsäule & Schmerztherapie",
     "desc": "Wirbelsäulenbehandlung in Salzburg: Facetteninfiltrationen, multimodale Schmerztherapie, Stoßwellentherapie (ESWT), Wirbelsäulenchirurgie. Wahlarzt Dr. Schrader.",
     "active": "LEISTUNGEN",
+    "crumbs": [("Startseite", "index.html"), ("Leistungen", "leistungen.html"), ("Wirbelsäule & Schmerztherapie", "wirbelsaeule-schmerztherapie.html")],
+    "faq": FAQ_SPINE,
     "body": page_header(
         '<a href="leistungen.html">Leistungen</a> <span>/</span> <span>Wirbelsäule &amp; Schmerztherapie</span>',
         "Wirbelsäule &amp; Schmerztherapie",
@@ -586,7 +710,7 @@ PAGES.append({
         </div>
       </div>
     </section>
-""" + closer("Ihr Rücken hat eine genaue Diagnose verdient.",
+""" + faq_block(FAQ_SPINE) + closer("Ihr Rücken hat eine genaue Diagnose verdient.",
              "Lassen Sie die Ursache Ihrer Beschwerden abklären — gründlich, ehrlich und ohne Zeitdruck.",
              "Rückenschmerz abklären lassen"),
 })
@@ -597,6 +721,8 @@ PAGES.append({
     "title": "Sportarzt Salzburg | Sportmedizin & Unfallchirurgie",
     "desc": "Sportverletzungen rasch abklären: Sportmedizin, unfallchirurgische Versorgung und Return-to-Sport-Konzepte in Salzburg. Dr. Thomas Schrader – Diplom-Sportmediziner.",
     "active": "LEISTUNGEN",
+    "crumbs": [("Startseite", "index.html"), ("Leistungen", "leistungen.html"), ("Sportmedizin & Unfallchirurgie", "sportmedizin-unfallchirurgie.html")],
+    "faq": FAQ_SPORT,
     "body": page_header(
         '<a href="leistungen.html">Leistungen</a> <span>/</span> <span>Sportmedizin &amp; Unfallchirurgie</span>',
         "Sportmedizin &amp; Unfallchirurgie",
@@ -642,11 +768,101 @@ PAGES.append({
           <h3>Ihr Vorteil bei Dr. Schrader</h3>
           <p>Diagnose, Therapie und — falls nötig — die Operation aus einer Hand, ohne Umwege und ohne lange Wartezeiten. Und weil ich selbst am Rennrad, am Mountainbike und auf Skiern trainiere, weiß ich aus eigener Erfahrung, was eine Verletzung für Sportler bedeutet.</p>
         </div>
+        <p class="reveal"><a class="text-link" href="knieschmerzen.html">Ratgeber: Knieschmerzen — Ursachen &amp; Behandlung <span class="arrow">→</span></a></p>
       </div>
     </section>
-""" + closer("Sportverletzung? Verlieren Sie keine Zeit.",
+""" + faq_block(FAQ_SPORT) + closer("Sportverletzung? Verlieren Sie keine Zeit.",
              "Je früher die exakte Diagnose, desto schneller die richtige Therapie — und desto sicherer Ihre Rückkehr zum Sport.",
              "Sportverletzung abklären lassen"),
+})
+
+# ============================================================ Ratgeber: Knieschmerzen
+PAGES.append({
+    "file": "knieschmerzen.html",
+    "title": "Knieschmerzen Salzburg | Ursachen & Behandlung – Dr. Schrader",
+    "desc": "Knieschmerzen beim Treppensteigen, an der Innenseite oder nach dem Sport? Ursachen, Diagnose und Behandlung beim Kniespezialisten in Salzburg – rasche Termine.",
+    "active": "",
+    "crumbs": [("Startseite", "index.html"), ("Ratgeber: Knieschmerzen", "knieschmerzen.html")],
+    "faq": FAQ_KNIE,
+    "body": page_header(
+        "<span>Ratgeber: Knieschmerzen</span>",
+        "Knieschmerzen: Ursachen, Diagnose &amp; Behandlung",
+        "Das Knie ist das am stärksten belastete Gelenk des Körpers — und Knieschmerzen sind selten „einfach so“ da. Wo es schmerzt und wann es schmerzt, verrät oft schon viel über die Ursache. Als Kniespezialist in Salzburg kläre ich Ihre Beschwerden rasch und gründlich ab.") + """
+    <section class="section">
+      <div class="container split" style="align-items:start;">
+        <div class="reveal">
+          <p class="eyebrow">Symptom-Check</p>
+          <h2>Was Ihr Knie Ihnen sagen will</h2>
+          <p>Eine erste Orientierung — die genaue Diagnose ersetzt sie nicht:</p>
+          <ul class="checklist">
+            <li><span><strong>Schmerzen an der Innenseite</strong> — häufig Innenmeniskus, beginnende Arthrose des inneren Gelenkanteils oder gereizte Sehnenansätze</span></li>
+            <li><span><strong>Schmerzen beim Treppensteigen</strong> — typisch für das Gleitlager der Kniescheibe (retropatellarer Knorpel)</span></li>
+            <li><span><strong>Schmerzen vorne / unter der Kniescheibe</strong> — Überlastung des Streckapparates, Patellaspitzensyndrom</span></li>
+            <li><span><strong>Anlaufschmerz am Morgen</strong> — klassisches Frühzeichen einer Arthrose</span></li>
+            <li><span><strong>Schmerzen nach dem Sport oder Joggen</strong> — Reizung von Sehnen, Schleimbeuteln oder Meniskus</span></li>
+            <li><span><strong>Schwellung, Blockade oder Instabilität</strong> — Warnzeichen für Meniskus- oder Bandverletzungen: rasch abklären lassen</span></li>
+            <li><span><strong>Nächtliche Ruheschmerzen</strong> — Hinweis auf eine aktivierte Arthrose oder Entzündung</span></li>
+          </ul>
+        </div>
+        <!-- TODO Livegang: Foto Knieuntersuchung -->
+        <div class="visual visual-grey ratio-45 reveal" aria-hidden="true">
+          <div class="visual-inner"><div class="visual-label">Knie-Diagnostik</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-grey">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Diagnose</p>
+          <h2>So kläre ich Ihre Knieschmerzen ab</h2>
+        </div>
+        <div class="steps">
+          <div class="step reveal">
+            <h3>Ausführliches Gespräch</h3>
+            <p>Wann schmerzt es, wo genau, seit wann — Ihre Geschichte liefert die wichtigsten Hinweise.</p>
+          </div>
+          <div class="step reveal">
+            <h3>Klinische Untersuchung</h3>
+            <p>Gezielte Funktions- und Stabilitätstests von Bändern, Menisken und Kniescheibe.</p>
+          </div>
+          <div class="step reveal">
+            <h3>Ultraschall sofort</h3>
+            <p>Erguss, Sehnen und Weichteile mache ich per Sonografie direkt beim ersten Termin sichtbar.</p>
+          </div>
+          <div class="step reveal">
+            <h3>Klarer Behandlungsplan</h3>
+            <p>Sie gehen mit einer Diagnose und einem konkreten Plan nach Hause — nicht mit einem „Schauen wir mal".</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Behandlung</p>
+          <h2>Ihre Behandlungswege bei Knieschmerzen</h2>
+          <p>Vom Gelenkerhalt bis zur Operation — alles aus einer Hand, abgestimmt auf Ihren Befund:</p>
+        </div>
+        <div class="card-grid">
+          <article class="card reveal">
+            <h3>Konservativ &amp; gelenkerhaltend</h3>
+            <p>Bewegungstherapie, Hyaluron-Injektionen und ACP-Eigenbluttherapie bei Arthrose und Knorpelschäden — Schmerzen lindern, ohne zu operieren.</p>
+            <a href="arthrose-gelenkerhalt.html" class="text-link">Gelenkerhalt &amp; Arthrosetherapie <span class="arrow">→</span></a>
+          </article>
+          <article class="card reveal">
+            <h3>Operativ, wenn nötig</h3>
+            <p>Arthroskopie, Kreuzbandersatz und Knieprothese an der Privatklinik Wehrle-Diakonissen — minimalinvasiv, präzise, persönlich begleitet.</p>
+            <a href="gelenkchirurgie-endoprothetik.html" class="text-link">Gelenkchirurgie &amp; Endoprothetik <span class="arrow">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+""" + faq_block(FAQ_KNIE) + closer("Knieschmerzen? Lassen Sie sie abklären, bevor sie chronisch werden.",
+             "Rasche Termine, exakte Diagnose beim ersten Besuch und ein klarer Behandlungsplan — beim Kniespezialisten in Salzburg.",
+             "Knieschmerzen abklären lassen"),
 })
 
 # ============================================================ Wahlarzt
@@ -655,6 +871,8 @@ PAGES.append({
     "title": "Wahlarzt Orthopädie Salzburg | Vorteile & Kostenrückerstattung",
     "desc": "Was bedeutet Wahlarzt? Ihre Vorteile bei Dr. Schrader in Salzburg: rasche Termine, Zeit für Diagnose und Therapie, Kostenrückerstattung der Krankenkasse einfach erklärt.",
     "active": "WAHLARZT",
+    "crumbs": [("Startseite", "index.html"), ("Wahlarzt-Vorteile", "wahlarzt-salzburg.html")],
+    "faq": FAQ_WAHLARZT,
     "body": page_header(
         "<span>Wahlarzt-Vorteile</span>",
         "Wahlarzt — was Sie davon haben",
@@ -708,6 +926,7 @@ PAGES.append({
       </div>
     </section>
 
+""" + faq_block(FAQ_WAHLARZT, grey=False) + """
     <section class="section section-navy closer">
       <div class="container reveal">
         <h2>Gönnen Sie Ihrer Gesundheit den Termin, den sie verdient.</h2>
@@ -727,6 +946,7 @@ PAGES.append({
     "title": "Ordination Salzburg | Anfahrt – Dr. Thomas Schrader",
     "desc": "Ordination im healthlab Salzburg, Alpenstraße 99: Anfahrt, Parken, Ordinationszeiten. Operationen an der Privatklinik Wehrle-Diakonissen.",
     "active": "ORDINATION",
+    "crumbs": [("Startseite", "index.html"), ("Ordination & Anfahrt", "ordination-anfahrt.html")],
     "body": page_header(
         "<span>Ordination &amp; Anfahrt</span>",
         "Ordination &amp; Anfahrt",
@@ -795,6 +1015,7 @@ PAGES.append({
     "title": "Kontakt & Termin | Orthopäde Dr. Schrader Salzburg",
     "desc": "Jetzt Wahlarzt-Termin vereinbaren: telefonisch unter +43 660 8574000, per E-Mail oder online. Ordination im healthlab Salzburg, Alpenstraße 99.",
     "active": "KONTAKT",
+    "crumbs": [("Startseite", "index.html"), ("Kontakt", "kontakt.html")],
     "body": page_header(
         "<span>Kontakt</span>",
         "Kontakt &amp; Terminvereinbarung",
@@ -950,6 +1171,12 @@ def render(p):
     html = html.replace("@TITLE@", p["title"]).replace("@DESC@", p["desc"]).replace("@FILE@", p["file"])
     for key in ("UEBER", "LEISTUNGEN", "WAHLARZT", "ORDINATION", "KONTAKT"):
         html = html.replace("@A_" + key + "@", ' class="active"' if p["active"] == key else "")
+    extra = ""
+    if p.get("crumbs"):
+        extra += breadcrumb_jsonld(p["crumbs"])
+    if p.get("faq"):
+        extra += faq_jsonld(p["faq"])
+    html = html.replace("@EXTRA_HEAD@", extra)
     return html
 
 

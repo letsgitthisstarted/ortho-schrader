@@ -9,6 +9,8 @@
   --navy-deep: #0a1f33;
   --navy-soft: #1b3a58;
   --gold: #b59a6b;
+  /* dunkleres Gold für kleinen Text auf hellem Grund (4,7:1 Kontrast, AA) */
+  --gold-text: #8a6f47;
   --gold-light: #cdb68c;
   --gold-faint: rgba(181, 154, 107, 0.18);
   --grey: #f4f2ef;
@@ -129,7 +131,7 @@ p:last-child {
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-text);
   margin-bottom: 1.4rem;
 }
 
@@ -311,7 +313,7 @@ p:last-child {
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .main-nav > ul {
@@ -870,7 +872,7 @@ p:last-child {
 }
 
 .breadcrumb a {
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .breadcrumb a:hover {
@@ -921,7 +923,7 @@ p:last-child {
   font-family: var(--font-serif);
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--gold);
+  color: var(--gold-text);
   letter-spacing: 0.04em;
   margin-bottom: 0.3rem;
 }
@@ -958,7 +960,7 @@ p:last-child {
   content: "0" counter(step);
   font-family: var(--font-serif);
   font-size: 2rem;
-  color: var(--gold);
+  color: var(--gold-text);
   display: block;
   margin-bottom: 1rem;
   border-bottom: 1px solid var(--gold-faint);
@@ -1010,7 +1012,7 @@ p:last-child {
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-text);
   margin-bottom: 0.6rem;
 }
 
@@ -1104,7 +1106,8 @@ p:last-child {
 .form-field select,
 .form-field textarea {
   font-family: var(--font-sans);
-  font-size: 0.98rem;
+  /* mind. 16px, sonst zoomt iOS Safari beim Fokussieren in das Feld */
+  font-size: 1rem;
   color: var(--ink);
   padding: 0.9rem 1.1rem;
   border: 1px solid var(--line);
@@ -1123,6 +1126,63 @@ p:last-child {
 .form-note {
   font-size: 0.82rem;
   color: var(--ink-soft);
+}
+
+/* ---------- FAQ ---------- */
+
+.faq-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2.4rem;
+}
+
+.faq-item {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.3rem 1.6rem;
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.4;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--gold-text);
+  flex-shrink: 0;
+  transition: transform var(--transition);
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  padding: 0 1.6rem 1.5rem;
+  font-size: 0.97rem;
+  color: var(--ink-soft);
+}
+
+.faq-answer p {
+  max-width: none;
 }
 
 /* ---------- Emergency strip ---------- */
@@ -1211,7 +1271,7 @@ p:last-child {
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 /* ---------- Footer ---------- */
@@ -1402,9 +1462,12 @@ p:last-child {
     margin-top: 0.8rem;
   }
 
+  /* schlägt ".main-nav a", das sonst Textfarbe und Padding des Buttons überschreibt */
   .nav-cta-item .btn {
     width: 100%;
+    padding: 1.05rem 2.1rem;
     font-size: 0.8rem;
+    color: var(--white);
   }
 
   .nav-cta-item a::after {
