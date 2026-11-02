@@ -562,13 +562,23 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 .story__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: 1; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 18px; }
 .story__body { font-size: 1.12rem; color: var(--ink-2); max-width: 40ch; }
 .story__visual { position: relative; display: grid; place-items: center; aspect-ratio: 1; width: min(100%, 40vh); justify-self: center; }
-.story__orb {
-  position: absolute; inset: 6%; border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #eef3f6 40%, #c9d8e3 100%);
-  box-shadow: 0 50px 80px -40px rgba(22, 41, 61, .45), inset 0 -20px 40px rgba(22, 41, 61, .08);
+/* A fine dial: the navy arc and ticks follow the four steps, a frosted plate carries the drawing. */
+.story__dial { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: none; }
+.story__track { stroke: rgba(22, 41, 61, .12); stroke-width: 1; }
+.story__progress { stroke: var(--navy); stroke-width: 1.6; stroke-linecap: round; transition: stroke-dasharray .7s var(--ease-out); }
+.story__dash { stroke: rgba(22, 41, 61, .2); stroke-width: 1; stroke-dasharray: 1 6; transform-origin: 100px 100px; animation: dial-spin 90s linear infinite; }
+.story__tick { fill: #eef1ee; stroke: rgba(22, 41, 61, .3); stroke-width: 1; transition: fill .35s var(--ease), stroke .35s var(--ease); }
+.story__tick.is-active { fill: var(--navy); stroke: var(--navy); }
+@keyframes dial-spin { to { transform: rotate(360deg); } }
+.story__glass {
+  position: absolute; inset: 22%; border-radius: 30%;
+  background: linear-gradient(160deg, rgba(255, 255, 255, .8), rgba(255, 255, 255, .35));
+  border: 1px solid rgba(255, 255, 255, .9);
+  box-shadow: 0 30px 60px -30px rgba(22, 41, 61, .4), inset 0 1px 0 #fff;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
 .story__art {
-  grid-area: 1 / 1; position: relative; width: 52%; color: var(--navy);
+  grid-area: 1 / 1; position: relative; width: 40%; color: var(--navy);
   opacity: 0; transform: scale(.85) rotate(-6deg);
   transition: opacity 0.39s var(--ease), transform 0.65s var(--ease-out);
 }
@@ -1314,4 +1324,32 @@ a.contact-card--dark:hover { background: var(--ink); }
 @media (prefers-reduced-motion: reduce) {
   .motion [data-stagger]:not(.is-in) > * { opacity: 1; }
   .tile:hover, .region-card:hover, .pill-tile:hover { transform: none; }
+}
+
+/* ───────────────────────────── illustration motion */
+
+/* fx-* parts loop while their card is hovered and while a story step is active. */
+.art .fx-wave { transform-origin: 80px 102px; transform: scale(var(--s)); opacity: var(--o); }
+.art .fx-ring { transform-origin: 80px 80px; }
+.art .fx-tilt { transform-origin: 80px 90px; }
+.art .fx-swing { transform-origin: 58.5px 47px; }
+@keyframes fx-wave { 0% { transform: scale(.3); opacity: 0; } 10% { opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+@keyframes fx-bob { 50% { transform: translateY(-3px); } }
+@keyframes fx-glow { 0%, 100% { opacity: .2; } 50% { opacity: .75; } }
+@keyframes fx-ring { 0% { transform: scale(1); opacity: .25; } 100% { transform: scale(1.12); opacity: 0; } }
+@keyframes fx-tilt { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+@keyframes fx-swing { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-7deg); } }
+@keyframes fx-dash { to { stroke-dashoffset: -20; } }
+.story__art.is-active .fx-wave { animation: fx-wave 2.4s linear var(--dl) infinite; }
+.story__art.is-active .fx-bob { animation: fx-bob 1.8s ease-in-out infinite; }
+.story__art.is-active .fx-glow { animation: fx-glow 1.8s ease-in-out infinite; }
+.story__art.is-active .fx-dash { animation: fx-dash 1.2s linear infinite; }
+@media (hover: hover) {
+  :is(.tile, .pill-tile, .region-card):hover .fx-wave { animation: fx-wave 2.4s linear var(--dl) infinite; }
+  :is(.tile, .pill-tile, .region-card):hover .fx-bob { animation: fx-bob 1.8s ease-in-out infinite; }
+  :is(.tile, .pill-tile, .region-card):hover .fx-glow { animation: fx-glow 1.8s ease-in-out infinite; }
+  :is(.tile, .pill-tile, .region-card):hover .fx-ring { animation: fx-ring 1.8s ease-out infinite; }
+  :is(.tile, .pill-tile, .region-card):hover .fx-tilt { animation: fx-tilt 2.4s ease-in-out infinite; }
+  :is(.tile, .pill-tile, .region-card):hover .fx-swing { animation: fx-swing 2.2s ease-in-out infinite; }
+  :is(.tile, .pill-tile, .region-card):hover .fx-dash { animation: fx-dash 1.2s linear infinite; }
 }

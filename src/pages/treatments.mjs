@@ -104,10 +104,10 @@ export function treatmentsIndex() {
   const crumbs = [['Behandlungen', '/behandlungen/']];
   const filters = [['alle', 'Alle'], ...groups.map((g) => [g.id, g.label])];
   const network = [
-    ['Schulterchirurgie', 'Rotatorenmanschettennaht, Stabilisierung, Gelenkersatz'],
-    ['Ellenbogenchirurgie', 'Eingriffe an Sehnen, Nerven und Gelenk'],
-    ['Wirbelsäulenchirurgie', 'Bandscheibe, Spinalkanal, Stabilisierung – unter anderem mit der Neurochirurgie im healthlab'],
-    ['Kreuzbandersatz', 'Rekonstruktion nach Kreuzbandriss'],
+    ['Schulterchirurgie', 'Rotatorenmanschettennaht, Stabilisierung, Gelenkersatz', 'shoulder'],
+    ['Ellenbogenchirurgie', 'Eingriffe an Sehnen, Nerven und Gelenk', 'elbow'],
+    ['Wirbelsäulenchirurgie', 'Bandscheibe, Spinalkanal, Stabilisierung – unter anderem mit der Neurochirurgie im healthlab', 'spine'],
+    ['Kreuzbandersatz', 'Rekonstruktion nach Kreuzbandriss', 'acl'],
   ];
 
   const body = html`
@@ -142,7 +142,7 @@ ${pageHero({
       ${sectionHead({ title: 'Im Netzwerk', tone: 'mit Spezialist:innen.', align: 'stack', text: 'Nicht jede Operation gehört in jede Hand. Für die folgenden Eingriffe arbeite ich mit spezialisierten Kolleg:innen in Salzburg und in der OUCC in Bayern zusammen. Die Abklärung, die Entscheidung und die Nachbehandlung können bei mir bleiben – Sie haben einen Ansprechpartner.' })}
     </div>
     <ul class="network-index__list">
-      ${network.map(([t, d]) => html`<li data-reveal><span class="network-index__art">${art('network')}</span><div><p class="network-index__title">${t}</p><p>${d}</p></div></li>`)}
+      ${network.map(([t, d, a]) => html`<li data-reveal><span class="network-index__art">${art(a)}</span><div><p class="network-index__title">${t}</p><p>${d}</p></div></li>`)}
     </ul>
   </div>
 </section>

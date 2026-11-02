@@ -282,6 +282,8 @@
   const storyTexts = story ? $$('[data-story-text]', story) : [];
   const storyArts = story ? $$('[data-story-art]', story) : [];
   const storyDots = story ? $$('[data-story-dot]', story) : [];
+  const storyTicks = story ? $$('[data-story-tick]', story) : [];
+  const storyProgress = story && $('[data-story-progress]', story);
   let storyIdx = 0;
   const onScrollStory = () => {
     if (!story || innerWidth <= 760) return;
@@ -292,6 +294,8 @@
     if (idx === storyIdx) return;
     storyIdx = idx;
     [storyTexts, storyArts, storyDots].forEach((list) => list.forEach((el, i) => el.classList.toggle('is-active', i === idx)));
+    storyTicks.forEach((el, i) => el.classList.toggle('is-active', i <= idx));
+    storyProgress.style.strokeDasharray = `${idx + 1} ${storyTexts.length}`;
   };
 
   /* ───────────── symptom finder */

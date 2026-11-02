@@ -43,6 +43,7 @@ export const icons = {
 // ───────────────────────────── Illustrations (160px canvas)
 // Soft, tonal objects: a gradient body in currentColor, a fine outline and a few highlight strokes.
 // Every call gets its own gradient ids, so the same drawing can appear on light and dark tiles.
+// Elements with an fx-* class animate in a loop while their tile is hovered (see main.css).
 
 let uid = 0;
 const illo = (draw) => () => {
@@ -53,7 +54,7 @@ const illo = (draw) => () => {
 <defs>
 <linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".34"/><stop offset="1" stop-color="currentColor" stop-opacity=".06"/></linearGradient>
 <radialGradient id="${id}s" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="currentColor" stop-opacity=".08"/><stop offset=".7" stop-color="currentColor" stop-opacity=".3"/><stop offset="1" stop-color="currentColor" stop-opacity=".45"/></radialGradient>
-</defs>${draw(g, s)}</svg>`;
+</defs>${draw(g, s, id)}</svg>`;
 };
 
 // Shared knee bones (front view): femur above, tibia below.
@@ -66,93 +67,128 @@ export const illustrations = {
   // Natural joint with smooth cartilage and two protective arcs – "Gelenk erhalten".
   joint: illo((g) => `${kneeBones(g)}
     <path d="M52 92c9 6 19 7 28 4 9 3 19 2 28-4" stroke-width="2.6" opacity=".55"/>
-    <path d="M30 56c-12 18-12 50 2 70M130 56c12 18 12 50-2 70" stroke-width="2" opacity=".5"/>
+    <path class="fx-glow" d="M30 56c-12 18-12 50 2 70M130 56c12 18 12 50-2 70" stroke-width="2" opacity=".5"/>
     <path d="M22 66c-7 14-7 34 2 50M138 66c7 14 7 34-2 50" opacity=".25"/>`),
 
-  // Hip prosthesis: cup, small ball head, neck and a long tapered stem.
+  // Hip prosthesis: cup, small ball head, neck and a long tapered stem (the stem swings in the cup).
   hip: illo((g, s) => `
     <path d="M42.5 56.3A18.5 18.5 0 0 1 73.5 36.1L70.2 38.5A14.5 14.5 0 0 0 45.9 54.3Z" fill="${g}"/>
-    <circle cx="58.5" cy="47" r="11" fill="${s}"/>
-    <path d="M66 55 85 74" stroke-width="9" opacity=".22"/>
-    <path d="M64.5 58.5 81 75.5M68.5 53 85.5 70" />
-    <path d="M80 70c6-8 21-7 25 3l3 15c2 18 0 40-4 62-1 6-9 6-10 0l-6-56c-1-8-4-15-8-20Z" fill="${g}"/>
-    <path d="M101 86c1 18 0 38-3 56" opacity=".35"/>
-    <circle cx="55" cy="43" r="2.6" fill="currentColor" stroke="none" opacity=".35"/>`),
+    <g class="fx-swing">
+      <circle cx="58.5" cy="47" r="11" fill="${s}"/>
+      <path d="M66 55 85 74" stroke-width="9" opacity=".22"/>
+      <path d="M64.5 58.5 81 75.5M68.5 53 85.5 70" />
+      <path d="M80 70c6-8 21-7 25 3l3 15c2 18 0 40-4 62-1 6-9 6-10 0l-6-56c-1-8-4-15-8-20Z" fill="${g}"/>
+      <path d="M101 86c1 18 0 38-3 56" opacity=".35"/>
+      <circle cx="55" cy="43" r="2.6" fill="currentColor" stroke="none" opacity=".35"/>
+    </g>`),
 
-  // Knee prosthesis: femoral component with two condyles, insert, tray and keel.
-  knee: illo((g) => `
-    <path d="M42 40c0-5 4-8 9-8h58c5 0 9 3 9 8v24c0 20-11 31-24 31-7 0-11-3-14-7-3 4-7 7-14 7-13 0-24-11-24-31Z" fill="${g}"/>
-    <path d="M54 34v26c0 13 6 21 15 22M106 34v26c0 13-6 21-15 22" opacity=".35"/>
-    <rect x="44" y="102" width="72" height="11" rx="5" fill="${g}"/>
-    <rect x="40" y="116" width="80" height="7" rx="3.5" fill="currentColor" fill-opacity=".28"/>
-    <path d="M72 123l1.5 22a6.5 6.5 0 0 0 13 0L88 123" fill="${g}"/>`),
+  // Knee prosthesis: polished femoral component with two condyles, plastic insert, tibial tray with keel;
+  // the bone it sits in is only hinted. The femoral part glides on the insert.
+  knee: illo((g, s) => `
+    <path d="M62 4c0 12-2 20-8 26M98 4c0 12 2 20 8 26" stroke-dasharray="2 4" opacity=".3"/>
+    <g class="fx-bob">
+      <path d="M44 42c0-7 5-11 11-11h50c6 0 11 4 11 11v16c0 17-9 29-21 29-6 0-10-3-15-8-5 5-9 8-15 8-12 0-21-12-21-29Z" fill="${s}"/>
+      <path d="M71 31v16c0 5 4 8 9 8s9-3 9-8V31" opacity=".4"/>
+      <path d="M51 50c0 12 5 24 13 28" stroke="#fff" stroke-width="2.2" opacity=".55"/>
+      <path d="M100 48c2 8 2 16-2 22" stroke="#fff" stroke-width="1.6" opacity=".35"/>
+    </g>
+    <path d="M46 96c8 5 22 5 34 1 12 4 26 4 34-1v9c0 3-2 5-5 5H51c-3 0-5-2-5-5Z" fill="currentColor" fill-opacity=".1"/>
+    <rect x="42" y="111" width="76" height="7" rx="3" fill="${s}"/>
+    <path d="M70 118h20l-3 25c-.5 4-3.5 6-7 6s-6.5-2-7-6Z" fill="${g}"/>
+    <path d="M71 122l-11 9M89 122l11 9" stroke-width="2" opacity=".45"/>
+    <path d="M54 118c4 8 6 18 6 36M106 118c-4 8-6 18-6 36" stroke-dasharray="2 4" opacity=".3"/>`),
 
   // Arthroscopy: knee joint with two slim instruments entering at the joint line, light at the tip.
   scope: illo((g) => `${kneeBones(g)}
-    <circle cx="80" cy="97" r="16" fill="currentColor" fill-opacity=".12" stroke="none"/>
+    <circle class="fx-glow" cx="80" cy="97" r="16" fill="currentColor" fill-opacity=".12" stroke="none"/>
     <path d="M14 140 64 99" stroke-width="4" opacity=".22"/><path d="M14 140 64 99"/>
     <path d="M146 140 98 100" stroke-width="3" opacity=".22"/><path d="M146 140 98 100"/>
     <circle cx="64" cy="99" r="2.5" fill="currentColor" stroke="none"/>`),
 
-  // Open hand, palm facing forward, fingers touching.
+  // Open right hand, palm facing forward: thumb spread, finger joints and palm creases.
   hand: illo((g) => `
-    <path d="M63 150v-12c-6-6-12-14-16-24L31 92c-5-6-5-14 1-17 5-3 10 1 14 7l7 10V40c0-8 12-8 12 0v-8c0-8 14-8 14 0v4c0-8 14-8 14 0v10c0-7 11-7 11 0v52c1 14-1 26-7 36v16Z" fill="${g}"/>
-    <path d="M65 40v38M79 36v40M93 46v32" opacity=".28"/>
-    <path d="M61 112c10-8 26-9 40-2" opacity=".35"/>`),
+    <path d="M62 152l-1-19c-6-6-12-14-17-23L31 89c-3-5-2-11 3-12 4-1 7 2 10 6l10 14 1-61c0-9 12-9 12 0l.5 30 .5-38c0-9 12-9 12 0l.5 38 .5-32c0-9 12-9 12 0l.5 34 .5-22c0-8 10-8 10 0l1 54c0 16-5 26-9 33v19Z" fill="${g}"/>
+    <path d="M57 50h8M57 60h8M70 40h8M70 52h8M83 46h8M83 57h8M96 56h6M96 65h6" opacity=".3"/>
+    <path d="M57 90c13 4 31 2 47-6M57 101c10 0 21-4 29-11M63 128c-5-11-5-23 1-33" opacity=".35"/>
+    <path d="M39 89l6-4" opacity=".3"/>
+    <path d="M59 40c0-4 2-6 4-6" stroke="#fff" stroke-width="1.6" opacity=".5"/>`),
 
-  // Foot in side view with lower leg, arch and ankle.
+  // Foot from the inner side: lower leg, ankle bone, heel, arch and big toe, with the bones faintly inside.
   foot: illo((g) => `
-    <path d="M66 10C63 40 60 62 60 80c0 12 10 20 30 28 20 8 42 12 52 20 8 6 4 18-6 18H56c-16 0-26-10-24-24 2-10 8-16 8-30 0-24-6-52-10-82Z" fill="${g}"/>
-    <path d="M60 146c14-10 36-12 56-4" opacity=".4"/>
-    <circle cx="51" cy="94" r="5" opacity=".35"/>
-    <path d="M132 128c5 4 8 9 9 15" opacity=".3"/>`),
+    <path d="M52 8c0 32 0 58-2 76-2 14-14 22-16 38-2 16 6 25 20 25 12 0 20-6 34-7 14-1 20 6 32 7l20 1c8 0 11-5 9-10-2-5-8-8-17-11-14-5-28-14-40-24-8-7-13-15-14-25-2-20 0-44 0-70Z" fill="${g}"/>
+    <ellipse cx="52" cy="131" rx="13" ry="8" opacity=".18"/>
+    <path d="M88 112l40 21M93 106l36 23" stroke-width="3" opacity=".12"/>
+    <circle cx="63" cy="91" r="5" opacity=".35"/>
+    <path d="M131 127c3 6 3 14 0 21" opacity=".3"/>
+    <path d="M64 140c14-5 32-5 46 1" opacity=".3"/>
+    <path d="M57 20c0 22 0 42-2 58" stroke="#fff" stroke-width="1.6" opacity=".45"/>`),
 
-  // Shockwave: applicator on the skin, waves spreading into the tissue below.
-  waves: illo((g) => `
-    <rect x="14" y="88" width="132" height="58" rx="12" fill="${g}" stroke-opacity=".5"/>
-    <rect x="68" y="14" width="24" height="48" rx="11" fill="${g}"/>
-    <path d="M58 62h44v12a8 8 0 0 1-8 8H66a8 8 0 0 1-8-8Z" fill="currentColor" fill-opacity=".25"/>
-    <path d="M66 96a14 10 0 0 0 28 0" stroke-width="1.8"/>
-    <path d="M56 98a24 18 0 0 0 48 0" opacity=".65"/>
-    <path d="M46 100a34 26 0 0 0 68 0" opacity=".4"/>
-    <path d="M36 102a44 34 0 0 0 88 0" opacity=".2"/>
-    <circle cx="80" cy="126" r="4" fill="currentColor" stroke="none" opacity=".5"/>`),
+  // Shockwave: a handheld applicator with cable on the skin; pressure waves travel into the tissue
+  // towards a focal point (the waves run outward in a loop while the tile is hovered).
+  waves: illo((g, s, id) => `
+    <defs>
+      <clipPath id="${id}c"><path d="M4 104c30-7 122-7 152 0v52H4Z"/></clipPath>
+      <linearGradient id="${id}f" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".22" stop-color="#fff"/><stop offset=".78" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <mask id="${id}m"><rect width="160" height="160" fill="url(#${id}f)"/></mask>
+    </defs>
+    <g mask="url(#${id}m)">
+      <path d="M4 104c30-7 122-7 152 0v52H4Z" fill="${g}" stroke="none"/>
+      <path d="M4 104c30-7 122-7 152 0" stroke-width="1.6"/>
+      <path d="M4 120c34-5 118-5 152 0" opacity=".25"/>
+      <path d="M30 142c18-5 82-5 100 0" stroke-width="7" opacity=".14"/>
+      <g clip-path="url(#${id}c)">
+        ${[[0.2, -0.48], [0.5, -1.2], [0.8, -1.92]].map(([p, d]) => `<ellipse class="fx-wave" cx="80" cy="102" rx="40" ry="28" stroke-width="2" vector-effect="non-scaling-stroke" style="--s:${(0.3 + 1.3 * p).toFixed(2)};--o:${Math.min(1, (1 - p) / 0.9).toFixed(2)};--dl:${d}s"/>`).join('')}
+      </g>
+    </g>
+    <circle class="fx-glow" cx="80" cy="128" r="4" fill="currentColor" stroke="none" opacity=".55"/>
+    <path d="M80 14c0-8 14-12 28-8s26 8 44 0" opacity=".4"/>
+    <path d="M70 22c0-5 4-8 10-8s10 3 10 8l2 40c0 3-2 5-5 5H73c-3 0-5-2-5-5Z" fill="${g}"/>
+    <path d="M71 32h18M71 39h18M71 46h18" opacity=".28"/>
+    <path d="M75 26c0-3 2-5 5-5" stroke="#fff" stroke-width="2" opacity=".6"/>
+    <rect x="65" y="66" width="30" height="8" rx="3" fill="currentColor" fill-opacity=".28"/>
+    <path d="M67 74h26l5 17c1 4-2 7-6 7H68c-4 0-7-3-6-7Z" fill="${s}"/>
+    <path d="M66 98c5 5 23 5 28 0" stroke-width="2"/>`),
 
   // Targeted infiltration: concentric rings with a drop at the centre – precision, not a needle.
   target: illo((g) => `
-    <circle cx="80" cy="80" r="58" opacity=".18"/>
+    <circle class="fx-ring" cx="80" cy="80" r="58" opacity=".18"/>
     <circle cx="80" cy="80" r="42" fill="${g}" opacity=".9"/>
     <circle cx="80" cy="80" r="26" opacity=".55"/>
     <path d="M80 8v14M80 138v14M8 80h14M138 80h14" opacity=".45"/>
-    <path d="M80 62s-11 13-11 21a11 11 0 0 0 22 0c0-8-11-21-11-21Z" fill="currentColor" fill-opacity=".35"/>`),
+    <path class="fx-bob" d="M80 62s-11 13-11 21a11 11 0 0 0 22 0c0-8-11-21-11-21Z" fill="currentColor" fill-opacity=".35"/>`),
 
   // Hyaluronic acid: a drop with a soft molecule chain inside.
   droplet: illo((g) => `
     <path d="M80 16s-44 50-44 82a44 44 0 0 0 88 0c0-32-44-82-44-82Z" fill="${g}"/>
     <path d="M58 116a24 24 0 0 1-5-18" opacity=".4"/>
-    <path d="M62 102c6-10 12-10 18 0s12 10 18 0" opacity=".55"/>
-    <circle cx="62" cy="102" r="4" fill="currentColor" fill-opacity=".3"/><circle cx="80" cy="102" r="4" fill="currentColor" fill-opacity=".3"/><circle cx="98" cy="102" r="4" fill="currentColor" fill-opacity=".3"/>`),
+    <g class="fx-bob">
+      <path d="M62 102c6-10 12-10 18 0s12 10 18 0" opacity=".55"/>
+      <circle cx="62" cy="102" r="4" fill="currentColor" fill-opacity=".3"/><circle cx="80" cy="102" r="4" fill="currentColor" fill-opacity=".3"/><circle cx="98" cy="102" r="4" fill="currentColor" fill-opacity=".3"/>
+    </g>`),
 
-  // Platelet-rich plasma: a tube with a separated plasma layer.
-  tube: illo((g) => `
+  // Platelet-rich plasma: a tube with a separated plasma layer (gently swirled on hover).
+  tube: illo((g) => `<g class="fx-tilt">
     <rect x="58" y="14" width="44" height="13" rx="5" fill="currentColor" fill-opacity=".25"/>
     <path d="M64 27v92a16 16 0 0 0 32 0V27" fill="${g}"/>
     <path d="M65 76h30v43a15 15 0 0 1-30 0Z" fill="currentColor" fill-opacity=".26" stroke="none"/>
     <path d="M64 76h32" />
-    <path d="M71 38v26" opacity=".35"/>`),
+    <path d="M71 38v26" opacity=".35"/></g>`),
 
-  // Spine: stacked vertebrae with discs.
-  spine: illo((g) => `${[0, 1, 2, 3, 4].map((i) => {
-      const y = 14 + i * 27; const w = 38 + i * 3.5; const x = 80 - w / 2;
-      return `<rect x="${x}" y="${y}" width="${w}" height="18" rx="7" fill="${g}"/>
-      <path d="M${x - 2} ${y + 9}h-10M${x + w + 2} ${y + 9}h10" opacity=".45"/>
-      ${i < 4 ? `<ellipse cx="80" cy="${y + 22.5}" rx="${w / 2 - 5}" ry="2.4" fill="currentColor" fill-opacity=".3" stroke="none"/>` : ''}`;
-    }).join('')}`),
+  // Lumbar spine from the front: waisted vertebral bodies with transverse processes, pedicles and discs;
+  // a soft glow marks a small vertebral joint, where an infiltration would aim.
+  spine: illo((g, s) => [0, 1, 2, 3].map((i) => {
+      const y = 10 + i * 36; const w = 40 + i * 4; const x0 = 80 - w / 2; const x1 = 80 + w / 2;
+      return `<path d="M${x0} ${y + 8}c-9-3-18-2-24 2-2 2-1 5 1 5 7 1 15 1 23-1M${x1} ${y + 8}c9-3 18-2 24 2 2 2 1 5-1 5-7 1-15 1-23-1" fill="${g}"/>
+      <path d="M${x0 + 4} ${y}H${x1 - 4}q4 0 4 4q-3 8 0 16q0 4-4 4H${x0 + 4}q-4 0-4-4q3-8 0-16q0-4 4-4Z" fill="${s}"/>
+      <ellipse cx="${80 - w / 4}" cy="${y + 12}" rx="3" ry="4" opacity=".35"/><ellipse cx="${80 + w / 4}" cy="${y + 12}" rx="3" ry="4" opacity=".35"/>
+      <path d="M${x0 + 8} ${y + 5}c6-2 14-2 20 0" stroke="#fff" stroke-width="1.6" opacity=".5"/>
+      ${i < 3 ? `<path d="M${x0 + 2} ${y + 30}q${w / 2 - 2} -4 ${w - 4} 0q-${w / 2 - 2} 4 -${w - 4} 0Z" fill="currentColor" fill-opacity=".22" opacity=".8"/>` : ''}`;
+    }).join('') + '<circle class="fx-glow" cx="91" cy="76" r="9" fill="currentColor" fill-opacity=".2" stroke="none"/>'),
 
   // Ultrasound: probe with its scan fan.
   probe: illo((g) => `
     <path d="M60 66 36 136a96 96 0 0 0 88 0L100 66Z" fill="${g}" stroke-opacity=".6"/>
-    <path d="M48 106a62 62 0 0 0 64 0M42 122a80 80 0 0 0 76 0" opacity=".35"/>
+    <path class="fx-glow" d="M48 106a62 62 0 0 0 64 0M42 122a80 80 0 0 0 76 0" opacity=".35"/>
     <ellipse cx="86" cy="108" rx="8" ry="6" fill="currentColor" fill-opacity=".3" stroke="none"/>
     <rect x="58" y="14" width="44" height="54" rx="14" fill="${g}"/>
     <path d="M66 28h28" opacity=".4"/>`),
@@ -167,15 +203,39 @@ export const illustrations = {
   // Two speech bubbles – listening.
   speech: illo((g) => `
     <path d="M20 44a14 14 0 0 1 14-14h64a14 14 0 0 1 14 14v34a14 14 0 0 1-14 14H58l-18 16V92h-6a14 14 0 0 1-14-14Z" fill="${g}"/>
-    <path d="M122 70h4a14 14 0 0 1 14 14v26a14 14 0 0 1-14 14h-2v14l-16-14H86a14 14 0 0 1-14-14v-6" opacity=".55"/>
+    <path class="fx-bob" d="M122 70h4a14 14 0 0 1 14 14v26a14 14 0 0 1-14 14h-2v14l-16-14H86a14 14 0 0 1-14-14v-6" opacity=".55"/>
     <path d="M40 52h52M40 66h34" opacity=".45"/>`),
 
   // A route with stops – accompanying the way back.
   route: illo((g) => `
-    <path d="M28 132c34 0 20-46 54-46s22-48 52-48" stroke-dasharray="3 7" opacity=".6"/>
+    <path class="fx-dash" d="M28 132c34 0 20-46 54-46s22-48 52-48" stroke-dasharray="3 7" opacity=".6"/>
     <circle cx="28" cy="132" r="8" fill="${g}"/>
     <circle cx="82" cy="86" r="8" fill="${g}"/>
     <path d="M128 52V22l22 9-22 9" fill="currentColor" fill-opacity=".3"/>`),
+
+  // Right shoulder from the front: clavicle and acromion above the ball of the upper arm in its socket.
+  shoulder: illo((g, s) => `
+    <path d="M12 40c20-7 46-4 66-2s22 1 27 5c2 3 0 7-4 7-6 0-13-4-25-5s-40-1-60 2c-5 1-8-5-4-7Z" fill="${g}"/>
+    <path d="M98 40c14-5 30 0 38 10 4 6 0 10-6 8-8-3-16-4-24-2Z" fill="${g}"/>
+    <path d="M90 62c-6 10-6 24 0 34" stroke-width="3" opacity=".45"/>
+    <path d="M86 70c-8 16-14 40-22 72" opacity=".3"/>
+    <path d="M112 58a20 20 0 0 1 18 28c-4 10-6 22-6 64h-22c0-38-2-50-6-58a20 20 0 0 1 16-34Z" fill="${s}"/>
+    <path d="M96 62c8-9 26-9 34 4" stroke-width="2" opacity=".4"/>
+    <path d="M104 66c3-3 7-4 11-4" stroke="#fff" stroke-width="1.8" opacity=".55"/>`),
+
+  // Bent elbow from the side: upper arm bone meeting the two forearm bones.
+  elbow: illo((g, s) => `
+    <path d="M40 8h20c0 26 2 50 8 66 4 10 4 22-4 28-8 6-22 4-28-6-4-8-2-16 2-24 4-18 4-40 2-64Z" fill="${g}"/>
+    <path d="M62 86c4-5 11-5 14 0l72 17c5 1 5 9 0 10l-74-6c-9-1-16-13-12-21Z" fill="${s}"/>
+    <path d="M32 100c5-8 16-7 23 0l93 22c5 1 5 10 0 11l-6 1-90-13c-13-2-24-10-20-21Z" fill="${g}"/>
+    <path d="M44 94c6 6 16 8 24 4" stroke-width="2" opacity=".4"/>
+    <path d="M47 16c1 18 2 36 6 52" stroke="#fff" stroke-width="1.6" opacity=".45"/>`),
+
+  // Knee with the two cruciate ligaments crossing between the bones; the anterior one is highlighted.
+  acl: illo((g) => `${kneeBones(g)}
+    <path class="fx-glow" d="M71 80 90 110" stroke-width="10" opacity=".25"/>
+    <path d="M71 80 90 110" stroke-width="3.4"/>
+    <path d="M90 80 71 110" stroke-width="2.2" opacity=".5"/>`),
 
   // Network of colleagues.
   network: illo((g) => `

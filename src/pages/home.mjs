@@ -75,7 +75,13 @@ ${bodyMap()}
           </div>`)}
         </div>
         <div class="story__visual" aria-hidden="true">
-          <div class="story__orb"></div>
+          <svg class="story__dial" viewBox="0 0 200 200">
+            <circle class="story__track" cx="100" cy="100" r="96"/>
+            <circle class="story__progress" cx="100" cy="100" r="96" pathLength="${journey.length}" transform="rotate(-90 100 100)" style="stroke-dasharray:1 ${journey.length}" data-story-progress/>
+            <circle class="story__dash" cx="100" cy="100" r="82"/>
+            ${journey.map((_, i) => { const a = ((i + 1) / journey.length * 360 - 90) * Math.PI / 180; return html`<circle class="story__tick${i === 0 ? ' is-active' : ''}" cx="${(100 + 96 * Math.cos(a)).toFixed(1)}" cy="${(100 + 96 * Math.sin(a)).toFixed(1)}" r="4.5" data-story-tick/>`; })}
+          </svg>
+          <div class="story__glass"></div>
           ${journey.map(([, , a], i) => html`<div class="story__art${i === 0 ? ' is-active' : ''}" data-story-art>${art(a)}</div>`)}
         </div>
       </div>
