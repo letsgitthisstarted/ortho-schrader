@@ -153,7 +153,7 @@
       en.target.classList.add('is-in');
       io.unobserve(en.target);
     });
-  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+  }, { rootMargin: '0px 0px 4% 0px', threshold: 0 });
   // Card grids: the cards rise in one after another once the grid scrolls into view.
   $$('[data-stagger]').forEach((grid) => {
     [...grid.children].forEach((c, i) => c.style.setProperty('--k', Math.min(i, 8)));

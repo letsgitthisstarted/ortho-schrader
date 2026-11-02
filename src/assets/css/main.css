@@ -288,6 +288,7 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 .mega__feature-art { position: absolute; top: 14px; right: 14px; width: 110px; color: var(--sky); opacity: .9; }
 .mega__feature-title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: 1.45rem; line-height: 1.15; }
 .mega__feature-text { font-size: .88rem; color: rgba(255, 255, 255, .72); }
+.mega__all { display: none; }
 
 /* mobile menu */
 .mobile-menu {
@@ -312,6 +313,14 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 .mm-group[open] summary .ico { transform: rotate(180deg); }
 .mm-group ul { display: grid; gap: 2px; padding: 10px 0 16px; }
 .mm-group ul a { display: block; padding: 8px 0; color: var(--ink-2); }
+/* "Alle …" closes each list as a distinct row, so it does not drown among the entries. */
+.mm-group ul a.mm-all {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-top: 10px; padding: 14px 18px; border-radius: 14px;
+  background: var(--sand); color: var(--ink); font-weight: 500;
+}
+.mm-all .ico { width: 18px; height: 18px; transition: transform .3s var(--ease); }
+.mm-all:active .ico { transform: translateX(3px); }
 .mobile-menu__foot { display: grid; gap: 10px; }
 
 /* ───────────────────────────── hero (home) */
@@ -554,10 +563,10 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 .story__texts { display: grid; }
 .story__text {
   grid-area: 1 / 1; max-width: 460px;
-  opacity: 0; transform: translateY(24px); filter: blur(6px);
-  transition: opacity 0.45s var(--ease), transform 0.52s var(--ease-out), filter 0.45s var(--ease);
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.5s var(--ease), transform 0.6s var(--ease-out);
 }
-.story__text.is-active { opacity: 1; transform: none; filter: none; }
+.story__text.is-active { opacity: 1; transform: none; }
 .story__num { font-size: .9rem; color: var(--slate); margin-bottom: 8px; }
 .story__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: 1; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 18px; }
 .story__body { font-size: 1.12rem; color: var(--ink-2); max-width: 40ch; }
@@ -1139,10 +1148,10 @@ a.contact-card--dark:hover { background: var(--ink); }
    ========================================================================== */
 
 /* main.js adds .motion only once it runs, so content stays visible if the script fails. */
-.motion [data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity .45s var(--ease), transform .55s var(--ease-out); transition-delay: var(--d, 0s); }
+.motion [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .9s var(--ease-out), transform 1.1s var(--ease-out); transition-delay: var(--d, 0s); }
 .motion [data-reveal].is-in { opacity: 1; transform: none; }
-.motion [data-split] .w { display: inline-block; opacity: 0; transform: translateY(.3em); filter: blur(6px); transition: opacity .5s var(--ease), transform .6s var(--ease-out), filter .5s var(--ease); transition-delay: calc(var(--i) * 28ms + 30ms); }
-.motion [data-split].is-in .w { opacity: 1; transform: none; filter: none; }
+.motion [data-split] .w { display: inline-block; opacity: 0; transform: translateY(.3em); transition: opacity .8s var(--ease-out), transform 1s var(--ease-out); transition-delay: calc(var(--i) * 40ms + 40ms); }
+.motion [data-split].is-in .w { opacity: 1; transform: none; }
 
 @view-transition { navigation: auto; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .3s; animation-timing-function: var(--ease); }
@@ -1162,6 +1171,9 @@ a.contact-card--dark:hover { background: var(--ink); }
   .header-phone { width: 42px; height: 42px; justify-content: center; border-radius: 99px; background: var(--sand); }
   .mega__inner--cols { grid-template-columns: repeat(2, 1fr); }
   .mega__feature { display: none; }
+  .mega__all { grid-column: 1 / -1; display: inline-flex; align-items: center; gap: 8px; justify-self: start; padding: 12px 18px; border-radius: 999px; background: var(--navy); color: #fff; font-weight: 500; }
+  .mega__all .ico { width: 16px; height: 16px; transition: transform .3s var(--ease); }
+  .mega__all:hover .ico { transform: translateX(3px); }
   .bodymap__stage { grid-template-columns: 180px minmax(0, 1fr) minmax(280px, 340px); }
   .region-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
@@ -1298,7 +1310,7 @@ a.contact-card--dark:hover { background: var(--ink); }
 
 /* Grids marked data-stagger: cards rise in one after another (main.js adds .is-in). */
 .motion [data-stagger]:not(.is-in) > * { opacity: 0; }
-.motion [data-stagger].is-in > * { animation: card-in .6s var(--ease-out) backwards; animation-delay: calc(var(--k, 0) * 70ms); }
+.motion [data-stagger].is-in > * { animation: card-in 1s var(--ease-out) backwards; animation-delay: calc(var(--k, 0) * 90ms); }
 @keyframes card-in { from { opacity: 0; transform: translateY(26px) scale(.97); } }
 
 /* Hover: clickable cards grow a little and take on a deeper shade of their own colour. */

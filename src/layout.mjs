@@ -149,6 +149,7 @@ function megaTreatments() {
       <span class="mega__feature-title">Alle Behandlungen im Überblick</span>
       <span class="mega__feature-text">Inklusive Schulter-, Ellenbogen- und Wirbelsäulenchirurgie in Zusammenarbeit mit spezialisierten Kolleg:innen.</span>
     </a>
+    <a class="mega__all" href="/behandlungen/">Alle Behandlungen im Überblick ${icons.arrow}</a>
   </div>
 </div>`;
 }
@@ -157,10 +158,10 @@ function mobileMenu() {
   return html`<div class="mobile-menu" id="mobile-menu" hidden data-mobile-menu>
   <nav aria-label="Mobile Navigation">
     <details class="mm-group"><summary>Beschwerden ${icons.chevron}</summary>
-      <ul>${conditions.map((c) => html`<li><a href="/beschwerden/${c.slug}/">${c.name}</a></li>`)}<li><a href="/beschwerden/">Alle Beschwerden</a></li></ul>
+      <ul>${conditions.map((c) => html`<li><a href="/beschwerden/${c.slug}/">${c.name}</a></li>`)}<li><a class="mm-all" href="/beschwerden/">Alle Beschwerden ${icons.arrow}</a></li></ul>
     </details>
     <details class="mm-group"><summary>Behandlungen ${icons.chevron}</summary>
-      <ul>${treatments.map((t) => html`<li><a href="/behandlungen/${t.slug}/">${t.name}</a></li>`)}<li><a href="/behandlungen/">Alle Behandlungen</a></li></ul>
+      <ul>${treatments.map((t) => html`<li><a href="/behandlungen/${t.slug}/">${t.name}</a></li>`)}<li><a class="mm-all" href="/behandlungen/">Alle Behandlungen ${icons.arrow}</a></li></ul>
     </details>
     <a class="mm-link" href="/ueber-mich/">Über mich</a>
     <a class="mm-link" href="/wahlarzt-kosten/">Wahlarzt &amp; Kosten</a>
