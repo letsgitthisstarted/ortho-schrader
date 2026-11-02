@@ -119,7 +119,7 @@ ${pageHero({
       ${[
         ['calendar', 'Zeitnahe Termine', 'In der Regel zeitnah – bei akuten Beschwerden bemühe ich mich um einen kurzfristigen Termin.'],
         ['clock', 'Zeit für Ihr Anliegen', 'Ein ausführliches Erstgespräch und eine gründliche Untersuchung, bei Bedarf mit Ultraschall.'],
-        ['user', 'Ein Arzt, ein Weg', 'Ein Ansprechpartner für Diagnose und Nachsorge – bei spezialisierten Eingriffen gemeinsam mit meinem Netzwerk.'],
+        ['user', 'Ein Arzt, ein Weg', 'Ein Ansprechpartner von der ersten Untersuchung bis zur Nachsorge.'],
         ['door', 'Ohne Überweisung', 'Sie können direkt zu mir kommen.'],
       ].map(([i, t, d]) => html`<div class="perk" data-reveal><span class="perk__icon">${icons[i]}</span><p class="perk__title">${t}</p><p>${d}</p></div>`)}
     </div>

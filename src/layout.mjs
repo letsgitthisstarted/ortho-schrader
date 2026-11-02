@@ -147,7 +147,7 @@ function megaTreatments() {
     <a class="mega__feature" href="/behandlungen/">
       <span class="mega__feature-art">${art('network')}</span>
       <span class="mega__feature-title">Alle Behandlungen im Überblick</span>
-      <span class="mega__feature-text">Inklusive Schulter-, Ellenbogen- und Wirbelsäulenchirurgie in Zusammenarbeit mit spezialisierten Kolleg:innen.</span>
+      <span class="mega__feature-text">Von der Injektion bis zum Gelenkersatz – alle Behandlungen auf einen Blick.</span>
     </a>
     <a class="mega__all" href="/behandlungen/">Alle Behandlungen im Überblick ${icons.arrow}</a>
   </div>

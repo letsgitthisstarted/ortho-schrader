@@ -449,7 +449,6 @@ export const treatments = [
     faq: [
       ['Muss ein Meniskusriss operiert werden?', 'Nicht immer. Viele, vor allem verschleißbedingte Risse lassen sich ohne Operation behandeln. Eine Operation kommt eher bei Blockaden oder bestimmten Rissformen infrage.'],
       ['Wie lange bin ich nach einer Kniearthroskopie im Krankenstand?', 'Das hängt vom Eingriff und von Ihrer Tätigkeit ab. Einen realistischen Zeitraum besprechen wir vor der Operation.'],
-      ['Wer operiert mein Kreuzband?', 'Spezialisierte Kolleg:innen aus meinem Netzwerk in Salzburg und Bayern. Ich begleite Sie von der Diagnose bis zur Rückkehr in den Alltag und Sport.'],
     ],
     conditions: ['knieschmerzen'],
     related: ['knieprothese', 'sportmedizin', 'ultraschall'],

@@ -29,7 +29,6 @@ export const conditions = [
     ],
     conservative: ['arthrosetherapie', 'kortison-infiltration', 'hyaluronsaeure', 'eigenbluttherapie', 'stosswellentherapie'],
     operative: ['kniearthroskopie', 'knieprothese'],
-    network: 'Den Kreuzbandersatz übernehmen spezialisierte Kniechirurg:innen aus meinem Netzwerk – Diagnose, Vorbereitung und Nachbehandlung können bei mir bleiben.',
     faq: [
       ['Wann sollte ich mit Knieschmerzen zum Orthopäden?', 'Wenn Schmerzen länger anhalten, das Knie anschwillt, blockiert oder instabil wirkt – und nach einer Verletzung.'],
       ['Was hilft bei Knieschmerzen beim Stiegensteigen?', 'Oft hilft gezieltes Kräftigen der Oberschenkel- und Hüftmuskulatur. Je nach Ursache können weitere Behandlungen sinnvoll sein – das klären wir in der Untersuchung.'],

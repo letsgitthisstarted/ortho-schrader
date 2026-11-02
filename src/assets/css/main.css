@@ -1186,8 +1186,8 @@ a.contact-card--dark:hover { background: var(--ink); }
   .wahlarzt-home__head .btn { grid-column: auto; }
   .bodymap__stage { grid-template-columns: minmax(0, 1fr); }
   .bodymap__cards { min-width: 0; }
-  .bodymap__list { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: calc(clamp(20px, 4vw, 64px) * -1); padding-inline: clamp(20px, 4vw, 64px); scroll-padding-inline: 40px; }
-  .bodymap__list::-webkit-scrollbar { display: none; }
+  /* All choices visible at once: they wrap instead of scrolling sideways. */
+  .bodymap__list { display: flex; flex-wrap: wrap; gap: 8px; }
   .bodymap__region { width: auto; padding: 10px 18px; border: 1px solid var(--line-light); border-radius: 999px; font-family: var(--ff-sans); font-size: 1rem; white-space: nowrap; }
   .bodymap__region .ico { display: none; }
   .bodymap__region[aria-selected='true'] { padding-left: 18px; background: #fff; color: var(--navy); }
@@ -1251,9 +1251,14 @@ a.contact-card--dark:hover { background: var(--ink); }
   .wahlarzt-home__facts { grid-template-columns: minmax(0, 1fr); }
   .finder__stage { grid-template-columns: minmax(0, 1fr); }
   .finder__panel { padding-bottom: 40px; }
-  .finder__options { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
-  .finder__options::-webkit-scrollbar { display: none; }
-  .finder__opt { white-space: nowrap; flex: none; }
+  .finder__options { display: flex; flex-wrap: wrap; gap: 8px; }
+  /* Treatment filter: two rows of options instead of a sideways-scrolling bar; the active one fills directly. */
+  .filter { position: static; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-radius: 26px; overflow: visible; }
+  .filter__btn:first-child { grid-column: 1 / -1; }
+  .filter__ink { display: none; }
+  .filter__btn { white-space: normal; line-height: 1.15; padding: 0 12px; transition: color .3s var(--ease), background-color .3s var(--ease); }
+  .filter__btn.is-active { background: var(--navy); }
+  .finder__opt { padding: 10px 16px; border-radius: 999px; font-size: .95rem; }
   .t-visual__panel { min-height: 0; padding: 18px; }
   .t-visual__figure { height: 440px; }
   .float-chip { font-size: .8rem; padding: 6px 11px; }

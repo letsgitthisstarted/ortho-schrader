@@ -96,7 +96,7 @@ ${bodyMap()}
   <div class="wrap">
     ${sectionHead({
       title: 'Erst erhalten,', tone: 'dann ersetzen.',
-      text: 'Viele Beschwerden lassen sich ohne Operation behandeln. Wenn eine Operation sinnvoll ist, klären wir gemeinsam, ob ich den Eingriff selbst durchführe oder spezialisierte Kolleg:innen hinzuziehe.',
+      text: 'Viele Beschwerden lassen sich ohne Operation behandeln. Wenn eine Operation sinnvoll ist, planen wir sie gemeinsam und in Ruhe.',
       link: html`<a class="text-link" href="/behandlungen/">Alle Behandlungen ${icons.arrow}</a>`,
     })}
 
