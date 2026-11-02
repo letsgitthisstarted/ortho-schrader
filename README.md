@@ -110,6 +110,7 @@ Facts marked as assumptions in the content – please confirm or correct:
 6. **English version** – useful for international patients in Salzburg?
 7. **Stoßwelle** – the page explains radial and focused shockwave. Which device(s) does the practice have?
 8. **"Ausführlich erklärt" topics** – please review the new in-depth texts on all treatment pages (prosthesis types, knee arthroscopy indications, before/after advice).
+9. **Bereitschaftsdienst KVB** – Über mich now says he still covers shifts in the ärztlicher Bereitschaftsdienst of the KV Bayern. Since when? (A year would let it join the Werdegang timeline.)
 
 
 ## Appointment system — discussion pending

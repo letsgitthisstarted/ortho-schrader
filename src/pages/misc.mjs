@@ -38,6 +38,7 @@ export function about() {
       <div class="philosophy__item" data-reveal><p class="philosophy__title">Ich höre zu, bevor ich untersuche.</p><p>Ihre Geschichte – wo, wann, wobei es schmerzt – ist oft der wichtigste Teil der Diagnose.</p></div>
       <div class="philosophy__item" data-reveal><p class="philosophy__title">Ich erkläre, bevor ich behandle.</p><p>Befunde zeige ich Ihnen am Ultraschall und erkläre sie verständlich. Sie entscheiden mit.</p></div>
       <div class="philosophy__item" data-reveal><p class="philosophy__title">Ich empfehle, was zu Ihnen passt.</p><p>Weil ich ohne und mit Operation behandle, kann ich Ihnen beide Wege erklären. Die Entscheidung treffen wir gemeinsam.</p></div>
+      <div class="philosophy__item" data-reveal><p class="philosophy__title">Ich sehe den ganzen Menschen.</p><p>Bis heute übernehme ich Dienste im ärztlichen Bereitschaftsdienst der Kassenärztlichen Vereinigung Bayerns und behandle dort Beschwerden aller Art. Diese allgemeinmedizinische Erfahrung nehme ich in jede Untersuchung mit – auch wenn es um Knie oder Rücken geht.</p></div>
     </div>
   </div>
 </section>
@@ -45,7 +46,7 @@ export function about() {
 <section class="section timeline-section" id="werdegang">
   <div class="wrap timeline__grid">
     <div class="timeline__head">
-      ${sectionHead({ title: 'Werdegang', tone: 'von München nach Salzburg.', align: 'stack', text: 'Über 25 Jahre in Chirurgie, Orthopädie und Notfallmedizin – mit Stationen in München, Wien, Basel, Port of Spain, Freilassing und Berchtesgaden.' })}
+      ${sectionHead({ title: 'Werdegang', tone: 'von München nach Salzburg.', align: 'stack', text: 'Über 25 Jahre in Chirurgie, Orthopädie und Notfallmedizin, dazu bis heute im allgemeinärztlichen Bereitschaftsdienst – mit Stationen in München, Wien, Basel, Port of Spain, Freilassing und Berchtesgaden.' })}
     </div>
     <ol class="timeline" data-timeline>
       <span class="timeline__line" aria-hidden="true"><span data-timeline-fill></span></span>

@@ -1014,7 +1014,8 @@ legend.booking__q { margin-bottom: 18px; }
 .big-quote { margin-bottom: clamp(56px, 7vw, 96px); }
 .big-quote p { max-width: 20ch; font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(1.8rem, 3.6vw, 3rem); line-height: 1.15; color: var(--ink); letter-spacing: -0.02em; text-wrap: balance; }
 .big-quote footer { margin-top: 20px; color: var(--slate); }
-.philosophy { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.philosophy { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+@media (max-width: 1180px) { .philosophy { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .philosophy__item { padding-top: 22px; border-top: 1px solid var(--ink); display: grid; gap: 10px; align-content: start; }
 .philosophy__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: 1.55rem; line-height: 1.15; color: var(--ink); }
 

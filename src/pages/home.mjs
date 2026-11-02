@@ -16,7 +16,7 @@ export function home() {
   <div class="wrap">
     <p class="hero__kicker" data-reveal>${site.name}, ${site.role}</p>
     <div class="hero__grid">
-      <h1 class="hero__title display" data-split>${twoTone('Orthopädie in Salzburg,', 'mit Zeit für Sie.')}</h1>
+      <h1 class="hero__title display" data-split>${twoTone('Ihr Orthopäde in Salzburg.', 'Persönlich begleitet, von Anfang an.')}</h1>
       <div class="hero__side" data-reveal>
         <ul class="ticks">
           <li><span class="ticks__icon">${icons.calendar}</span>Ohne Überweisung, Termine in der Regel zeitnah</li>
