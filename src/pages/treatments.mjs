@@ -11,6 +11,13 @@ const groupById = Object.fromEntries(groups.map((g) => [g.id, g]));
 export function treatmentPage(t) {
   const x = extras[t.slug] ?? {};
   const group = groupById[t.group];
+  const costText = t.slug === 'hyaluronsaeure'
+    ? 'Hyaluronsäure wird von gesetzlichen Krankenkassen in der Regel nicht übernommen. Eine mögliche Erstattung durch Ihre private Zusatzversicherung klären Sie bitte vorab. Sie erhalten vor Behandlungsbeginn eine Kostenaufstellung.'
+    : t.slug === 'eigenbluttherapie'
+      ? 'Die Eigenbluttherapie ist eine Privatleistung. Eine mögliche Erstattung durch Ihre private Zusatzversicherung klären Sie bitte vorab. Sie erhalten die Kosten vor Beginn schriftlich.'
+      : t.group === 'operativ'
+        ? 'Die Kosten für Operation, Klinikaufenthalt und Nachsorge besprechen wir vorab. Ob Ihre Versicherung diese übernimmt und welcher Eigenanteil bleibt, muss vor dem Eingriff geklärt werden.'
+        : 'Das Honorar und mögliche Zusatzkosten besprechen wir vor Behandlungsbeginn. Ob Ihre Krankenkasse einen Teil erstattet, hängt von der Leistung und Ihrem Versicherungsschutz ab.';
   const crumbs = [['Behandlungen', '/behandlungen/'], [t.name, `/behandlungen/${t.slug}/`]];
   const toc = [...t.sections.map((s) => [s.id, s.title]), ['faq', 'Häufige Fragen']];
 
@@ -49,7 +56,7 @@ ${pageHero({
       </section>`)}
       <aside class="note" data-reveal>
         <span class="note__icon">${icons.euro}</span>
-        <div><p class="note__title">Kosten und Kasse</p><p>Als Wahlarzt stelle ich eine Honorarnote, die Sie bei Ihrer Krankenkasse einreichen können. Alle Kosten erfahren Sie vorab. <a href="/wahlarzt-kosten/">So funktioniert die Rückerstattung</a>.</p></div>
+        <div><p class="note__title">Kosten und Kasse</p><p>${costText} <a href="/wahlarzt-kosten/">So funktioniert die Rückerstattung</a>.</p></div>
       </aside>
     </div>
   </div>
@@ -64,7 +71,7 @@ ${faqSection(t.faq, { title: 'Häufige Fragen', tone: `zu ${t.name}` })}
       <div class="chips chips--lg">${t.conditions.map((c) => html`<a class="chip" href="/beschwerden/${c}/">${conditionBySlug[c].name}</a>`)}</div>
     </div>` : ''}
     ${sectionHead({ title: 'Das könnte Sie', tone: 'auch interessieren.' })}
-    <div class="tile-row">
+    <div class="tile-row" data-stagger>
       ${t.related.map((s) => treatmentTile(s, { size: 'md', tone: treatmentBySlug[s].group === 'operativ' ? 'dark' : 'light' }))}
     </div>
   </div>
@@ -113,8 +120,8 @@ ${pageHero({
 
 <section class="section t-index" data-filter-root>
   <div class="wrap">
-    <div class="filter" role="tablist" aria-label="Behandlungen filtern">
-      ${filters.map(([id, label], i) => html`<button class="filter__btn${i === 0 ? ' is-active' : ''}" role="tab" aria-selected="${i === 0}" data-filter="${id}">${label}</button>`)}
+    <div class="filter" role="group" aria-label="Behandlungen filtern">
+      ${filters.map(([id, label], i) => html`<button class="filter__btn${i === 0 ? ' is-active' : ''}" aria-pressed="${i === 0}" data-filter="${id}">${label}</button>`)}
       <span class="filter__ink" aria-hidden="true" data-filter-ink></span>
     </div>
     ${groups.map((g) => html`<div class="t-group" id="${g.id}" data-group="${g.id}">
@@ -122,7 +129,7 @@ ${pageHero({
         <h2 class="t-group__title display">${g.label}</h2>
         <p>${g.blurb}</p>
       </header>
-      <div class="tile-grid">
+      <div class="tile-grid" data-stagger>
         ${treatments.filter((t) => t.group === g.id).map((t) => treatmentTile(t.slug, { size: 'md', tone: g.id === 'operativ' ? 'dark' : 'light' }))}
       </div>
     </div>`)}

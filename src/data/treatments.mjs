@@ -593,6 +593,6 @@ export const extras = {
   knieprothese: { claim: 'Teil- oder Totalprothese, individuell geplant.', badges: ['Privatklinik', 'persönlich begleitet'] },
   kniearthroskopie: { claim: 'Über kleine Zugänge ins Gelenk.', badges: ['kleine Schnitte', 'Meniskus erhalten'] },
   handchirurgie: { claim: 'Kleine Eingriffe an der Hand.', badges: ['örtliche Betäubung', 'ambulant'] },
-  fusschirurgie: { claim: 'Für schmerzfreies Auftreten.', badges: ['DAF-Mitglied', 'zuerst ohne OP'] },
+  fusschirurgie: { claim: 'Beschwerden am Fuß gezielt behandeln.', badges: ['DAF-Mitglied', 'zuerst ohne OP'] },
   sportmedizin: { claim: 'Rasch zur Diagnose, schrittweise zurück zum Sport.', badges: ['Ultraschall', 'kurzfristige Termine'] },
 };

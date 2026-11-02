@@ -85,8 +85,9 @@ export function bodyMap({ id = 'bodymap', heading = true } = {}) {
   <div class="bodymap__panel">
     ${heading ? html`<header class="bodymap__head">
       <h2 class="display" data-reveal>${twoTone('Wo tut es weh?', 'Wählen Sie eine Stelle.')}</h2>
-      <p data-reveal>Tippen Sie auf die Stelle am Körper oder wählen Sie links eine Region. Sie sehen häufige Ursachen und passende Behandlungen.</p>
+      <p data-reveal>Tippen Sie auf die Stelle am Körper oder wählen Sie eine Region. Sie sehen häufige Ursachen und passende Behandlungen.</p>
     </header>` : ''}
+    <p class="sr" data-bodymap-status role="status" aria-live="polite" aria-atomic="true"></p>
     <div class="bodymap__stage">
       <ul class="bodymap__list" role="tablist" aria-label="Körperregionen">
         ${regions.map((r, i) => html`<li role="presentation"><button class="bodymap__region" role="tab" id="${id}-tab-${r.id}" aria-selected="false" aria-controls="${id}-panel-${r.id}" data-region="${r.id}" tabindex="${i === 0 ? 0 : -1}">
@@ -147,6 +148,7 @@ export function faqSection(faq, { title = 'Häufige Fragen', tone = '', id = 'fa
 // consented reviews replace them.
 export function reviewsSection() {
   const { items, placeholder, source } = reviews;
+  if (placeholder || !items.length) return '';
   return html`<section class="section reviews" data-carousel>
   <div class="wrap reviews__head">
     <h2 class="display" data-reveal>${twoTone('Was Patient:innen', 'über die Behandlung sagen.')}</h2>

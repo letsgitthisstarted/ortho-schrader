@@ -6,19 +6,13 @@
   const fine = matchMedia('(pointer: fine)').matches;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-  /* ───────────── smooth scroll */
-  let lenis = null;
-  if (!reduced && window.Lenis) {
-    lenis = new window.Lenis({ autoRaf: true, lerp: 0.14, wheelMultiplier: 0.95 });
-  }
+  /* Native scrolling keeps wheel, touch and keyboard behavior predictable. */
   const headerOffset = () => -(($('[data-header]')?.offsetHeight ?? 72) + 20);
   const scrollToEl = (el) => {
     if (!el) return;
-    if (lenis) lenis.scrollTo(el, { offset: headerOffset(), duration: 1 });
-    else window.scrollTo({ top: el.getBoundingClientRect().top + scrollY + headerOffset(), behavior: reduced ? 'auto' : 'smooth' });
+    window.scrollTo({ top: el.getBoundingClientRect().top + scrollY + headerOffset(), behavior: reduced ? 'auto' : 'smooth' });
   };
   const lockScroll = (on) => {
-    if (lenis) on ? lenis.stop() : lenis.start();
     document.documentElement.style.overflow = on ? 'hidden' : '';
   };
 
@@ -29,6 +23,8 @@
     const target = id && document.getElementById(id);
     if (!target) return;
     e.preventDefault();
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
     scrollToEl(target);
     history.replaceState(null, '', `#${id}`);
   });
@@ -41,56 +37,91 @@
   const onScrollHeader = () => {
     const y = scrollY;
     header.classList.toggle('is-scrolled', y > 8);
-    const hide = y > 400 && y > lastY + 2 && !megaOpen() && !menuOpen();
+    const hide = y > 400 && y > lastY + 2 && !megaOpen() && !menuOpen() && !header.contains(document.activeElement);
     if (hide) header.classList.add('is-hidden');
-    else if (y < lastY - 2 || y < 400) header.classList.remove('is-hidden');
+    else if (y < lastY - 2 || y < 400 || header.contains(document.activeElement)) header.classList.remove('is-hidden');
     lastY = y;
   };
+  header.addEventListener('focusin', () => header.classList.remove('is-hidden'));
 
   /* ───────────── mega menus */
   const megaItems = $$('[data-mega]');
   let megaTimer;
   const closeMegas = (except) => megaItems.forEach((item) => {
     if (item === except) return;
-    const btn = $('.nav__link', item); const panel = $('.mega', item);
+    const btn = $('.nav__toggle', item); const panel = $('.mega', item);
     btn.setAttribute('aria-expanded', 'false');
     panel.classList.remove('is-open');
-    setTimeout(() => { if (!panel.classList.contains('is-open')) panel.hidden = true; }, 300);
+    panel.hidden = true;
   });
   const openMega = (item) => {
     closeMegas(item);
-    const btn = $('.nav__link', item); const panel = $('.mega', item);
+    const btn = $('.nav__toggle', item); const panel = $('.mega', item);
     panel.hidden = false;
     requestAnimationFrame(() => panel.classList.add('is-open'));
     btn.setAttribute('aria-expanded', 'true');
     header.classList.remove('is-hidden');
   };
   megaItems.forEach((item) => {
-    const btn = $('.nav__link', item);
+    const btn = $('.nav__toggle', item);
     btn.addEventListener('click', () => (btn.getAttribute('aria-expanded') === 'true' ? closeMegas() : openMega(item)));
     if (fine) {
       item.addEventListener('mouseenter', () => { clearTimeout(megaTimer); megaTimer = setTimeout(() => openMega(item), 90); });
       item.addEventListener('mouseleave', () => { clearTimeout(megaTimer); megaTimer = setTimeout(() => closeMegas(), 220); });
     }
   });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMegas(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const activeItem = document.activeElement.closest('[data-mega]');
+    if (activeItem) $('.nav__toggle', activeItem).focus();
+    clearTimeout(megaTimer);
+    closeMegas();
+  });
+  megaItems.forEach((item) => item.addEventListener('focusout', (e) => {
+    if (!item.contains(e.relatedTarget)) closeMegas();
+  }));
   document.addEventListener('click', (e) => { if (!e.target.closest('[data-mega]')) closeMegas(); });
 
   /* ───────────── mobile menu */
   const menuBtn = $('[data-menu-toggle]');
   const menu = $('[data-mobile-menu]');
-  const setMenu = (open) => {
+  const menuBackground = $$('main, .site-footer, [data-float-cta]');
+  const setMenu = (open, restoreFocus = true) => {
     menuBtn.setAttribute('aria-expanded', String(open));
     document.body.classList.toggle('menu-open', open);
     lockScroll(open);
-    if (open) { menu.hidden = false; requestAnimationFrame(() => menu.classList.add('is-open')); }
-    else { menu.classList.remove('is-open'); setTimeout(() => { if (!menu.classList.contains('is-open')) menu.hidden = true; }, 300); }
+    menuBackground.forEach((el) => { el.inert = open; });
+    if (open) {
+      closeMegas();
+      header.classList.remove('is-hidden');
+      menu.hidden = false;
+      requestAnimationFrame(() => menu.classList.add('is-open'));
+      $('summary, a', menu)?.focus({ preventScroll: true });
+    } else {
+      menu.classList.remove('is-open');
+      menu.hidden = true;
+      if (restoreFocus) menuBtn.focus({ preventScroll: true });
+    }
   };
   menuBtn?.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
   menu?.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
-  menu?.setAttribute('data-lenis-prevent', '');
+  document.addEventListener('keydown', (e) => {
+    if (!menuOpen()) return;
+    if (e.key === 'Escape') { e.preventDefault(); setMenu(false); return; }
+    if (e.key !== 'Tab') return;
+    const items = [menuBtn, ...$$('a, summary, button', menu)].filter((el) => el.getClientRects().length);
+    const i = items.indexOf(document.activeElement);
+    if (i < 0 || (e.shiftKey && i === 0) || (!e.shiftKey && i === items.length - 1)) {
+      e.preventDefault();
+      items[e.shiftKey ? items.length - 1 : 0].focus();
+    }
+  });
+  matchMedia('(min-width: 1021px)').addEventListener('change', (e) => {
+    if (e.matches && menuOpen()) { setMenu(false, false); $('.brand').focus(); }
+  });
 
-  /* ───────────── headline split: words blur in one after another */
+  /* ───────────── headline split: words rise in one after another */
+  if (!reduced) document.documentElement.classList.add('motion');
   $$('[data-split]').forEach((el) => {
     let i = 0;
     const walk = (node) => {
@@ -101,15 +132,18 @@
             if (!part) return;
             if (/^\s+$/.test(part)) { frag.append(part); return; }
             const w = document.createElement('span');
-            w.className = 'w'; w.style.setProperty('--i', i++); w.textContent = part;
+            w.className = 'w'; w.setAttribute('aria-hidden', 'true'); w.style.setProperty('--i', i++); w.textContent = part;
             frag.append(w);
           });
           child.replaceWith(frag);
         } else if (child.nodeType === 1) walk(child);
       });
     };
+    const label = el.textContent.replace(/\s+/g, ' ').trim();
     walk(el);
-    el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
+    const sr = document.createElement('span');
+    sr.className = 'sr'; sr.textContent = label;
+    el.prepend(sr);
   });
 
   /* ───────────── reveal on scroll, staggered among siblings */
@@ -119,26 +153,18 @@
       en.target.classList.add('is-in');
       io.unobserve(en.target);
     });
-  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+  // Card grids: the cards rise in one after another once the grid scrolls into view.
+  $$('[data-stagger]').forEach((grid) => {
+    [...grid.children].forEach((c, i) => c.style.setProperty('--k', Math.min(i, 8)));
+    io.observe(grid);
+  });
   $$('[data-reveal], [data-split]').forEach((el) => {
     const sibs = [...(el.parentElement?.children ?? [])].filter((s) => s.hasAttribute('data-reveal'));
     const idx = sibs.indexOf(el);
-    if (idx > 0) el.style.setProperty('--d', `${Math.min(idx, 6) * 0.05}s`);
+    if (idx > 0) el.style.setProperty('--d', `${Math.min(idx, 6) * 0.06}s`);
     io.observe(el);
   });
-
-  /* ───────────── magnetic buttons */
-  if (fine && !reduced) {
-    $$('.btn--dark, .btn--light, .float-cta__btn').forEach((b) => {
-      b.addEventListener('pointermove', (e) => {
-        const r = b.getBoundingClientRect();
-        const x = (e.clientX - r.left - r.width / 2) / r.width;
-        const y = (e.clientY - r.top - r.height / 2) / r.height;
-        b.style.transform = `translate(${x * 8}px, ${y * 6}px)`;
-      });
-      b.addEventListener('pointerleave', () => { b.style.transform = ''; });
-    });
-  }
 
   /* ───────────── body map */
   $$('[data-bodymap]').forEach((root) => {
@@ -176,8 +202,9 @@
       cards.forEach((c) => {
         const on = c.dataset.card === id;
         c.classList.toggle('is-active', on);
-        if (c.dataset.card !== 'intro') c.hidden = !on;
+        c.hidden = !on;
       });
+      $('[data-bodymap-status]', root).textContent = `${tabs.find((t) => t.dataset.region === id).textContent.trim()}: Ursachen und Behandlungen werden angezeigt.`;
     };
 
     tabs.forEach((t, i) => {
@@ -312,7 +339,7 @@
     const groups = $$('[data-group]', root);
     const moveInk = (b) => { ink.style.width = `${b.offsetWidth}px`; ink.style.transform = `translateX(${b.offsetLeft - 5}px)`; ink.style.left = '5px'; };
     const apply = (id, scroll) => {
-      btns.forEach((b) => { const on = b.dataset.filter === id; b.classList.toggle('is-active', on); b.setAttribute('aria-selected', String(on)); if (on) moveInk(b); });
+      btns.forEach((b) => { const on = b.dataset.filter === id; b.classList.toggle('is-active', on); b.setAttribute('aria-pressed', String(on)); if (on) moveInk(b); });
       groups.forEach((g) => { g.hidden = id !== 'alle' && g.dataset.group !== id; });
       if (scroll) scrollToEl(root);
     };
@@ -350,20 +377,24 @@
   /* ───────────── floating CTA */
   const float = $('[data-float-cta]');
   const hasInline = !!$('.booking--inline');
-  let footerVisible = false;
-  const fio = new IntersectionObserver((entries) => { entries.forEach((en) => { footerVisible = en.isIntersecting; }); onScrollFloat(); });
+  const visibleCtas = new Set();
+  const fio = new IntersectionObserver((entries) => { entries.forEach((en) => { if (en.isIntersecting) visibleCtas.add(en.target); else visibleCtas.delete(en.target); }); onScrollFloat(); });
   $$('.site-footer, .cta').forEach((el) => fio.observe(el));
   function onScrollFloat() {
     if (!float) return;
-    const show = !hasInline && scrollY > innerHeight * 0.9 && !footerVisible && !menuOpen() && !document.body.classList.contains('booking-open');
+    const show = !hasInline && scrollY > innerHeight * 0.9 && !visibleCtas.size && !menuOpen() && !document.body.classList.contains('booking-open');
     float.classList.toggle('is-visible', show);
+    float.inert = !show;
   }
 
   /* ───────────── booking request */
   const dialog = $('[data-booking-dialog]');
-  dialog?.setAttribute('data-lenis-prevent', '');
   const openBooking = () => {
-    if (hasInline) { scrollToEl($('#termin')); return; }
+    if (hasInline) {
+      if (menuOpen()) setMenu(false);
+      $('.booking--inline .is-active .booking__q')?.focus({ preventScroll: true });
+      scrollToEl($('#termin')); return;
+    }
     if (!dialog) return;
     closeMegas();
     if (menuOpen()) setMenu(false);
@@ -388,34 +419,68 @@
     const back = $('[data-bk-back]', form);
     const bar = $('[data-bk-progress]', form);
     const err = $('[data-bk-error]', form);
+    const count = $('[data-bk-count]', form);
     let step = 1;
-    const go = (n) => {
+    const go = (n, moveFocus = true) => {
       step = n;
-      stepsEls.forEach((s) => s.classList.toggle('is-active', +s.dataset.bkStep === n));
+      stepsEls.forEach((s) => {
+        const active = +s.dataset.bkStep === n;
+        s.classList.toggle('is-active', active);
+        s.hidden = !active;
+      });
       back.hidden = n === 1 || n > total;
       bar.style.width = `${Math.min(n, total) / total * 100}%`;
-      const first = $(`[data-bk-step="${n}"] input:not([type=hidden])`, form);
-      if (n <= total && first && form.closest('dialog')) first.focus({ preventScroll: true });
+      count.textContent = n <= total ? `Schritt ${n} von ${total}` : 'E-Mail vorbereiten';
+      if (moveFocus) {
+        const heading = $(`[data-bk-step="${n}"] .booking__q`, form);
+        heading.focus({ preventScroll: true });
+        if (form.closest('dialog')) dialog.scrollTop = 0;
+        else if (heading.getBoundingClientRect().top < -headerOffset() || heading.getBoundingClientRect().bottom > innerHeight) scrollToEl(form);
+      }
     };
     back.addEventListener('click', () => go(Math.max(1, step - 1)));
     $$('[data-bk-next]', form).forEach((b) => b.addEventListener('click', () => go(step + 1)));
+    // A mouse or touch choice moves on by itself; keyboard users (click with detail 0) use Weiter.
     // 'click' rather than 'change': choosing the already selected option again must still move on.
-    $$('[data-bk-auto]', form).forEach((r) => r.addEventListener('click', () => setTimeout(() => go(2), 180)));
-    $$('[data-bk-step="3"] input[name="wann"]', form).forEach((r) => r.addEventListener('click', () => {
-      const tz = $('[data-bk-step="3"] input[name="tageszeit"]:checked', form);
-      if (tz) setTimeout(() => go(4), 180);
+    const auto = (e, n) => { if (e.detail > 0) setTimeout(() => go(n), 180); };
+    $$('[data-bk-auto]', form).forEach((r) => r.addEventListener('click', (e) => auto(e, 2)));
+    $$('[data-bk-step="3"] input[name="wann"]', form).forEach((r) => r.addEventListener('click', (e) => {
+      if ($('[data-bk-step="3"] input[name="tageszeit"]:checked', form)) auto(e, 4);
     }));
+    const fieldError = (name, message) => {
+      const input = form.elements[name];
+      const feedback = $(`[data-field-error="${name}"]`, form);
+      input.setAttribute('aria-invalid', String(!!message));
+      feedback.textContent = message;
+      feedback.hidden = !message;
+    };
+    form.addEventListener('input', (e) => {
+      if (!e.target.matches('[aria-invalid="true"]')) return;
+      fieldError(e.target.name, '');
+      err.textContent = '';
+    });
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
+      if (step !== total) { go(Math.min(step + 1, total)); return; }
       const fd = new FormData(form);
       const name = (fd.get('name') || '').trim();
       const tel = (fd.get('telefon') || '').trim();
-      const fields = [['name', name], ['telefon', tel]];
-      fields.forEach(([n, v]) => form.elements[n].setAttribute('aria-invalid', String(!v)));
-      if (!name || !tel) { err.textContent = 'Bitte geben Sie Ihren Namen und eine Telefonnummer an, damit ich Sie erreichen kann.'; err.hidden = false; return; }
-      if (!fd.get('consent')) { err.textContent = 'Bitte bestätigen Sie, dass Ihre Angaben für die Terminvereinbarung verwendet werden dürfen.'; err.hidden = false; return; }
-      err.hidden = true;
+      const digits = tel.replace(/\D/g, '');
+      const errors = [
+        ['name', name ? '' : 'Bitte geben Sie Ihren Namen an.'],
+        ['telefon', /^\+?[\d\s().\/-]+$/.test(tel) && digits.length >= 6 && digits.length <= 17 ? '' : 'Bitte geben Sie eine gültige Telefonnummer mit Vorwahl an.'],
+        ['email', form.elements.email.validity.valid ? '' : 'Bitte prüfen Sie Ihre E-Mail-Adresse, zum Beispiel name@beispiel.at.'],
+        ['consent', fd.get('consent') ? '' : 'Bitte stimmen Sie der Verwendung Ihrer Angaben zur Terminvereinbarung zu.'],
+      ];
+      errors.forEach(([name, message]) => fieldError(name, message));
+      const invalid = errors.filter(([, message]) => message);
+      if (invalid.length) {
+        err.textContent = `Bitte korrigieren Sie ${invalid.length === 1 ? 'das markierte Feld' : 'die markierten Felder'}. Ihre Anfrage wurde nicht vorbereitet.`;
+        form.elements[invalid[0][0]].focus();
+        return;
+      }
+      err.textContent = '';
 
       const lines = [
         'Guten Tag,', '', 'ich möchte einen Termin anfragen.', '',
@@ -432,7 +497,7 @@
       go(5);
       window.location.href = href;
     });
-    go(1);
+    go(1, false);
   });
 
   /* ───────────── scroll loop */

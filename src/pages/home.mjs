@@ -1,10 +1,7 @@
 import { html, icons, art } from '../lib.mjs';
 import { layout, physicianSchema } from '../layout.mjs';
-import { site, regions, homeFaq } from '../data/site.mjs';
-import { conditions, diagnoses } from '../data/conditions.mjs';
-import { twoTone, sectionHead, treatmentTile, pillTile, regionPill, bodyMap, faqSection, ctaPanel, photo, reviewsSection } from '../components.mjs';
-
-const regionById = Object.fromEntries(regions.map((r) => [r.id, r]));
+import { site, homeFaq } from '../data/site.mjs';
+import { twoTone, sectionHead, treatmentTile, pillTile, bodyMap, faqSection, ctaPanel, photo } from '../components.mjs';
 
 const journey = [
   ['Zuhören', 'Ein ausführliches Erstgespräch: Wo tut es weh, seit wann, wobei? Ihre Geschichte liefert die wichtigsten Hinweise – dafür nehme ich mir Zeit.', 'speech'],
@@ -24,8 +21,9 @@ export function home() {
         <ul class="ticks">
           <li><span class="ticks__icon">${icons.calendar}</span>Ohne Überweisung, Termine in der Regel zeitnah</li>
           <li><span class="ticks__icon">${icons.user}</span>Ein ausführliches Gespräch – ich nehme mir Zeit für Sie</li>
-          <li><span class="ticks__icon">${icons.layers}</span>Behandlung ohne und mit Operation aus einer Hand</li>
+          <li><span class="ticks__icon">${icons.layers}</span>Behandlung ohne und mit Operation</li>
         </ul>
+        <p class="hero__practice">Wahlarzt · ${site.ordination.name}<br>${site.ordination.street}, ${site.ordination.zip} ${site.ordination.city} · Termine nach Vereinbarung</p>
         <div class="btn-row">
           <a class="btn btn--dark" href="/kontakt/#termin" data-booking-open>Termin anfragen</a>
           <a class="btn btn--ghost" href="#bodymap">Wo tut es weh?</a>
@@ -34,9 +32,6 @@ export function home() {
     </div>
   </div>
 
-  <div class="wrap hero__photo" data-reveal>
-    ${photo({ label: 'Thomas Schrader im Gespräch mit einem Patienten', ratio: '21/9' })}
-  </div>
 </section>
 
 <section class="section about-home">
@@ -62,6 +57,8 @@ export function home() {
     </div>
   </div>
 </section>
+
+${bodyMap()}
 
 <section class="story" data-story style="--steps:${journey.length}">
   <div class="story__sticky">
@@ -89,53 +86,29 @@ export function home() {
   </div>
 </section>
 
-<section class="section diagnoses">
-  <div class="wrap diagnoses__grid">
-    <div class="diagnoses__reel" aria-hidden="true">
-      <div class="diagnoses__track">
-        ${[0, 1].map(() => html`<ul>${diagnoses.map((d) => html`<li>${d}</li>`)}</ul>`)}
-      </div>
-      <div class="diagnoses__float">
-        <span class="diagnoses__float-art">${art('speech')}</span>
-        <span class="diagnoses__float-label">Zuhören. Erklären. Gemeinsam entscheiden.</span>
-      </div>
-    </div>
-    <div class="diagnoses__copy">
-      <h2 class="display" data-reveal>${twoTone('Von Arthrose bis Zerrung.', 'Zuerst höre ich zu.')}</h2>
-      <p data-reveal>Kniearthrose, Fersensporn, Kalkschulter oder Karpaltunnelsyndrom: Hinter jeder Diagnose steht ein Mensch mit eigenen Fragen und Zielen. Ich nehme mir die Zeit, Ihnen zuzuhören, alles verständlich zu erklären und gemeinsam mit Ihnen den passenden Weg zu finden.</p>
-      <div class="btn-row" data-reveal>
-        <a class="btn btn--dark" href="/beschwerden/">Beschwerden finden</a>
-        <a class="btn btn--ghost" href="/kontakt/#termin" data-booking-open>Termin anfragen</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-${bodyMap()}
-
 <section class="section treatments-home" id="behandlungen">
   <div class="wrap">
     ${sectionHead({
       title: 'Erst erhalten,', tone: 'dann ersetzen.',
-      text: 'Viele Beschwerden lassen sich ohne Operation behandeln. Ist eine Operation der bessere Weg, operiere ich selbst – und begleite Sie bis zur Nachsorge.',
+      text: 'Viele Beschwerden lassen sich ohne Operation behandeln. Wenn eine Operation sinnvoll ist, klären wir gemeinsam, ob ich den Eingriff selbst durchführe oder spezialisierte Kolleg:innen hinzuziehe.',
       link: html`<a class="text-link" href="/behandlungen/">Alle Behandlungen ${icons.arrow}</a>`,
     })}
 
     <div class="bento-label" data-reveal><span>Ohne Operation</span></div>
-    <div class="bento">
+    <div class="bento" data-stagger>
       ${treatmentTile('stosswellentherapie', { size: 'lg', tone: 'light' })}
       ${treatmentTile('kortison-infiltration', { tone: 'light' })}
       ${treatmentTile('hyaluronsaeure', { tone: 'light' })}
       ${treatmentTile('eigenbluttherapie', { tone: 'light' })}
       ${treatmentTile('wirbelsaeulen-infiltration', { tone: 'light' })}
     </div>
-    <div class="pill-row">
+    <div class="pill-row" data-stagger>
       ${pillTile({ href: '/behandlungen/arthrosetherapie/', title: 'Arthrose', tone: 'ohne OP behandeln', art: html`<span class="pill-tile__ico">${art('joint')}</span>` })}
       ${pillTile({ href: '/behandlungen/ultraschall/', title: 'Ultraschall', tone: 'beim ersten Termin', art: html`<span class="pill-tile__ico">${art('probe')}</span>` })}
     </div>
 
     <div class="bento-label" data-reveal><span>Mit Operation</span></div>
-    <div class="bento bento--flip">
+    <div class="bento bento--flip" data-stagger>
       ${treatmentTile('hueftprothese', { size: 'lg', tone: 'dark' })}
       ${treatmentTile('knieprothese', { tone: 'dark' })}
       ${treatmentTile('kniearthroskopie', { tone: 'dark' })}
@@ -174,13 +147,11 @@ ${bodyMap()}
   </div>
 </section>
 
-${reviewsSection()}
-
 <section class="wahlarzt-home">
   <div class="wahlarzt-home__panel">
     <div class="wahlarzt-home__head">
-      <h2 class="display" data-reveal>${twoTone('Wahlarzt heißt:', 'Zeit für Ihr Anliegen.')}</h2>
-      <p data-reveal>Als Wahlarzt kann ich mir für jeden Termin die Zeit nehmen, die Ihr Anliegen braucht. Einen Teil des Honorars erhalten Sie von Ihrer Krankenkasse zurück.</p>
+      <h2 class="display" data-reveal>${twoTone('Wahlarzt & Kosten:', 'vorab gut informiert.')}</h2>
+      <p data-reveal>Sie bezahlen die Behandlung zunächst selbst. Für erstattungsfähige Leistungen übernimmt Ihre Krankenkasse einen Teil nach ihrem Tarif. Fragen Sie das Honorar gerne vor Ihrem Termin an.</p>
       <a class="btn btn--light" href="/wahlarzt-kosten/" data-reveal>So funktioniert die Rückerstattung</a>
     </div>
     <div class="wahlarzt-home__facts">

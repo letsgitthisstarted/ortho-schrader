@@ -112,8 +112,8 @@ ${bodyMap({ id: 'bodymap', heading: false })}
 <section class="section">
   <div class="wrap">
     ${sectionHead({ title: 'Alle Regionen', tone: 'im Überblick.' })}
-    <div class="region-grid">
-      ${conditions.map((c) => html`<a class="region-card" href="/beschwerden/${c.slug}/" data-reveal data-spot>
+    <div class="region-grid" data-stagger>
+      ${conditions.map((c) => html`<a class="region-card" href="/beschwerden/${c.slug}/">
         <span class="region-card__fig">${figure({ id: `rc-${c.slug}`, regions, lit: [c.region], marks: [c.region] })}</span>
         <span class="region-card__body">
           <span class="region-card__title">${c.name}</span>
