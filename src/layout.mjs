@@ -25,6 +25,7 @@ export const physicianSchema = () => ({
     addressCountry: site.ordination.country,
   },
   geo: { '@type': 'GeoCoordinates', latitude: site.ordination.geo.lat, longitude: site.ordination.geo.lng },
+  hasMap: site.ordination.maps,
   areaServed: ['Salzburg', 'Salzburger Land', 'Flachgau', 'Tennengau', 'Berchtesgadener Land', 'Rupertiwinkel'],
   availableService: treatments.map((t) => ({ '@type': 'MedicalProcedure', name: t.name, url: `${site.domain}/behandlungen/${t.slug}/` })),
   sameAs: [site.clinic.url, site.bavaria.url],

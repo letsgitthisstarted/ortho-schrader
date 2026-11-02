@@ -175,8 +175,8 @@ ${ctaPanel()}
 
   return layout({
     path: '/',
-    title: 'Orthopäde in Salzburg – Thomas Schrader | Wahlarzt für Orthopädie & Unfallchirurgie',
-    description: 'Wahlarzt für Orthopädie und Unfallchirurgie in Salzburg: Stoßwelle, Infiltrationen, Arthrosetherapie, Hüft- und Knieprothesen, Kniearthroskopie. Termine ohne Überweisung im healthlab Salzburg.',
+    title: 'Orthopäde in Salzburg | Thomas Schrader, Wahlarzt im healthlab',
+    description: 'Wahlarzt für Orthopädie und Unfallchirurgie in Salzburg: Behandlung ohne und mit Operation, mit Zeit für Sie. Termine ohne Überweisung im healthlab.',
     body,
     faq: homeFaq,
     schema: [physicianSchema()],

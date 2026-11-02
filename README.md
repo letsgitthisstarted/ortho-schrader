@@ -76,6 +76,9 @@ Needed: portrait (2–3 variants), Thomas with a patient / at the ultrasound, th
 - Header: "Beschwerden" and "Behandlungen" open their overview pages; hovering or the small arrow opens the dropdown.
 - Homepage: hero and practice details → introduction (face first) → interactive body map → "Ihr Weg" story → treatments → network → Wahlarzt & Kosten → FAQ.
 - Mobile body-map results appear immediately after the region selector, above the figure (which then shrinks to at most 300px).
+- Contact map: `src/assets/img/map-healthlab.jpg` is a static OpenStreetMap excerpt served from this site, so visitors' browsers contact no map service (no cookie banner or privacy-policy entry needed). The page shows the required OpenStreetMap attribution. Regenerate it only if the address changes: `clang -fobjc-arc -framework AppKit scripts/generate-map.m -o /tmp/ortho-map && /tmp/ortho-map` (macOS).
+- Treatment pages: an "Ausführlich erklärt" section of expandable topics (`src/data/treatment-details.mjs`), then notes for related complaints, "Ohne Zeitdruck, ganzheitlich" and costs.
+- SEO: titles about 60 characters and descriptions up to about 155, main search term first; structured data for physician, procedures, breadcrumbs and FAQs.
 - Social cards use the checked-in `src/assets/img/social-card.png`. The optional macOS generator is `scripts/generate-social-card.m`; normal builds need no image tooling.
 
 ## Before going live
@@ -101,6 +104,8 @@ Facts marked as assumptions in the content – please confirm or correct:
 4. **Online booking** – is there a healthlab booking link we should add?
 5. **Prices** – show prices (e.g. first appointment) or keep "on request"?
 6. **English version** – useful for international patients in Salzburg?
+7. **Stoßwelle** – the page explains radial and focused shockwave. Which device(s) does the practice have?
+8. **"Ausführlich erklärt" topics** – please review the new in-depth texts on all treatment pages (prosthesis types, knee arthroscopy indications, before/after advice).
 
 
 ## Appointment system — discussion pending

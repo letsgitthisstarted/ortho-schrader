@@ -128,8 +128,8 @@ ${ctaPanel()}
 `;
   return layout({
     path: '/beschwerden/',
-    title: 'Beschwerden von Knie bis Rücken – Orthopäde Salzburg | Thomas Schrader',
-    description: 'Knieschmerzen, Hüftschmerzen, Rückenschmerzen, Schulterschmerzen, Tennisellenbogen, Karpaltunnel, Fersensporn: Ursachen und Behandlung beim Orthopäden in Salzburg.',
+    title: 'Beschwerden von Knie bis Rücken | Orthopäde Salzburg',
+    description: 'Knie-, Hüft-, Rücken- und Schulterschmerzen, Tennisellenbogen, Karpaltunnel, Fersensporn: Ursachen und Behandlung beim Orthopäden in Salzburg.',
     body,
     crumbs,
     bodyClass: 'page-conditions',

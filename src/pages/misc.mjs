@@ -80,8 +80,8 @@ ${ctaPanel()}
 `;
   return layout({
     path: '/ueber-mich/',
-    title: 'Über mich – Thomas Schrader, Orthopäde und Unfallchirurg in Salzburg',
-    description: 'Thomas Schrader, Facharzt für Orthopädie und Unfallchirurgie, Sportmediziner und Notarzt: Werdegang, Qualifikationen und Philosophie – Wahlarzt-Ordination im healthlab Salzburg.',
+    title: 'Über mich | Thomas Schrader, Orthopäde in Salzburg',
+    description: 'Thomas Schrader, Facharzt für Orthopädie und Unfallchirurgie, Sportmediziner und Notarzt: Werdegang und Arbeitsweise. Wahlarzt im healthlab Salzburg.',
     body,
     crumbs,
     schema: [physicianSchema()],
@@ -148,8 +148,8 @@ ${ctaPanel()}
 `;
   return layout({
     path: '/wahlarzt-kosten/',
-    title: 'Wahlarzt Orthopädie Salzburg: Kosten & Rückerstattung | Thomas Schrader',
-    description: 'Was ist ein Wahlarzt, was kostet ein Termin und wie funktioniert die Rückerstattung durch ÖGK, BVAEB und SVS? Alle Antworten für Ihren Termin beim Orthopäden Thomas Schrader in Salzburg.',
+    title: 'Wahlarzt in Salzburg: Kosten & Rückerstattung | Orthopädie',
+    description: 'Was ist ein Wahlarzt, was kostet ein Termin und wie funktioniert die Rückerstattung durch ÖGK, BVAEB und SVS? Antworten für Ihren Termin in Salzburg.',
     body,
     crumbs,
     faq: wahlarztFaq,
@@ -204,6 +204,15 @@ ${pageHero({
 <section class="section locations">
   <div class="wrap">
     ${sectionHead({ title: 'So finden', tone: 'Sie mich.' })}
+    <figure class="map-photo" data-reveal>
+      <a class="map-photo__link" href="${site.ordination.maps}" target="_blank" rel="noopener" aria-label="${site.ordination.name}, ${site.ordination.street}, ${site.ordination.zip} ${site.ordination.city} – in Google Maps öffnen">
+        <img src="/assets/img/map-healthlab.jpg" alt="Kartenausschnitt von Salzburg-Süd mit dem healthlab an der Alpenstraße" width="1800" height="640" loading="lazy" decoding="async">
+      </a>
+      <span class="map__pin" style="left:50%;top:50%" aria-hidden="true"><span></span></span>
+      <span class="map-photo__label" aria-hidden="true"><strong>${site.ordination.name}</strong>${site.ordination.street}</span>
+      <a class="btn btn--dark map-photo__btn" href="${site.ordination.maps}" target="_blank" rel="noopener">Route in Google Maps ${icons.arrowUpRight}</a>
+      <figcaption class="map-photo__credit">Kartendaten © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap-Mitwirkende</a></figcaption>
+    </figure>
     <div class="locations__grid">
       <article class="location location--main" data-reveal>
         <div class="arrival">
@@ -244,7 +253,7 @@ ${pageHero({
 `;
   return layout({
     path: '/kontakt/',
-    title: 'Kontakt & Termin – Orthopäde Thomas Schrader, healthlab Salzburg',
+    title: 'Kontakt & Termin | Orthopäde Thomas Schrader, Salzburg',
     description: 'Termin beim Orthopäden in Salzburg anfragen: Telefon +43 660 857 40 00, E-Mail oder Online-Anfrage. Ordination im healthlab, Alpenstraße 99, 5020 Salzburg.',
     body,
     crumbs,

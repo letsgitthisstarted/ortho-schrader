@@ -3,10 +3,13 @@ import { layout } from '../layout.mjs';
 import { site, regions, groups } from '../data/site.mjs';
 import { treatments, treatmentBySlug, extras } from '../data/treatments.mjs';
 import { conditionBySlug } from '../data/conditions.mjs';
+import { details } from '../data/treatment-details.mjs';
 import { twoTone, pageHero, sectionHead, treatmentTile, steps, faqSection, ctaPanel, artFor, figChip } from '../components.mjs';
 
 const regionById = Object.fromEntries(regions.map((r) => [r.id, r]));
 const groupById = Object.fromEntries(groups.map((g) => [g.id, g]));
+// Injections pass through the skin; shockwave, ultrasound and the advisory pages do not.
+const percutaneous = ['kortison-infiltration', 'hyaluronsaeure', 'eigenbluttherapie', 'wirbelsaeulen-infiltration'];
 
 export function treatmentPage(t) {
   const x = extras[t.slug] ?? {};
@@ -19,7 +22,8 @@ export function treatmentPage(t) {
         ? 'Die Kosten für Operation, Klinikaufenthalt und Nachsorge besprechen wir vorab. Ob Ihre Versicherung diese übernimmt und welcher Eigenanteil bleibt, muss vor dem Eingriff geklärt werden.'
         : 'Das Honorar und mögliche Zusatzkosten besprechen wir vor Behandlungsbeginn. Ob Ihre Krankenkasse einen Teil erstattet, hängt von der Leistung und Ihrem Versicherungsschutz ab.';
   const crumbs = [['Behandlungen', '/behandlungen/'], [t.name, `/behandlungen/${t.slug}/`]];
-  const toc = [...t.sections.map((s) => [s.id, s.title]), ['faq', 'Häufige Fragen']];
+  const more = details[t.slug] ?? [];
+  const toc = [...t.sections.map((s) => [s.id, s.title]), ...(more.length ? [['mehr-wissen', 'Ausführlich erklärt']] : []), ['faq', 'Häufige Fragen']];
 
   const body = html`
 ${pageHero({
@@ -54,10 +58,32 @@ ${pageHero({
         <h2 class="prose-block__title" data-reveal>${s.title}</h2>
         ${s.steps ? steps(s.steps) : html`<div class="prose" data-reveal>${s.html}</div>`}
       </section>`)}
+      ${more.length ? html`<section class="prose-block" id="mehr-wissen">
+        <h2 class="prose-block__title" data-reveal>Ausführlich erklärt</h2>
+        <p class="prose-block__intro" data-reveal>Für alle, die es genauer wissen möchten. Öffnen Sie die Themen, die Sie interessieren.</p>
+        <div class="more-list">
+          ${more.map(([title, body]) => html`<details class="acc acc--more" data-acc>
+            <summary><h3>${title}</h3><span class="acc__icon" aria-hidden="true">${icons.plus}</span></summary>
+            <div class="acc__body prose">${body}</div>
+          </details>`)}
+        </div>
+      </section>` : ''}
+      <div class="notes">
+      ${t.conditions?.length ? html`<aside class="note note--conditions" data-reveal>
+        <span class="note__icon">${icons.pin}</span>
+        <div><p class="note__title">Hilft unter anderem bei</p>
+          <div class="chips">${t.conditions.map((c) => html`<a class="chip chip--outline" href="/beschwerden/${c}/">${conditionBySlug[c].name}</a>`)}</div>
+        </div>
+      </aside>` : ''}
+      <aside class="note" data-reveal>
+        <span class="note__icon">${icons.clock}</span>
+        <div><p class="note__title">Ohne Zeitdruck, ganzheitlich betrachtet</p><p>Für Ihre Entscheidung gibt es keinen Zeitdruck. Ich betrachte nicht nur die schmerzende Stelle, sondern auch Haltung, Bewegung, Alltag und Ihre Ziele – und erkläre Ihnen alle Möglichkeiten, ohne und mit Operation. Fragen sind jederzeit willkommen, auch nach dem Termin.</p></div>
+      </aside>
       <aside class="note" data-reveal>
         <span class="note__icon">${icons.euro}</span>
         <div><p class="note__title">Kosten und Kasse</p><p>${costText} <a href="/wahlarzt-kosten/">So funktioniert die Rückerstattung</a>.</p></div>
       </aside>
+      </div>
     </div>
   </div>
 </section>
@@ -66,10 +92,6 @@ ${faqSection(t.faq, { title: 'Häufige Fragen', tone: `zu ${t.name}` })}
 
 <section class="section related">
   <div class="wrap">
-    ${t.conditions?.length ? html`<div class="related__conditions" data-reveal>
-      <p class="related__label">Hilft unter anderem bei</p>
-      <div class="chips chips--lg">${t.conditions.map((c) => html`<a class="chip" href="/beschwerden/${c}/">${conditionBySlug[c].name}</a>`)}</div>
-    </div>` : ''}
     ${sectionHead({ title: 'Das könnte Sie', tone: 'auch interessieren.' })}
     <div class="tile-row" data-stagger>
       ${t.related.map((s) => treatmentTile(s, { size: 'md', tone: treatmentBySlug[s].group === 'operativ' ? 'dark' : 'light' }))}
@@ -93,7 +115,9 @@ ${ctaPanel({ title: 'Ist das der richtige Weg für Sie?', tone: 'Klären wir es 
       name: t.h1,
       description: t.description,
       howPerformed: t.lead,
-      procedureType: t.group === 'operativ' ? 'https://schema.org/SurgicalProcedure' : 'https://schema.org/NoninvasiveProcedure',
+      procedureType: t.group === 'operativ' ? 'https://schema.org/SurgicalProcedure' : percutaneous.includes(t.slug) ? 'https://schema.org/PercutaneousProcedure' : 'https://schema.org/NoninvasiveProcedure',
+      bodyLocation: t.regions.map((id) => regionById[id].label).join(', '),
+      relevantSpecialty: 'https://schema.org/Musculoskeletal',
       url: `${site.domain}/behandlungen/${t.slug}/`,
     }],
     bodyClass: 'page-treatment',
@@ -151,8 +175,8 @@ ${ctaPanel({ title: 'Nicht sicher, was Sie brauchen?', tone: 'Genau dafür ist d
 `;
   return layout({
     path: '/behandlungen/',
-    title: 'Behandlungen – Orthopädie Salzburg | Injektionen, Stoßwelle, Prothetik, Arthroskopie',
-    description: 'Alle Behandlungen der Wahlarzt-Ordination Thomas Schrader in Salzburg: Kortison-, Hyaluron- und Eigenblut-Injektionen, Stoßwelle, Ultraschall, Hüft- und Knieprothese, Kniearthroskopie, Hand- und Fußchirurgie.',
+    title: 'Behandlungen | Orthopäde Thomas Schrader, Salzburg',
+    description: 'Injektionen, Stoßwelle, Ultraschall, Hüft- und Knieprothese, Kniearthroskopie, Hand- und Fußchirurgie: alle Behandlungen beim Orthopäden in Salzburg.',
     body,
     crumbs,
     bodyClass: 'page-treatments',
