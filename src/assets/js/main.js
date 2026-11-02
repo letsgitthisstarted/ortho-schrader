@@ -370,12 +370,20 @@
   /* ───────────── timeline fill */
   const tl = $('[data-timeline]');
   const tlFill = tl && $('[data-timeline-fill]', tl);
+  // The line eases toward the scroll position instead of jumping with each scroll event
+  // (iOS delivers those unevenly), and grows via transform so it never triggers layout.
+  let tlTarget = 0, tlNow = 0, tlRaf = 0;
+  const tlStep = () => {
+    tlNow += (tlTarget - tlNow) * 0.18;
+    if (Math.abs(tlTarget - tlNow) < 0.0005) tlNow = tlTarget;
+    tlFill.style.transform = `scaleY(${tlNow})`;
+    tlRaf = tlNow === tlTarget ? 0 : requestAnimationFrame(tlStep);
+  };
   const onScrollTimeline = () => {
     if (!tl) return;
     const r = tl.getBoundingClientRect();
-    const p = clamp((innerHeight * 0.6 - r.top) / r.height, 0, 1);
-    tlFill.style.setProperty('--fill', `${p * 100}%`);
-    tlFill.style.height = `${p * 100}%`;
+    tlTarget = clamp((innerHeight * 0.6 - r.top) / r.height, 0, 1);
+    if (!tlRaf) tlRaf = requestAnimationFrame(tlStep);
   };
 
   /* ───────────── floating CTA */
