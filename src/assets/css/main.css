@@ -1003,8 +1003,8 @@ legend.booking__q { margin-bottom: 18px; }
 .about-hero__grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: clamp(32px, 6vw, 96px); align-items: end; }
 .about-hero__grid .page-hero__title { margin-bottom: 26px; }
 .about-hero__grid .page-hero__lead { margin-bottom: 30px; }
-.big-quote { max-width: 30ch; margin-bottom: clamp(56px, 7vw, 96px); }
-.big-quote p { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(1.8rem, 3.6vw, 3rem); line-height: 1.15; color: var(--ink); letter-spacing: -0.02em; text-wrap: balance; }
+.big-quote { margin-bottom: clamp(56px, 7vw, 96px); }
+.big-quote p { max-width: 20ch; font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(1.8rem, 3.6vw, 3rem); line-height: 1.15; color: var(--ink); letter-spacing: -0.02em; text-wrap: balance; }
 .big-quote footer { margin-top: 20px; color: var(--slate); }
 .philosophy { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
 .philosophy__item { padding-top: 22px; border-top: 1px solid var(--ink); display: grid; gap: 10px; align-content: start; }
@@ -1390,4 +1390,27 @@ a.contact-card--dark:hover { background: var(--ink); }
   .map-photo { aspect-ratio: 4 / 3; }
   .map-photo__label { left: 50%; top: calc(50% - 30px); transform: translate(-50%, -100%); text-align: center; }
   .map-photo__credit { bottom: auto; top: 8px; }
+}
+
+/* ───────────────────────────── about: quote over the operating-room photo */
+
+/* A navy veil from the left keeps the quote legible; the surgeon stays visible on the right. */
+.quote-stage {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: flex; align-items: center;
+  min-height: clamp(460px, 48vw, 680px); margin-bottom: clamp(56px, 7vw, 96px);
+  padding: clamp(32px, 5vw, 80px); border-radius: var(--r-xl); background: var(--navy);
+}
+.quote-stage__img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 75% 40%; filter: saturate(.55) contrast(1.05); }
+.quote-stage::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, rgba(22, 41, 61, .96) 0%, rgba(22, 41, 61, .88) 38%, rgba(22, 41, 61, .35) 68%, rgba(22, 41, 61, .1) 100%);
+}
+.quote-stage .big-quote { margin: 0; }
+.quote-stage .big-quote p { color: #fff; }
+.quote-stage .big-quote footer { color: var(--sky); }
+@media (max-width: 760px) {
+  .quote-stage { align-items: flex-end; min-height: 560px; }
+  .quote-stage__img { object-position: 80% 30%; }
+  .quote-stage::before { background: linear-gradient(180deg, rgba(22, 41, 61, .25) 0%, rgba(22, 41, 61, .8) 45%, rgba(22, 41, 61, .96) 100%); }
 }

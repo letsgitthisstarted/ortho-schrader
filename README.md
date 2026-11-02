@@ -65,7 +65,9 @@ Every photo slot uses `photo({ label, … })` and shows a calm placeholder that 
 photo({ label: 'Porträt Thomas Schrader', ratio: '4/5', src: '/assets/img/portrait.jpg' })
 ```
 
-Needed: portrait (2–3 variants), Thomas with a patient / at the ultrasound, the treatment room at healthlab, one personal photo (bike, mountains or skiing).
+In use: `portrait-thomas-schrader.jpg` (home + Über mich; low resolution, replace with a larger original when available) and `op-saal.jpg` (operating room, behind the quote on Über mich – confirm it is a real photo of Thomas and that everyone shown agreed to its use).
+
+Still needed: Thomas with a patient / at the ultrasound, the treatment room at healthlab, one personal photo (bike, mountains or skiing).
 
 ## Design notes
 

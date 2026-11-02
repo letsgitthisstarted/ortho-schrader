@@ -20,17 +20,20 @@ export function about() {
           <a class="btn btn--ghost" href="#werdegang">Werdegang</a>
         </div>
       </div>
-      <div class="about-hero__photo" data-reveal>${photo({ label: 'Porträt Thomas Schrader', ratio: '4/5' })}</div>
+      <div class="about-hero__photo" data-reveal>${photo({ label: 'Porträt Thomas Schrader', ratio: '4/5', src: '/assets/img/portrait-thomas-schrader.jpg' })}</div>
     </div>
   </div>
 </section>
 
 <section class="section quote-section">
   <div class="wrap">
-    <blockquote class="big-quote" data-reveal>
-      <p>„Während meiner Weiterbildung zum Facharzt wurde mir klar, dass meine Patientenbetreuung immer auf Augenhöhe und in ehrlicher, souveräner Art und Weise stattfinden soll.“</p>
-      <footer>${site.name}</footer>
-    </blockquote>
+    <div class="quote-stage" data-reveal>
+      <img class="quote-stage__img" src="/assets/img/op-saal.jpg" alt="" width="1717" height="916" loading="lazy" decoding="async">
+      <blockquote class="big-quote">
+        <p>„Während meiner Weiterbildung zum Facharzt wurde mir klar, dass meine Patientenbetreuung immer auf Augenhöhe und in ehrlicher, souveräner Art und Weise stattfinden soll.“</p>
+        <footer>${site.name}</footer>
+      </blockquote>
+    </div>
     <div class="philosophy">
       <div class="philosophy__item" data-reveal><p class="philosophy__title">Ich höre zu, bevor ich untersuche.</p><p>Ihre Geschichte – wo, wann, wobei es schmerzt – ist oft der wichtigste Teil der Diagnose.</p></div>
       <div class="philosophy__item" data-reveal><p class="philosophy__title">Ich erkläre, bevor ich behandle.</p><p>Befunde zeige ich Ihnen am Ultraschall und erkläre sie verständlich. Sie entscheiden mit.</p></div>

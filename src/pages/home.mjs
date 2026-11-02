@@ -37,7 +37,7 @@ export function home() {
 <section class="section about-home">
   <div class="wrap about-home__grid">
     <div class="doctor-card" data-reveal>
-      ${photo({ label: 'Porträt Thomas Schrader', ratio: '4/5' })}
+      ${photo({ label: 'Porträt Thomas Schrader', ratio: '4/5', src: '/assets/img/portrait-thomas-schrader.jpg' })}
       <div class="doctor-card__tag">
         <p class="doctor-card__name">${site.name}</p>
         <ul><li>Orthopädie</li><li>Unfallchirurgie</li><li>Sportmedizin</li><li>Notfallmedizin</li></ul>
