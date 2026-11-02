@@ -421,7 +421,7 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 
 /* ───────────────────────────── body map */
 
-.bodymap { padding-inline: var(--edge); margin-top: clamp(64px, 9vw, 120px); scroll-margin-top: 80px; }
+.bodymap { padding-inline: var(--edge); scroll-margin-top: 80px; }
 .bodymap__panel {
   position: relative; overflow: hidden; isolation: isolate;
   border-radius: var(--r-xl);
@@ -434,8 +434,8 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 }
 .bodymap__panel .display { color: #fff; }
 .bodymap__panel .tt-b { color: var(--sky); }
-.bodymap__head { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px 64px; align-items: end; margin-bottom: clamp(20px, 3vw, 40px); }
-.bodymap__head p { max-width: 44ch; }
+.bodymap__head { display: grid; gap: 16px; margin-bottom: clamp(20px, 3vw, 40px); }
+.bodymap__head p { max-width: 60ch; }
 .bodymap__stage { display: grid; grid-template-columns: 250px minmax(0, 1fr) minmax(300px, 380px); gap: clamp(16px, 3vw, 48px); align-items: center; }
 .bodymap__list { display: grid; gap: 2px; }
 .bodymap__region {
@@ -681,9 +681,8 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 }
 .wahlarzt-home__panel .display { color: #fff; }
 .wahlarzt-home__panel .tt-b { color: var(--sky); }
-.wahlarzt-home__head { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; }
-.wahlarzt-home__head .btn { grid-column: 2; justify-self: start; }
-.wahlarzt-home__head p { max-width: 46ch; }
+.wahlarzt-home__head { display: grid; gap: 20px; justify-items: start; }
+.wahlarzt-home__head p { max-width: 60ch; }
 .wahlarzt-home__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .fact-card { padding: 22px 24px; border-radius: var(--r-md); background: var(--sand); color: var(--ink-2); display: grid; gap: 4px; align-content: start; }
 .fact-card__big { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(1.9rem, 3vw, 2.6rem); line-height: 1.05; color: var(--ink); letter-spacing: -0.02em; }
@@ -914,9 +913,9 @@ legend.booking__q { margin-bottom: 18px; }
 .filter__ink { position: absolute; z-index: 0; top: 5px; height: 42px; border-radius: 999px; background: var(--navy); transition: transform 0.33s var(--ease-out), width 0.33s var(--ease-out); }
 .t-group { margin-bottom: clamp(56px, 7vw, 96px); transition: opacity 0.26s var(--ease); scroll-margin-top: 150px; }
 .t-group[hidden] { display: none; }
-.t-group__head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 64px; align-items: end; margin-bottom: 24px; }
+.t-group__head { display: grid; gap: 10px; margin-bottom: 24px; }
 .t-group__title { font-size: clamp(2rem, 3.6vw, 3rem); }
-.t-group__head p { max-width: 46ch; }
+.t-group__head p { max-width: 60ch; }
 
 .network-index { background: var(--sand); border-radius: var(--r-xl); margin-inline: var(--edge); }
 .network-index__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
@@ -936,7 +935,7 @@ legend.booking__q { margin-bottom: 18px; }
 }
 .finder__panel .display { color: #fff; }
 .finder__panel .tt-b { color: var(--sky); }
-.finder__intro { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px 64px; align-items: end; margin-bottom: clamp(28px, 4vw, 48px); }
+.finder__intro { display: grid; gap: 14px; margin-bottom: clamp(28px, 4vw, 48px); }
 .finder__stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) 220px; gap: clamp(16px, 3vw, 40px); align-items: center; }
 .finder__options { display: grid; gap: 8px; }
 .finder__opt {
@@ -989,12 +988,12 @@ legend.booking__q { margin-bottom: 18px; }
 .region-card { position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; gap: 12px; padding: 18px 18px 22px; border-radius: var(--r-lg); background: var(--sand); transition: background-color .3s, transform 0.39s var(--ease-out); }
 .region-card:hover { transform: translateY(-4px); }
 .region-card:hover { background: var(--sand-2); }
-.region-card__fig { height: 220px; display: grid; place-items: center; }
-.region-card__fig { min-width: 0; }
-.region-card__fig .figure { height: 100%; width: auto; max-width: 100%; aspect-ratio: 348 / 648; }
-.region-card__body { display: grid; gap: 4px; padding-right: 52px; position: relative; z-index: 1; }
-.region-card__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: 1.5rem; color: var(--ink); line-height: 1.1; hyphens: auto; -webkit-hyphens: auto; overflow-wrap: break-word; }
-.region-card__text { font-size: .9rem; color: var(--slate); }
+/* --fig-h sizes both the slot and the figure: a percentage height does not resolve here, so the whole body must fit. */
+.region-card__fig { --fig-h: 220px; height: var(--fig-h); min-width: 0; display: grid; place-items: center; overflow: hidden; }
+.region-card__fig .figure { height: var(--fig-h); width: auto; max-width: 100%; aspect-ratio: 348 / 648; }
+.region-card__body { display: grid; gap: 4px; position: relative; z-index: 1; }
+.region-card__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(1.2rem, 1.7vw, 1.5rem); color: var(--ink); line-height: 1.1; }
+.region-card__text { font-size: .9rem; color: var(--slate); padding-right: 52px; }
 .region-card .tile__go { position: absolute; right: 16px; bottom: 18px; color: var(--ink); z-index: 1; }
 .region-card:hover .tile__go { background: var(--navy); color: #fff; border-color: var(--navy); }
 
@@ -1247,7 +1246,7 @@ a.contact-card--dark:hover { background: var(--ink); }
   .t-visual__figure { height: 440px; }
   .float-chip { font-size: .8rem; padding: 6px 11px; }
   .region-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-  .region-card__fig { height: 160px; }
+  .region-card__fig { --fig-h: 160px; }
   .region-card__title { font-size: 1.2rem; }
   .region-card__text { display: none; }
   .timeline__item { grid-template-columns: minmax(0, 1fr); gap: 6px; padding-left: 36px; }
@@ -1267,7 +1266,7 @@ a.contact-card--dark:hover { background: var(--ink); }
 }
 
 /* Audit refinements: narrow-screen wrapping, form feedback, contact arrival panel */
-.display { overflow-wrap: anywhere; hyphens: auto; -webkit-hyphens: auto; }
+@media (max-width: 420px) { .display { overflow-wrap: anywhere; hyphens: auto; -webkit-hyphens: auto; } }
 .network-index__list, .network-index__list li > div, .options__col { min-width: 0; }
 .network-index__list li { grid-template-columns: 56px minmax(0, 1fr); }
 .options__network { grid-template-columns: 56px minmax(0, 1fr); }
@@ -1414,3 +1413,34 @@ a.contact-card--dark:hover { background: var(--ink); }
   .quote-stage__img { object-position: 80% 30%; }
   .quote-stage::before { background: linear-gradient(180deg, rgba(22, 41, 61, .25) 0%, rgba(22, 41, 61, .8) 45%, rgba(22, 41, 61, .96) 100%); }
 }
+
+/* ───────────────────────────── page rhythm */
+
+/* One gap between all top-level blocks of a page. Plain sections carry no outer padding of their own;
+   blocks with a coloured background (network index, timeline) keep theirs as inner padding. */
+main > * + * { margin-top: var(--section); }
+main > .section:not(.network-index):not(.timeline-section), main > .faq { padding-block: 0; }
+main > .hero, main > .page-hero { padding-bottom: 0; }
+main > .section:last-child:not(.network-index):not(.timeline-section) { padding-bottom: var(--section); }
+
+/* Section heads stack: intro text and links sit under the title, on the same left edge as the content. */
+.section-head--split { grid-template-columns: minmax(0, 1fr); align-items: start; gap: 18px; }
+.section-head--split .section-head__side p { max-width: 60ch; }
+
+/* Treatment groups: complete rows whatever the number of cards (data-count is set per group). */
+@media (min-width: 1021px) {
+  .tile-grid[data-count='4'] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .tile-grid[data-count='4'] .tile__art { inset: 13% 22% 50%; }
+  .tile-grid[data-count='5'] > :first-child { grid-column: span 2; }
+}
+@media (min-width: 761px) and (max-width: 1020px) {
+  .tile-grid[data-count='3'] > :first-child, .tile-grid[data-count='5'] > :first-child { grid-column: span 2; }
+}
+/* A group with a single treatment becomes one wide card: text on the left, drawing on the right. */
+@media (min-width: 761px) {
+  .tile-grid[data-count='1'] { grid-template-columns: minmax(0, 1fr); }
+  .tile-grid[data-count='1'] .tile { min-height: 300px; }
+  .tile-grid[data-count='1'] .tile__art { inset: 12% 8% 12% 58%; }
+  .tile-grid[data-count='1'] .tile__body { max-width: 52%; }
+}
+

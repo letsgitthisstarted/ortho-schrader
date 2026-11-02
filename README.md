@@ -67,7 +67,9 @@ photo({ label: 'Porträt Thomas Schrader', ratio: '4/5', src: '/assets/img/portr
 
 In use: `portrait-thomas-schrader.jpg` (home + Über mich; low resolution, replace with a larger original when available) and `op-saal.jpg` (operating room, behind the quote on Über mich – confirm it is a real photo of Thomas and that everyone shown agreed to its use).
 
-Still needed: Thomas with a patient / at the ultrasound, the treatment room at healthlab, one personal photo (bike, mountains or skiing).
+`skitour.jpg` (ski tour, "Als Sportler" on Über mich; the alt text does not claim it shows Thomas).
+
+Still needed: Thomas with a patient / at the ultrasound, the treatment room at healthlab.
 
 ## Design notes
 

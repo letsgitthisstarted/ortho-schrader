@@ -153,9 +153,9 @@ ${pageHero({
         <h2 class="t-group__title display">${g.label}</h2>
         <p>${g.blurb}</p>
       </header>
-      <div class="tile-grid" data-stagger>
-        ${treatments.filter((t) => t.group === g.id).map((t) => treatmentTile(t.slug, { size: 'md', tone: g.id === 'operativ' ? 'dark' : 'light' }))}
-      </div>
+      ${((items) => html`<div class="tile-grid" data-count="${items.length}" data-stagger>
+        ${items.map((t) => treatmentTile(t.slug, { size: 'md', tone: g.id === 'operativ' ? 'dark' : 'light' }))}
+      </div>`)(treatments.filter((t) => t.group === g.id))}
     </div>`)}
   </div>
 </section>

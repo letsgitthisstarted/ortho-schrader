@@ -70,7 +70,7 @@ export function about() {
 
 <section class="section personal">
   <div class="wrap personal__grid">
-    ${photo({ label: 'Thomas Schrader in den Bergen oder am Rad', ratio: '5/4', className: 'personal__photo' })}
+    ${photo({ label: 'Skitour im verschneiten Hochgebirge', ratio: '5/4', className: 'personal__photo', src: '/assets/img/skitour.jpg' })}
     <div>
       <h2 class="display" data-reveal>${twoTone('Als Sportler', 'verstehe ich Sportler:innen.')}</h2>
       <p data-reveal>Mit meiner Frau und unseren drei Kindern lebe ich seit vielen Jahren in der Stadt Salzburg. Ausgleich finde ich dort, wo ich auch meine Patient:innen wieder hinbringen möchte: in der Bewegung – am Rennrad, am Mountainbike und im Winter auf Skiern.</p>
