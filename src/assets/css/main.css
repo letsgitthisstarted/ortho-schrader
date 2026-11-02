@@ -37,7 +37,7 @@
   /* blues */
   --ink: #14202e;
   --ink-2: #3c4957;
-  --slate: #6f8394;
+  --slate: #526675;
   --navy: #16293d;
   --navy-2: #1f3a52;
   --petrol: #2b4b5f;
@@ -792,7 +792,7 @@ legend.booking__q { margin-bottom: 18px; }
 .consent { display: flex; gap: 12px; font-size: .88rem; line-height: 1.45; cursor: pointer; }
 .consent input { flex: none; width: 20px; height: 20px; margin-top: 1px; accent-color: var(--navy); }
 .consent a { text-decoration: underline; }
-.booking__error { color: #a3402b; font-size: .92rem; }
+.booking__error, .field__error { color: #a3402b; font-size: .92rem; }
 .booking__note { font-size: .84rem; color: var(--slate); text-align: center; }
 .booking__done { text-align: center; justify-items: center; padding: 12px 0 8px; }
 .booking__done-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 99px; background: var(--mist); color: var(--navy); margin-bottom: 8px; }
@@ -1104,22 +1104,9 @@ a.contact-card--dark:hover { background: var(--ink); }
    Motion
    ========================================================================== */
 
-.js [data-reveal] { opacity: 0; transform: translateY(14px); filter: blur(6px); transition: opacity 0.65s var(--ease), transform 0.72s var(--ease-out), filter 0.65s var(--ease); transition-delay: var(--d, 0s); }
-.js [data-reveal].is-in { opacity: 1; transform: none; filter: none; }
-.js [data-split] .w { display: inline-block; opacity: 0; transform: translateY(.35em); filter: blur(10px); transition: opacity 0.65s var(--ease), transform 0.78s var(--ease-out), filter 0.65s var(--ease); transition-delay: calc(var(--i) * 35ms + 40ms); }
-.js [data-split].is-in .w { opacity: 1; transform: none; filter: none; }
-
-@view-transition { navigation: auto; }
-::view-transition-old(root), ::view-transition-new(root) { animation-duration: .35s; animation-timing-function: var(--ease); }
-
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-stopped { overflow: clip; }
-
+/* Content stays visible even if JavaScript fails. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
-  .js [data-reveal], .js [data-split] .w { opacity: 1; transform: none; filter: none; }
-  .diagnoses__track { animation: none; }
 }
 
 /* ==========================================================================
@@ -1232,4 +1219,51 @@ html.lenis, html.lenis body { height: auto; }
   .entry__pills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pill-tile__art .mini-fig { width: 22px; height: 46px; }
   .pill-tile__ico { width: 40px; }
+}
+
+/* Patient-focused audit refinements */
+.display { overflow-wrap: anywhere; hyphens: auto; -webkit-hyphens: auto; }
+.network-index__list, .network-index__list li > div, .options__col { min-width: 0; }
+.network-index__list li { grid-template-columns: 56px minmax(0, 1fr); }
+.options__network { grid-template-columns: 56px minmax(0, 1fr); }
+.option-link { grid-template-columns: 52px minmax(0, 1fr) auto; }
+.network-index__list p, .options__network p, .option-link__title { overflow-wrap: anywhere; hyphens: auto; -webkit-hyphens: auto; }
+.hero__practice { font-size: .95rem; color: var(--ink-2); }
+.hero__side { gap: 24px; }
+.hero__side .btn-row { margin-top: 0; }
+.hero { padding-bottom: clamp(36px, 5vw, 64px); }
+.page-home .hero + .bodymap { margin-top: 0; }
+.journey { padding-top: 0; }
+.journey__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.journey__grid li { background: var(--sand); border-radius: var(--r-lg); padding: 28px; }
+.journey__number { color: var(--slate); font-size: .9rem; }
+.journey__grid h3 { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: 1.8rem; color: var(--ink); margin: 12px 0; }
+.journey__grid p { font-size: .95rem; }
+.booking__step-count { font-size: .9rem; color: var(--slate); margin: -8px 0 20px; }
+.booking__error:empty { display: none; }
+.booking__step[hidden] { display: none; }
+.field input::placeholder, .field textarea::placeholder { color: var(--slate); opacity: 1; }
+.consent input[aria-invalid='true'] { outline: 2px solid #a3402b; outline-offset: 3px; }
+.bodymap__region { color: rgba(255, 255, 255, .85); }
+.urgent-note { margin: 0 auto 40px; padding: 24px 28px; border-left: 4px solid #8b472d; border-radius: 0 var(--r-md) var(--r-md) 0; background: #faf1e9; color: var(--ink); }
+.urgent-note h2 { font-size: 1.2rem; margin-bottom: 8px; }
+.urgent-note p + p { margin-top: 10px; }
+.urgent-note a { text-decoration: underline; text-underline-offset: 3px; }
+.urgent-note__source { font-size: .85rem; }
+.arrival { display: grid; gap: 16px; align-content: center; background: #fff; border-radius: var(--r-lg); padding: clamp(24px, 4vw, 40px); }
+.arrival h3 { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: 2rem; color: var(--ink); }
+.arrival a { text-decoration: underline; text-underline-offset: 3px; }
+.refund__source { font-size: .9rem; margin-top: 20px; }
+.refund__source a { text-decoration: underline; }
+@media (max-width: 1020px) {
+  .journey__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bodymap__list { grid-row: 1; }
+  .bodymap.has-picked .bodymap__cards { grid-row: 2; }
+  .bodymap.has-picked .bodymap__figure { grid-row: 3; width: min(60%, 230px); }
+  .bodymap__card[hidden] { display: none; }
+}
+@media (max-width: 760px) {
+  .journey__grid { grid-template-columns: minmax(0, 1fr); }
+  .bodymap__card { padding: 22px; }
+  .urgent-note { padding: 20px; }
 }

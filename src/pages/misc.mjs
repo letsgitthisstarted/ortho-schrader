@@ -93,7 +93,7 @@ ${ctaPanel()}
 
 const wahlarztFaq = [
   ['Wie viel bekomme ich von der Krankenkasse zurück?', 'Die Kasse erstattet bis zu 80 % des Betrags, den sie einem Vertragsarzt für dieselbe Leistung bezahlen würde. Wie viel das in Euro ist, hängt von der Leistung und Ihrer Kasse ab – das Honorar ist in der Regel höher als dieser Tarif.'],
-  ['Wie reiche ich die Honorarnote ein?', 'Am einfachsten online: bei der ÖGK über „meineSV“ oder die ÖGK-App, bei BVAEB und SVS über deren Online-Portale. Alternativ per Post oder persönlich. Sie brauchen die bezahlte Honorarnote mit Zahlungsbestätigung.'],
+  ['Wie reiche ich die Honorarnote ein?', 'Bezahlte Honorarnoten können mit Ihrer Zustimmung über WAHonline direkt von einer Wahlarztpraxis an die Krankenversicherung übermittelt werden. Fragen Sie bei Ihrem Termin nach, wie die Einreichung für Sie erfolgt. Falls Sie selbst einreichen, nutzen Sie das Portal Ihrer Kasse oder den Postweg. Bereits übermittelte Rechnungen bitte nicht doppelt einreichen.'],
   ['Übernimmt meine private Zusatzversicherung die Kosten?', 'Viele ambulante Zusatzversicherungen übernehmen den Rest des Wahlarzthonorars ganz oder teilweise. Operationen an der Privatklinik werden über die Sonderklasse abgerechnet. Fragen Sie am besten vorab bei Ihrer Versicherung nach.'],
   ['Brauche ich eine Überweisung?', 'Nein. Sie können direkt zu mir kommen. Für bestimmte Untersuchungen wie ein MRT stelle ich Ihnen bei Bedarf eine Zuweisung aus.'],
   ['Was kostet ein Termin?', 'Das Honorar richtet sich nach Dauer und Umfang der Untersuchung und Behandlung. Auf Wunsch nenne ich Ihnen die Kosten vorab – bei Injektionen und Stoßwelle bekommen Sie immer eine Aufstellung vor Behandlungsbeginn.'],
@@ -107,7 +107,7 @@ ${pageHero({
   crumbs,
   title: 'Wahlarzt & Kosten',
   tone: 'einfach erklärt.',
-  lead: 'Als Wahlarzt arbeite ich ohne Kassenvertrag. Sie können direkt zu mir kommen, und ich kann mir für jeden Termin die Zeit nehmen, die Ihr Anliegen braucht. Einen Teil des Honorars erhalten Sie von Ihrer Krankenkasse zurück.',
+  lead: 'Als Wahlarzt arbeite ich ohne Kassenvertrag. Sie können direkt zu mir kommen, und ich kann mir für jeden Termin die Zeit nehmen, die Ihr Anliegen braucht. Für erstattungsfähige Leistungen erhalten Sie einen Teil nach dem Tarif Ihrer Krankenkasse zurück.',
 })}
 
 <section class="section">
@@ -116,7 +116,7 @@ ${pageHero({
       ${[
         ['calendar', 'Zeitnahe Termine', 'In der Regel zeitnah – bei akuten Beschwerden bemühe ich mich um einen kurzfristigen Termin.'],
         ['clock', 'Zeit für Ihr Anliegen', 'Ein ausführliches Erstgespräch und eine gründliche Untersuchung, bei Bedarf mit Ultraschall.'],
-        ['user', 'Ein Arzt, ein Weg', 'Diagnose, Behandlung, Operation und Nachsorge bleiben in einer Hand.'],
+        ['user', 'Ein Arzt, ein Weg', 'Ein Ansprechpartner für Diagnose und Nachsorge – bei spezialisierten Eingriffen gemeinsam mit meinem Netzwerk.'],
         ['door', 'Ohne Überweisung', 'Sie können direkt zu mir kommen.'],
       ].map(([i, t, d]) => html`<div class="perk" data-reveal><span class="perk__icon">${icons[i]}</span><p class="perk__title">${t}</p><p>${d}</p></div>`)}
     </div>
@@ -126,7 +126,7 @@ ${pageHero({
 <section class="section refund">
   <div class="wrap refund__grid">
     <div>
-      ${sectionHead({ title: 'So funktioniert', tone: 'die Rückerstattung.', align: 'stack', text: 'Vier Schritte – und auf Wunsch helfe ich Ihnen dabei.' })}
+      ${sectionHead({ title: 'So funktioniert', tone: 'die Rückerstattung.', align: 'stack', text: 'Von der Honorarnote bis zur Erstattung – wir besprechen, welcher Weg für Sie passt.' })}
       <div class="refund__calc" data-reveal>
         <p class="refund__calc-label">Rechenbeispiel</p>
         <p>Würde eine Untersuchung beim Vertragsarzt der Kasse <strong>50 €</strong> kosten, erstattet die Kasse Ihnen davon bis zu <strong>40 €</strong> (80 %) – unabhängig davon, wie hoch das Wahlarzthonorar ist.</p>
@@ -137,8 +137,9 @@ ${pageHero({
       ['Termin vereinbaren', 'Telefonisch, per E-Mail oder über die Terminanfrage.'],
       ['Behandlung', 'Ausführliches Gespräch, gründliche Untersuchung und ein Plan, den Sie verstehen.'],
       ['Honorarnote bezahlen', 'Sie erhalten eine transparente Honorarnote mit allen Leistungen.'],
-      ['Bei der Kasse einreichen', 'Online über meineSV, die ÖGK-App oder das Portal Ihrer Kasse. Die Rückerstattung kommt auf Ihr Konto.'],
+      ['Einreichung klären', 'Über WAHonline kann die Praxis die bezahlte Honorarnote mit Ihrer Zustimmung übermitteln. Klären Sie bei Ihrem Termin, ob noch eine eigene Einreichung nötig ist.'],
     ])}
+    <p class="refund__source">WAHonline ermöglicht die direkte Einreichung durch die Praxis. <a href="https://www.oegk.at/cdscontent/?contentid=10007.880165&amp;portal=oegkvpportal" target="_blank" rel="noopener">Informationen der ÖGK zu WAHonline</a></p>
   </div>
 </section>
 
@@ -205,16 +206,11 @@ ${pageHero({
     ${sectionHead({ title: 'So finden', tone: 'Sie mich.' })}
     <div class="locations__grid">
       <article class="location location--main" data-reveal>
-        <div class="map" aria-hidden="true">
-          <svg viewBox="0 0 400 260" class="map__svg">
-            <path class="map__river" d="M-10 40 C80 70 120 30 190 80 S300 150 410 120"/>
-            <path class="map__road" d="M60 270 C110 200 150 170 200 140 S280 70 330 -10"/>
-            <path class="map__road map__road--minor" d="M-10 170 C80 160 160 150 230 175 S350 220 410 215"/>
-            <path class="map__road map__road--minor" d="M120 -10 C130 60 150 100 200 140"/>
-            <text class="map__label" x="246" y="60">Alpenstraße</text>
-            <text class="map__label map__label--river" x="40" y="34">Salzach</text>
-          </svg>
-          <span class="map__pin" style="left:50%;top:54%"><span></span></span>
+        <div class="arrival">
+          <p class="location__kicker">Ihr Weg zur Ordination</p>
+          <h3>${site.ordination.street}<br>${site.ordination.zip} ${site.ordination.city}</h3>
+          <p>Planen Sie Ihre Anfahrt zum healthlab über den Routenlink. Den Termin in meiner Ordination vereinbaren Sie bitte vorab.</p>
+          <p>Fragen zu Eingang oder Zugang? Der healthlab-Empfang hilft Ihnen unter <a href="${site.phoneReceptionHref}">${site.phoneReception}</a>.</p>
         </div>
         <div class="location__body">
           <p class="location__kicker">Ordination</p>
@@ -225,7 +221,7 @@ ${pageHero({
             <li>${icons.check} Obus-Haltestellen entlang der Alpenstraße</li>
             <li>${icons.check} Barrierefrei erreichbar</li>
           </ul>
-          <p class="location__hours">Öffnungszeiten des Hauses: ${site.ordination.houseHours.map(([d, h]) => `${d} ${h}`).join(', ')}</p>
+          <p class="location__hours">Hausöffnungszeiten: ${site.ordination.houseHours.map(([d, h]) => `${d} ${h}`).join(', ')}. Diese Zeiten sind keine Sprechzeiten der Ordination; Arzttermine nur nach Vereinbarung.</p>
           <a class="btn btn--dark" href="${site.ordination.maps}" target="_blank" rel="noopener">Route in Google Maps ${icons.arrowUpRight}</a>
         </div>
       </article>
@@ -286,7 +282,7 @@ UID-Nummer: ${todo('falls vorhanden ergänzen')}</p>
 <h2>Haftungsausschluss</h2>
 <p>Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Sie dienen der allgemeinen Information und ersetzen keine persönliche ärztliche Beratung, Untersuchung oder Behandlung. Für Inhalte externer Links sind ausschließlich deren Betreiber verantwortlich.</p>
 <h2>Bildnachweise und Schriften</h2>
-<p>Schriften: Geist und Geist Serif (SIL Open Font License), lokal eingebunden. ${todo('Bildnachweise ergänzen, sobald Fotos eingesetzt sind')}</p>`);
+<p>Schriften: Newsreader und Geist (SIL Open Font License), lokal eingebunden. ${todo('Bildnachweise ergänzen, sobald Fotos eingesetzt sind')}</p>`);
 
 export const datenschutz = () => legal('/datenschutz/', 'Datenschutzerklärung', 'Datenschutz', `
 <p>${todo('Entwurf – vor Veröffentlichung rechtlich prüfen lassen.')}</p>

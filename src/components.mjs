@@ -85,8 +85,9 @@ export function bodyMap({ id = 'bodymap', heading = true } = {}) {
   <div class="bodymap__panel">
     ${heading ? html`<header class="bodymap__head">
       <h2 class="display" data-reveal>${twoTone('Wo tut es weh?', 'Wählen Sie eine Stelle.')}</h2>
-      <p data-reveal>Tippen Sie auf die Stelle am Körper oder wählen Sie links eine Region. Sie sehen häufige Ursachen und passende Behandlungen.</p>
+      <p data-reveal>Tippen Sie auf die Stelle am Körper oder wählen Sie eine Region. Sie sehen häufige Ursachen und passende Behandlungen.</p>
     </header>` : ''}
+    <p class="sr" data-bodymap-status role="status" aria-live="polite" aria-atomic="true"></p>
     <div class="bodymap__stage">
       <ul class="bodymap__list" role="tablist" aria-label="Körperregionen">
         ${regions.map((r, i) => html`<li role="presentation"><button class="bodymap__region" role="tab" id="${id}-tab-${r.id}" aria-selected="false" aria-controls="${id}-panel-${r.id}" data-region="${r.id}" tabindex="${i === 0 ? 0 : -1}">
@@ -129,6 +130,20 @@ export function steps(items, { compact = false } = {}) {
   </ol>`;
 }
 
+// General warning signs, based on IQWiG and the Austrian public health portal.
+// Thomas should review this patient-facing wording before the public launch.
+export function urgentNote(region = 'verletzung') {
+  const back = region === 'ruecken';
+  return html`<div class="wrap"><aside class="urgent-note" aria-labelledby="urgent-title">
+    <h2 id="urgent-title">Wann Sie nicht auf einen Termin warten sollten</h2>
+    ${back
+      ? html`<p>Bei Rückenschmerzen mit neu auftretenden Problemen beim Wasserlassen oder Stuhlgang, Taubheit im Schritt oder zunehmenden Lähmungen brauchen Sie sofort ärztliche Hilfe. Wenden Sie sich direkt an eine Notaufnahme; im akuten Notfall wählen Sie in Österreich <a href="tel:144">144</a>.</p>`
+      : html`<p>Bei einer schweren Verletzung, einer sichtbaren Fehlstellung oder einer offenen Wunde mit sichtbarem Knochen brauchen Sie sofort ärztliche Hilfe. Wenden Sie sich direkt an eine Notaufnahme; im akuten Notfall wählen Sie in Österreich <a href="tel:144">144</a>.</p>`}
+    <p>Warten Sie in diesen Fällen nicht auf eine Antwort auf Ihre Terminanfrage.</p>
+    <p class="urgent-note__source"><a href="${back ? 'https://www.gesundheitsinformation.de/rueckenschmerzen-wann-zur-aerztin-oder-zum-arzt.html' : 'https://www.gesundheit.gv.at/krankheiten/verletzungen/knochenverletzungen/knochenbrueche.html'}" target="_blank" rel="noopener">Weitere Informationen: ${back ? 'IQWiG – Warnzeichen bei Rückenschmerzen' : 'Österreichisches Gesundheitsportal – Knochenverletzungen'}</a></p>
+  </aside></div>`;
+}
+
 export function faqSection(faq, { title = 'Häufige Fragen', tone = '', id = 'faq' } = {}) {
   return html`<section class="faq" id="${id}">
   <div class="wrap faq__grid">
@@ -147,6 +162,7 @@ export function faqSection(faq, { title = 'Häufige Fragen', tone = '', id = 'fa
 // consented reviews replace them.
 export function reviewsSection() {
   const { items, placeholder, source } = reviews;
+  if (placeholder || !items.length) return '';
   return html`<section class="section reviews" data-carousel>
   <div class="wrap reviews__head">
     <h2 class="display" data-reveal>${twoTone('Was Patient:innen', 'über die Behandlung sagen.')}</h2>

@@ -3,7 +3,7 @@ import { layout } from '../layout.mjs';
 import { regions } from '../data/site.mjs';
 import { conditions } from '../data/conditions.mjs';
 import { treatmentBySlug } from '../data/treatments.mjs';
-import { twoTone, pageHero, sectionHead, bodyMap, faqSection, ctaPanel, regionPill, artFor } from '../components.mjs';
+import { twoTone, pageHero, sectionHead, bodyMap, faqSection, ctaPanel, regionPill, artFor, urgentNote } from '../components.mjs';
 
 const regionById = Object.fromEntries(regions.map((r) => [r.id, r]));
 
@@ -18,6 +18,7 @@ export function conditionPage(c) {
 
   const body = html`
 ${pageHero({ crumbs, title: c.h1, tone: c.h1b, lead: c.lead })}
+${urgentNote(c.region)}
 
 <section class="finder" data-finder>
   <div class="finder__panel">
