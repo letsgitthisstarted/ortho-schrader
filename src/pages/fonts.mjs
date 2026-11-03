@@ -35,7 +35,7 @@ export function fonts() {
 <section class="section" style="padding-top:0"><div class="wrap spec">
   ${candidates.map(([name, note, family, w], i) => html`<article class="spec__item${i % 2 ? ' spec__item--dark' : ''}">
     <p class="spec__meta"><span class="spec__name">${name}</span><span>${note}</span></p>
-    <p class="spec__h" style="font-family:${family};font-weight:${w}">${twoTone('Zuhören. Verstehen.', 'Behandeln.')}</p>
+    <p class="spec__h" style="font-family:${family};font-weight:${w}">${twoTone('Ihr Orthopäde in Salzburg.', 'Zuhören. Verstehen. Behandeln.')}</p>
     <p class="spec__h2" style="font-family:${family};font-weight:${w}">Kniearthroskopie · Hüftprothese · Stoßwellentherapie · Schulterschmerzen</p>
   </article>`)}
 </div></section>`;
