@@ -859,18 +859,18 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 .float-cta__btn .ico { width: 18px; height: 18px; transition: transform .3s var(--ease); }
 .float-cta__btn:hover { box-shadow: 0 0 0 8px rgb(var(--glow) / .7), 0 0 48px 10px rgb(var(--glow) / .55), 0 18px 40px -12px rgba(15, 26, 38, .55); }
 .float-cta__btn:hover .ico { transform: translateX(3px); }
-/* Second, quieter option for people who would rather phone. */
+/* Second, quieter option for people who would rather phone. Solid, without backdrop blur or its own
+   animation (Safari misplaces text in blurred, animated children of the sliding dock). */
 .float-cta__call {
-  display: inline-flex; align-items: center; gap: 8px; height: 54px; white-space: nowrap; padding: 0 22px 0 18px; border-radius: 999px;
-  background: rgba(255, 255, 255, .86); color: var(--ink); font-weight: 500;
-  border: 1px solid var(--line-2); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 18px 40px -16px rgba(15, 26, 38, .45);
-  transition: background-color .26s var(--ease), transform .3s var(--ease);
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 54px; white-space: nowrap; padding: 0 22px 0 18px; border-radius: 999px;
+  background: #fff; color: var(--ink); font-weight: 500; line-height: 1;
+  box-shadow: inset 0 0 0 1px var(--line-2), 0 18px 40px -16px rgba(15, 26, 38, .45);
+  transition: transform .3s var(--ease);
 }
+.float-cta__call span { display: block; line-height: 1; }
 .float-cta__call .ico { width: 18px; height: 18px; color: var(--navy); }
-.float-cta__call:hover { background: #fff; transform: translateY(-2px); }
-.float-cta.is-visible .float-cta__call { animation: call-in .45s var(--ease-out) .08s backwards; }
-@keyframes call-in { from { opacity: 0; transform: translateX(-12px); } }
+@media (hover: hover) { .float-cta__call:hover { transform: translateY(-2px); } }
+.float-cta__btn { line-height: 1; }
 /* The dock stays available to the very end, so the footer leaves room for it. */
 .site-footer { padding-bottom: 104px; }
 @media (max-width: 359px) {
@@ -1685,7 +1685,7 @@ main > .page-sources { margin-top: clamp(40px, 5vw, 64px); }
 
 .proof { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); gap: 24px 48px; margin-top: var(--gap-cards); padding: var(--pad-panel); border-radius: var(--r-xl); background: var(--sand); }
 .proof__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(1.5rem, 2.2vw, 1.9rem); line-height: 1.15; color: var(--ink); margin-bottom: 10px; }
-.proof__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.proof__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 8px; }
 .proof__link { display: flex; align-items: center; justify-content: space-between; gap: 14px; height: 100%; padding: 14px 18px; border-radius: var(--r-md); background: #fff; color: var(--ink); transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
 .proof__link:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -20px rgba(22, 41, 61, .45); }
 .proof__label { display: block; font-weight: 500; line-height: 1.3; }
@@ -1745,4 +1745,11 @@ main > .page-sources { margin-top: clamp(40px, 5vw, 64px); }
   .proof__list, .bring-section__grid, .op-path__grid, .op-places__grid { grid-template-columns: minmax(0, 1fr); }
   .guide-link { padding: var(--pad-card); }
   .guide-link__go { width: 40px; height: 40px; }
+}
+
+/* Small phones: the figure sits close to the panel edge, so labels on the left side go above their joint instead
+   of beside it; long button labels wrap instead of running out of their panel. */
+@media (max-width: 480px) {
+  .t-visual__chips .float-chip--left { transform: translate(-50%, calc(-100% - 14px)); }
+  .btn { height: auto; min-height: var(--h); padding-block: 12px; white-space: normal; text-align: center; line-height: 1.25; max-width: 100%; }
 }
