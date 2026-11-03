@@ -427,7 +427,8 @@
 
   $$('[data-booking]').forEach((form) => {
     const stepsEls = $$('[data-bk-step]', form);
-    const total = 4;
+    const total = 3;
+    const summary = $('[data-bk-summary]', form);
     const back = $('[data-bk-back]', form);
     const bar = $('[data-bk-progress]', form);
     const err = $('[data-bk-error]', form);
@@ -443,6 +444,13 @@
       back.hidden = n === 1 || n > total;
       bar.style.width = `${Math.min(n, total) / total * 100}%`;
       count.textContent = n <= total ? `Schritt ${n} von ${total}` : 'E-Mail vorbereiten';
+      // The last step repeats what was chosen, so nobody has to go back to check.
+      if (n === total) {
+        const fd = new FormData(form);
+        const when = [fd.get('wann'), fd.get('tageszeit')].filter((v) => v && v !== 'Egal').join(', ');
+        summary.textContent = [fd.get('anliegen'), fd.getAll('region').join(', '), when].filter(Boolean).join(' · ');
+        summary.hidden = !summary.textContent;
+      }
       if (moveFocus) {
         const heading = $(`[data-bk-step="${n}"] .booking__q`, form);
         heading.focus({ preventScroll: true });
@@ -456,9 +464,6 @@
     // 'click' rather than 'change': choosing the already selected option again must still move on.
     const auto = (e, n) => { if (e.detail > 0) setTimeout(() => go(n), 180); };
     $$('[data-bk-auto]', form).forEach((r) => r.addEventListener('click', (e) => auto(e, 2)));
-    $$('[data-bk-step="3"] input[name="wann"]', form).forEach((r) => r.addEventListener('click', (e) => {
-      if ($('[data-bk-step="3"] input[name="tageszeit"]:checked', form)) auto(e, 4);
-    }));
     const fieldError = (name, message) => {
       const input = form.elements[name];
       const feedback = $(`[data-field-error="${name}"]`, form);
@@ -489,6 +494,8 @@
       const invalid = errors.filter(([, message]) => message);
       if (invalid.length) {
         err.textContent = `Bitte korrigieren Sie ${invalid.length === 1 ? 'das markierte Feld' : 'die markierten Felder'}. Ihre Anfrage wurde nicht vorbereitet.`;
+        // The e-mail field sits in the folded 'add more' part; unfold it so the error is visible.
+        if (invalid.some(([n]) => n === 'email')) $('.booking__more', form).open = true;
         form.elements[invalid[0][0]].focus();
         return;
       }
@@ -506,7 +513,7 @@
       lines.push('', 'Vielen Dank!');
       const href = `mailto:schrader@healthlab.at?subject=${encodeURIComponent(`Terminanfrage – ${name}`)}&body=${encodeURIComponent(lines.join('\n'))}`;
       $('[data-bk-name]', form).textContent = `, ${name.split(' ')[0]}`;
-      go(5);
+      go(total + 1);
       window.location.href = href;
     });
     go(1, false);

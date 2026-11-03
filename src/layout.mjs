@@ -223,7 +223,7 @@ function floatingCta() {
 
 // Multi-step appointment request. Works as a <dialog> on every page and inline on /kontakt/.
 export function bookingForm({ inline = false } = {}) {
-  const areas = [...conditions.map((c) => [c.region, regionById[c.region].label]), ['andere', 'Andere Region']];
+  const areas = [...conditions.map((c) => [c.region, regionById[c.region].label]), ['andere', 'Andere']];
   const reasons = [
     ['abklaerung', 'Abklärung von Beschwerden', 'Schmerzen, die ich untersuchen lassen möchte'],
     ['zweitmeinung', 'Zweitmeinung zu einer Operation', 'Mir wurde eine OP empfohlen'],
@@ -238,55 +238,50 @@ export function bookingForm({ inline = false } = {}) {
     <div class="booking__progress" aria-hidden="true"><span data-bk-progress></span></div>
     ${inline ? '' : html`<button type="button" class="booking__close" data-booking-close aria-label="Schließen">${icons.close}</button>`}
   </div>
-  <p class="booking__step-count" data-bk-count>Schritt 1 von 4</p>
+  <p class="booking__step-count" data-bk-count>Schritt 1 von 3</p>
 
   <fieldset class="booking__step is-active" data-bk-step="1">
     <legend class="booking__q" tabindex="-1">Wobei kann ich Ihnen helfen?</legend>
     <div class="booking__options">
       ${reasons.map(([v, l, d]) => html`<label class="option"><input type="radio" name="anliegen" value="${l}" data-bk-auto><span class="option__box"><span class="option__label">${l}</span><span class="option__desc">${d}</span></span></label>`)}
     </div>
-    <button type="button" class="btn btn--dark btn--block" data-bk-next>Weiter</button>
+    <div class="booking__actions booking__actions--keys"><button type="button" class="btn btn--dark btn--block" data-bk-next>Weiter</button></div>
   </fieldset>
 
+  <!-- Step 2 is where a real slot picker goes once the practice has a calendar backend. -->
   <fieldset class="booking__step" data-bk-step="2">
-    <legend class="booking__q" tabindex="-1">Wo haben Sie Beschwerden?</legend>
-    <p class="booking__hint">Optional. Mehrfachauswahl möglich.</p>
-    <div class="booking__chips">
+    <legend class="booking__q" tabindex="-1">Wo und wann?</legend>
+    <p class="booking__sub" id="${p}-region-label">Körperregion <span class="field__opt">optional</span></p>
+    <div class="booking__chips" role="group" aria-labelledby="${p}-region-label">
       ${areas.map(([v, l]) => html`<label class="chip-check"><input type="checkbox" name="region" value="${l}"><span>${l}</span></label>`)}
     </div>
-    <button type="button" class="btn btn--dark btn--block" data-bk-next>Weiter</button>
+    <p class="booking__sub" id="${p}-when-label">Wunschtermin <span class="field__opt">optional</span></p>
+    <div class="booking__chips" role="radiogroup" aria-labelledby="${p}-when-label">
+      ${['So bald wie möglich', 'Diese Woche', 'Nächste Woche', 'Flexibel'].map((l) => html`<label class="chip-check"><input type="radio" name="wann" value="${l}"><span>${l}</span></label>`)}
+    </div>
+    <div class="booking__chips" role="radiogroup" aria-label="Tageszeit">
+      ${['Vormittag', 'Nachmittag', 'Egal'].map((l) => html`<label class="chip-check chip-check--soft"><input type="radio" name="tageszeit" value="${l}"><span>${l}</span></label>`)}
+    </div>
+    <div class="booking__actions"><button type="button" class="btn btn--dark btn--block" data-bk-next>Weiter</button></div>
   </fieldset>
 
   <fieldset class="booking__step" data-bk-step="3">
-    <legend class="booking__q" tabindex="-1">Wann passt es Ihnen?</legend>
-    <p class="booking__hint">Optional. Ihre Auswahl ist ein Wunsch, noch kein bestätigter Termin.</p>
-    <div class="booking__options booking__options--grid">
-      ${['So bald wie möglich', 'Diese Woche', 'Nächste Woche', 'Ich bin flexibel'].map((l) => html`<label class="option option--compact"><input type="radio" name="wann" value="${l}"><span class="option__box"><span class="option__label">${l}</span></span></label>`)}
-    </div>
-    <p class="booking__sub">Tageszeit</p>
-    <div class="booking__chips">
-      ${['Vormittag', 'Nachmittag', 'Egal'].map((l) => html`<label class="chip-check"><input type="radio" name="tageszeit" value="${l}"><span>${l}</span></label>`)}
-    </div>
-    <button type="button" class="btn btn--dark btn--block" data-bk-next>Weiter</button>
-  </fieldset>
-
-  <fieldset class="booking__step" data-bk-step="4">
-    <legend class="booking__q" tabindex="-1">Wie erreichen wir Sie?</legend>
-    <p class="booking__hint">Name, Telefonnummer und Zustimmung sind erforderlich.</p>
-    <div class="field"><label for="${p}-name">Vor- und Nachname</label><input id="${p}-name" name="name" autocomplete="name" required aria-describedby="${p}-name-error"><p class="field__error" id="${p}-name-error" data-field-error="name" hidden></p></div>
-    <div class="field-row">
-      <div class="field"><label for="${p}-tel">Telefon mit Vorwahl</label><input id="${p}-tel" name="telefon" type="tel" autocomplete="tel" required aria-describedby="${p}-tel-error"><p class="field__error" id="${p}-tel-error" data-field-error="telefon" hidden></p></div>
-      <div class="field"><label for="${p}-mail">E-Mail <span class="field__opt">optional</span></label><input id="${p}-mail" name="email" type="email" autocomplete="email" aria-describedby="${p}-mail-error"><p class="field__error" id="${p}-mail-error" data-field-error="email" hidden></p></div>
-    </div>
-    <div class="field"><label for="${p}-msg">Kurz zu Ihren Beschwerden <span class="field__opt">optional</span></label><textarea id="${p}-msg" name="nachricht" rows="3" placeholder="Zum Beispiel: Knieschmerzen rechts seit drei Wochen, vor allem beim Stiegensteigen."></textarea></div>
-    <label class="consent"><input type="checkbox" name="consent" required aria-describedby="${p}-consent-error"><span>Ich bin einverstanden, dass meine Angaben zur Terminvereinbarung verwendet werden. Mehr in der <a href="/datenschutz/">Datenschutzerklärung</a>.</span></label>
+    <legend class="booking__q" tabindex="-1">Wie erreiche ich Sie?</legend>
+    <p class="booking__summary" data-bk-summary></p>
+    <div class="field"><label for="${p}-name">Vor- und Nachname</label><input id="${p}-name" name="name" autocomplete="name" autocapitalize="words" enterkeyhint="next" required aria-describedby="${p}-name-error"><p class="field__error" id="${p}-name-error" data-field-error="name" hidden></p></div>
+    <div class="field"><label for="${p}-tel">Telefon</label><input id="${p}-tel" name="telefon" type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next" placeholder="+43 …" required aria-describedby="${p}-tel-error"><p class="field__error" id="${p}-tel-error" data-field-error="telefon" hidden></p></div>
+    <details class="booking__more">
+      <summary>${icons.plus}<span>E-Mail oder Nachricht hinzufügen <span class="field__opt">optional</span></span></summary>
+      <div class="field"><label for="${p}-mail">E-Mail <span class="field__opt">optional</span></label><input id="${p}-mail" name="email" type="email" inputmode="email" autocomplete="email" enterkeyhint="done" aria-describedby="${p}-mail-error"><p class="field__error" id="${p}-mail-error" data-field-error="email" hidden></p></div>
+      <div class="field"><label for="${p}-msg">Kurz zu Ihren Beschwerden</label><textarea id="${p}-msg" name="nachricht" rows="3" placeholder="Zum Beispiel: Knieschmerzen rechts seit drei Wochen, vor allem beim Stiegensteigen."></textarea></div>
+    </details>
+    <label class="consent"><input type="checkbox" name="consent" required aria-describedby="${p}-consent-error"><span>Meine Angaben dürfen zur Terminvereinbarung verwendet werden (<a href="/datenschutz/">Datenschutz</a>).</span></label>
     <p class="field__error" id="${p}-consent-error" data-field-error="consent" hidden></p>
     <p class="booking__error" data-bk-error role="alert" aria-atomic="true"></p>
-    <button type="submit" class="btn btn--dark btn--block">Anfrage senden</button>
-    <p class="booking__note">Bitte keine Befunde mitschicken – die besprechen wir im Termin.</p>
+    <div class="booking__actions"><button type="submit" class="btn btn--dark btn--block">Anfrage senden</button></div>
   </fieldset>
 
-  <div class="booking__step booking__done" data-bk-step="5">
+  <div class="booking__step booking__done" data-bk-step="4">
     <span class="booking__done-icon">${icons.check}</span>
     <p class="booking__q" tabindex="-1">Danke<span data-bk-name></span>.</p>
     <p class="booking__text">Ihre Anfrage ist in Ihrem E-Mail-Programm vorbereitet. Schicken Sie sie ab – ich melde mich so bald wie möglich mit einem Terminvorschlag.</p>

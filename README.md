@@ -122,6 +122,8 @@ Two possible directions to discuss with Thomas:
 1. **Patient books an available slot:** an appointment service or practice calendar exposes suitable slots, reserves the selection, and confirms it. Decide appointment types, durations, buffers, and which calendar is authoritative.
 2. **Practice proposes a slot:** a private request inbox lets Thomas or reception review a request and propose a time. The patient accepts or asks for an alternative; a proposal only becomes a confirmed appointment after acceptance.
 
+The request form has three steps (reason → region and preferred time → name and phone). Each fits a phone screen and the step button stays pinned at the bottom. Step 2 is where a real slot picker (calendar or list) would replace the preferred-time chips.
+
 Before implementation, decide who handles requests, how patients receive proposals, and what existing practice software can support. No backend, calendar integration, inbox, patient database, or outbound messaging has been added.
 
 ## Content references for the audit changes
