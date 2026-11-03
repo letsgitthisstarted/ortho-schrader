@@ -584,12 +584,10 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 /* A fine dial: the navy arc and ticks follow the four steps, a frosted plate carries the drawing. */
 .story__dial { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: none; }
 .story__track { stroke: rgba(22, 41, 61, .12); stroke-width: 1; }
-.story__progress { stroke: var(--navy); stroke-width: 1.6; stroke-linecap: round; }
+.story__progress { stroke: var(--navy); stroke-width: 1.6; stroke-linecap: round; transition: stroke-dasharray 1.2s cubic-bezier(.65, 0, .35, 1); }
 .story__dash { stroke: rgba(22, 41, 61, .2); stroke-width: 1; stroke-dasharray: 1 6; transform-origin: 100px 100px; animation: dial-spin 90s linear infinite; }
 .story__tick { fill: #eef1ee; stroke: rgba(22, 41, 61, .3); stroke-width: 1; transition: fill .35s var(--ease), stroke .35s var(--ease); }
-.story__tick { transform-box: fill-box; transform-origin: center; transition: fill .35s var(--ease), stroke .35s var(--ease), transform .45s var(--ease-out); }
-.story__tick.is-done { fill: var(--navy); stroke: var(--navy); }
-.story__tick.is-active { fill: #fff; stroke: var(--navy); stroke-width: 2; transform: scale(1.35); }
+.story__tick.is-active { fill: var(--navy); stroke: var(--navy); transition-delay: .55s; }
 @keyframes dial-spin { to { transform: rotate(360deg); } }
 .story__glass {
   position: absolute; inset: 22%; border-radius: 30%;
@@ -599,36 +597,43 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
 .story__art {
-  grid-area: 1 / 1; position: relative; width: 52%; display: grid; justify-items: center; gap: 5%; color: var(--navy);
+  grid-area: 1 / 1; position: relative; width: 40%; color: var(--navy);
   opacity: 0; transform: scale(.85) rotate(-6deg);
   transition: opacity 0.39s var(--ease), transform 0.65s var(--ease-out);
 }
 .story__art.is-active { opacity: 1; transform: none; }
-.story__pic { display: grid; width: 74%; }
-.story__pic .art { width: 100%; height: auto; }
-.story__caption { display: grid; justify-items: center; padding: 6px 14px; border-radius: 99px; background: rgba(255, 255, 255, .75); box-shadow: 0 1px 0 #fff inset, 0 6px 16px -10px rgba(22, 41, 61, .45); font-size: clamp(.76rem, 1.5vh, .9rem); line-height: 1.2; color: var(--ink); white-space: nowrap; }
-/* Behandeln: the options take turns – each slot is 1/n of the loop, with a short crossfade. */
-.story__cycle { display: grid; }
-.story__alt { grid-area: 1 / 1; display: grid; justify-items: center; }
-.motion .story__alt { opacity: 0; }
-.motion .story__alt:first-child { opacity: 1; }
-.motion .is-active > .story__pic .story__alt, .motion .is-active > .story__caption .story__alt, .motion .story__mini .story__alt {
-  animation: story-cycle calc(var(--n) * 2.2s) var(--ease) calc(var(--i) * 2.2s - .3s) infinite both;
-}
-@keyframes story-cycle {
-  0% { opacity: 0; transform: translateY(6px) scale(.96); }
-  5%, 17% { opacity: 1; transform: none; }
-  22%, 100% { opacity: 0; transform: translateY(-6px) scale(.96); }
-}
-.story__mini { display: none; }
-html:not(.motion) .story__alt:not(:first-child) { display: none; }
-
-/* Step index: four segments that fill while you scroll through each step. */
-.story__index { display: grid; grid-template-columns: repeat(var(--steps), minmax(0, 1fr)); gap: 12px; width: min(100%, 560px); justify-self: start; }
-.story__index li { display: grid; gap: 10px; font-size: .9rem; color: rgba(20, 32, 46, .4); transition: color .3s var(--ease); }
+.story__glass { transition: transform .8s var(--ease-out); }
+.story__index { display: grid; gap: 6px; justify-self: start; }
+.story__index li { position: relative; padding-left: 16px; font-size: .95rem; color: rgba(20, 32, 46, .38); transition: color 0.26s; }
+.story__index li::before { content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 2px; border-radius: 2px; background: currentColor; opacity: .5; }
 .story__index li.is-active { color: var(--ink); }
-.story__bar { position: relative; height: 2px; border-radius: 2px; overflow: hidden; background: rgba(22, 41, 61, .14); }
-.story__bar span { position: absolute; inset: 0; background: var(--navy); transform-origin: left; transform: scaleX(var(--f, 0)); }
+.story__index li.is-active::before { opacity: 1; }
+
+/* Behandeln: the plate steps back and five treatment options float out onto an orbit around it.
+   Layers: .story__orbit turns slowly, .story__sat places one option on the circle,
+   .story__sat-in and .story__bubble undo both rotations so the drawings stay upright. */
+.story__visual.is-orbit .story__glass { transform: scale(.84); }
+.story__visual.is-orbit .story__art.is-active { transform: scale(.8); }
+.story__orbit { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.motion .story__orbit { animation: orbit-spin 80s linear infinite; }
+.story__sat {
+  position: absolute; left: 50%; top: 50%; width: 16%; aspect-ratio: 1; margin: -8%;
+  opacity: 0; transform: rotate(var(--a)) translateY(0) scale(.4);
+  transition: opacity .45s var(--ease) calc(var(--k) * 70ms), transform .9s var(--ease-out) calc(var(--k) * 70ms);
+}
+.is-orbit .story__sat { opacity: 1; transform: rotate(var(--a)) translateY(-238%) scale(1); }
+.story__sat-in { display: block; width: 100%; height: 100%; transform: rotate(calc(-1 * var(--a))); }
+.story__bubble {
+  display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; color: var(--navy);
+  background: linear-gradient(160deg, #fff, rgba(255, 255, 255, .7));
+  border: 1px solid #fff; box-shadow: 0 12px 24px -14px rgba(22, 41, 61, .55);
+}
+.motion .story__bubble { animation: orbit-spin 80s linear infinite reverse; }
+.story__bubble .art { width: 70%; height: auto; }
+.motion .is-orbit .story__bubble .art { animation: sat-float 4.2s ease-in-out calc(var(--k) * -.84s) infinite; }
+@keyframes orbit-spin { to { transform: rotate(360deg); } }
+@keyframes sat-float { 50% { transform: translateY(-6%); } }
+.story__opts, .story__mini { display: none; }
 
 /* ───────────────────────────── diagnoses reel */
 
@@ -1373,8 +1378,11 @@ a.contact-card--dark:hover { background: var(--ink); }
   .story__text > p { grid-column: 1; }
   .story__mini { display: grid; grid-column: 2; grid-row: 1 / span 2; align-self: start; place-items: center; width: 72px; height: 72px; border-radius: 22px; background: linear-gradient(160deg, rgba(255, 255, 255, .85), rgba(255, 255, 255, .4)); border: 1px solid #fff; box-shadow: 0 14px 28px -18px rgba(22, 41, 61, .45); color: var(--navy); }
   .story__mini .art { width: 46px; height: 46px; }
-  .story__mini .story__cycle { width: 46px; }
   .story__text > .story__body { grid-column: 1 / -1; }
+  .story__opts { display: flex; flex-wrap: wrap; gap: 8px; grid-column: 1 / -1; margin-top: 16px; }
+  .story__opts li { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px 5px 6px; border-radius: 99px; background: rgba(255, 255, 255, .7); border: 1px solid #fff; font-size: .86rem; color: var(--ink); }
+  .story__opts span { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #fff; color: var(--navy); }
+  .story__opts .art { width: 20px; height: 20px; }
   .story__title { font-size: 2.2rem; }
 
   .diagnoses__reel { height: 380px; }

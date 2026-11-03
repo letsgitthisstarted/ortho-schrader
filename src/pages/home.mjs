@@ -3,19 +3,15 @@ import { layout, physicianSchema } from '../layout.mjs';
 import { site, homeFaq } from '../data/site.mjs';
 import { twoTone, sectionHead, treatmentTile, pillTile, bodyMap, faqSection, ctaPanel, photo } from '../components.mjs';
 
-// [title, text, art, caption] – Behandeln lists several [art, caption] pairs that take turns on the plate.
 const journey = [
-  ['Zuhören', 'Ein ausführliches Erstgespräch: Wo tut es weh, seit wann, wobei? Ihre Geschichte liefert die wichtigsten Hinweise – dafür nehme ich mir Zeit.', 'speech', 'Ausführliches Erstgespräch'],
-  ['Untersuchen', 'Gründliche Untersuchung und Ultraschall direkt in der Ordination. Den Befund sehen Sie gemeinsam mit mir am Bildschirm.', 'probe', 'Ultraschall in der Ordination'],
-  ['Behandeln', 'Ein Plan, der zu Ihnen passt: ohne Operation, wo es möglich ist. Mit Operation, wenn es der bessere Weg ist.', [['waves', 'Stoßwelle'], ['target', 'Infiltration'], ['droplet', 'Hyaluronsäure'], ['tube', 'Eigenblut (PRP)'], ['knee', 'Gelenkersatz']]],
-  ['Begleiten', 'Kontrollen, Nachsorge und Reha, bis Sie Ihr Ziel erreicht haben. Physiotherapie und Training finden Sie im selben Haus.', 'route', 'Physiotherapie im selben Haus'],
+  ['Zuhören', 'Ein ausführliches Erstgespräch: Wo tut es weh, seit wann, wobei? Ihre Geschichte liefert die wichtigsten Hinweise – dafür nehme ich mir Zeit.', 'speech'],
+  ['Untersuchen', 'Gründliche Untersuchung und Ultraschall direkt in der Ordination. Den Befund sehen Sie gemeinsam mit mir am Bildschirm.', 'probe'],
+  ['Behandeln', 'Ein Plan, der zu Ihnen passt: ohne Operation, wo es möglich ist. Mit Operation, wenn es der bessere Weg ist.', 'joint'],
+  ['Begleiten', 'Kontrollen, Nachsorge und Reha, bis Sie Ihr Ziel erreicht haben. Physiotherapie und Training finden Sie im selben Haus.', 'route'],
 ];
-const stepArt = ([, , a, caption]) => Array.isArray(a)
-  ? html`<span class="story__cycle" style="--n:${a.length}">${a.map(([name], i) => html`<span class="story__alt" style="--i:${i}">${art(name)}</span>`)}</span>`
-  : art(a);
-const stepCaption = ([, , a, caption]) => Array.isArray(a)
-  ? html`<span class="story__cycle" style="--n:${a.length}">${a.map(([, label], i) => html`<span class="story__alt" style="--i:${i}">${label}</span>`)}</span>`
-  : caption;
+// The options that orbit the plate during "Behandeln" – from conservative to surgical, clockwise from the top.
+const treatStep = 2;
+const treatOptions = [['waves', 'Stoßwelle'], ['target', 'Infiltration'], ['droplet', 'Hyaluronsäure'], ['tube', 'Eigenblut (PRP)'], ['knee', 'Gelenkersatz']];
 
 export function home() {
   const body = html`
@@ -75,29 +71,30 @@ ${bodyMap()}
       </div>
       <div class="story__stage">
         <div class="story__texts">
-          ${journey.map((step, i) => html`<div class="story__text${i === 0 ? ' is-active' : ''}" data-story-text>
-            <span class="story__mini" aria-hidden="true">${stepArt(step)}</span>
+          ${journey.map(([t, x, a], i) => html`<div class="story__text${i === 0 ? ' is-active' : ''}" data-story-text>
+            <span class="story__mini" aria-hidden="true">${art(a)}</span>
             <p class="story__num">Schritt ${i + 1} von ${journey.length}</p>
-            <p class="story__title">${step[0]}</p>
-            <p class="story__body">${step[1]}</p>
+            <p class="story__title">${t}</p>
+            <p class="story__body">${x}</p>
+            ${i === treatStep ? html`<ul class="story__opts">${treatOptions.map(([o, label]) => html`<li><span aria-hidden="true">${art(o)}</span>${label}</li>`)}</ul>` : ''}
           </div>`)}
         </div>
         <div class="story__visual" aria-hidden="true">
           <svg class="story__dial" viewBox="0 0 200 200">
             <circle class="story__track" cx="100" cy="100" r="96"/>
-            <circle class="story__progress" cx="100" cy="100" r="96" pathLength="${journey.length}" transform="rotate(-90 100 100)" style="stroke-dasharray:.12 ${journey.length}" data-story-progress/>
+            <circle class="story__progress" cx="100" cy="100" r="96" pathLength="${journey.length}" transform="rotate(-90 100 100)" style="stroke-dasharray:1 ${journey.length}" data-story-progress/>
             <circle class="story__dash" cx="100" cy="100" r="82"/>
             ${journey.map((_, i) => { const a = ((i + 1) / journey.length * 360 - 90) * Math.PI / 180; return html`<circle class="story__tick${i === 0 ? ' is-active' : ''}" cx="${(100 + 96 * Math.cos(a)).toFixed(1)}" cy="${(100 + 96 * Math.sin(a)).toFixed(1)}" r="4.5" data-story-tick/>`; })}
           </svg>
           <div class="story__glass"></div>
-          ${journey.map((step, i) => html`<div class="story__art${i === 0 ? ' is-active' : ''}" data-story-art>
-            <span class="story__pic">${stepArt(step)}</span>
-            <span class="story__caption">${stepCaption(step)}</span>
-          </div>`)}
+          ${journey.map(([, , a], i) => html`<div class="story__art${i === 0 ? ' is-active' : ''}" data-story-art>${art(a)}</div>`)}
+          <div class="story__orbit" data-story-orbit="${treatStep}">
+            ${treatOptions.map(([o], i) => html`<span class="story__sat" style="--a:${i * 72}deg;--k:${i}"><span class="story__sat-in"><span class="story__bubble">${art(o)}</span></span></span>`)}
+          </div>
         </div>
       </div>
       <ol class="story__index" aria-hidden="true">
-        ${journey.map(([t], i) => html`<li class="${i === 0 ? 'is-active' : ''}" data-story-dot><span class="story__bar"><span></span></span>${t}</li>`)}
+        ${journey.map(([t], i) => html`<li class="${i === 0 ? 'is-active' : ''}" data-story-dot>${t}</li>`)}
       </ol>
     </div>
   </div>

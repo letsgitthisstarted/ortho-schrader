@@ -284,33 +284,22 @@
   const storyDots = story ? $$('[data-story-dot]', story) : [];
   const storyTicks = story ? $$('[data-story-tick]', story) : [];
   const storyProgress = story && $('[data-story-progress]', story);
-  const storyBars = storyDots.map((d) => $('.story__bar span', d));
-  const n = storyTexts.length;
-  // The arc and the index bars follow the scroll position continuously (eased), the step text switches at each quarter.
-  let storyIdx = 0, stTarget = 0, stNow = 0, stRaf = 0;
-  const stPaint = () => {
-    storyProgress.style.strokeDasharray = `${stNow} ${n}`;
-    storyBars.forEach((b, i) => b && b.style.setProperty('--f', clamp(stNow - i, 0, 1).toFixed(4)));
-  };
-  const stStep = () => {
-    stNow += (stTarget - stNow) * (reduced ? 1 : 0.16);
-    if (Math.abs(stTarget - stNow) < 0.0005) stNow = stTarget;
-    stPaint();
-    stRaf = stNow === stTarget ? 0 : requestAnimationFrame(stStep);
-  };
+  const storyVisual = story && $('.story__visual', story);
+  const orbitEl = story && $('[data-story-orbit]', story);
+  const orbitStep = orbitEl ? Number(orbitEl.dataset.storyOrbit) : -1;
+  let storyIdx = 0;
   const onScrollStory = () => {
     if (!story || innerWidth <= 760) return;
     const r = story.getBoundingClientRect();
     const total = story.offsetHeight - innerHeight;
     const p = clamp(-r.top / total, 0, 0.9999);
-    // Keep a sliver of arc visible at the very start so the dial never looks empty.
-    stTarget = Math.max(0.12, p * n);
-    if (!stRaf) stRaf = requestAnimationFrame(stStep);
-    const idx = Math.floor(p * n);
+    const idx = Math.floor(p * storyTexts.length);
     if (idx === storyIdx) return;
     storyIdx = idx;
     [storyTexts, storyArts, storyDots].forEach((list) => list.forEach((el, i) => el.classList.toggle('is-active', i === idx)));
-    storyTicks.forEach((el, i) => { el.classList.toggle('is-active', i === idx); el.classList.toggle('is-done', i < idx); });
+    storyTicks.forEach((el, i) => el.classList.toggle('is-active', i <= idx));
+    storyProgress.style.strokeDasharray = `${idx + 1} ${storyTexts.length}`;
+    storyVisual?.classList.toggle('is-orbit', idx === orbitStep);
   };
 
   /* ───────────── count-up numbers (e.g. "bis 80 %") – the ring next to them fills along */
