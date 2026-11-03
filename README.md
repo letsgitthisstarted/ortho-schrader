@@ -103,6 +103,7 @@ Still needed: Thomas with a patient / at the ultrasound, the treatment room at h
 - [ ] Impressum: exact specialist title (as registered with the Ärztekammer) + issuing country, UID number (marked yellow on the page).
 - [ ] Datenschutz: confirm the actual hosting provider, processing/retention details and health-data handling with legal review (still visibly marked as a draft).
 - [ ] Real photos (see above). The remaining portrait/personal-image slots are still placeholders; do not substitute invented photos of the doctor or patients.
+- [ ] **"Medizinisch geprüft von" is switched on for the preview only** (`site.content.medicallyReviewed` in `src/data/site.mjs`). Thomas has not reviewed the texts yet: either he reviews them before launch (then set `reviewed` to that date) or switch it back to `false`.
 - [ ] Thomas to approve medical wording before public launch, including the cost notes per treatment (e.g. "Hyaluronsäure wird von gesetzlichen Krankenkassen in der Regel nicht übernommen").
 - [ ] Decide with Thomas whether any emergency hint (e.g. 144) is wanted. Urgent-care boxes on every complaint page were tried and removed (branch `codex-audit`).
 - [ ] Confirm the actual WAHonline process, prices, OUCC contact/location, and procedures listed below. No prices or practice-specific electronic submission promises have been invented.

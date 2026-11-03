@@ -52,7 +52,7 @@ export const site = {
   content: {
     updated: '2026-11-03',
     reviewed: '2026-11-03',
-    medicallyReviewed: false,
+    medicallyReviewed: true, // PREVIEW ONLY: switched on to show Thomas the final look – he has not reviewed the texts yet. Set back to false if the site goes live before his review.
   },
 
   // Independent pages where patients can check who he is. Add the Ärzteliste/DocFinder entries once known.
