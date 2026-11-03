@@ -584,10 +584,12 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 /* A fine dial: the navy arc and ticks follow the four steps, a frosted plate carries the drawing. */
 .story__dial { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: none; }
 .story__track { stroke: rgba(22, 41, 61, .12); stroke-width: 1; }
-.story__progress { stroke: var(--navy); stroke-width: 1.6; stroke-linecap: round; transition: stroke-dasharray .7s var(--ease-out); }
+.story__progress { stroke: var(--navy); stroke-width: 1.6; stroke-linecap: round; }
 .story__dash { stroke: rgba(22, 41, 61, .2); stroke-width: 1; stroke-dasharray: 1 6; transform-origin: 100px 100px; animation: dial-spin 90s linear infinite; }
 .story__tick { fill: #eef1ee; stroke: rgba(22, 41, 61, .3); stroke-width: 1; transition: fill .35s var(--ease), stroke .35s var(--ease); }
-.story__tick.is-active { fill: var(--navy); stroke: var(--navy); }
+.story__tick { transform-box: fill-box; transform-origin: center; transition: fill .35s var(--ease), stroke .35s var(--ease), transform .45s var(--ease-out); }
+.story__tick.is-done { fill: var(--navy); stroke: var(--navy); }
+.story__tick.is-active { fill: #fff; stroke: var(--navy); stroke-width: 2; transform: scale(1.35); }
 @keyframes dial-spin { to { transform: rotate(360deg); } }
 .story__glass {
   position: absolute; inset: 22%; border-radius: 30%;
@@ -597,16 +599,36 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
 .story__art {
-  grid-area: 1 / 1; position: relative; width: 40%; color: var(--navy);
+  grid-area: 1 / 1; position: relative; width: 52%; display: grid; justify-items: center; gap: 5%; color: var(--navy);
   opacity: 0; transform: scale(.85) rotate(-6deg);
   transition: opacity 0.39s var(--ease), transform 0.65s var(--ease-out);
 }
 .story__art.is-active { opacity: 1; transform: none; }
-.story__index { display: grid; gap: 6px; justify-self: start; }
-.story__index li { position: relative; padding-left: 16px; font-size: .95rem; color: rgba(20, 32, 46, .38); transition: color 0.26s; }
-.story__index li::before { content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 2px; border-radius: 2px; background: currentColor; opacity: .5; }
+.story__pic { display: grid; width: 74%; }
+.story__pic .art { width: 100%; height: auto; }
+.story__caption { display: grid; justify-items: center; padding: 6px 14px; border-radius: 99px; background: rgba(255, 255, 255, .75); box-shadow: 0 1px 0 #fff inset, 0 6px 16px -10px rgba(22, 41, 61, .45); font-size: clamp(.76rem, 1.5vh, .9rem); line-height: 1.2; color: var(--ink); white-space: nowrap; }
+/* Behandeln: the options take turns – each slot is 1/n of the loop, with a short crossfade. */
+.story__cycle { display: grid; }
+.story__alt { grid-area: 1 / 1; display: grid; justify-items: center; }
+.motion .story__alt { opacity: 0; }
+.motion .story__alt:first-child { opacity: 1; }
+.motion .is-active > .story__pic .story__alt, .motion .is-active > .story__caption .story__alt, .motion .story__mini .story__alt {
+  animation: story-cycle calc(var(--n) * 2.2s) var(--ease) calc(var(--i) * 2.2s - .3s) infinite both;
+}
+@keyframes story-cycle {
+  0% { opacity: 0; transform: translateY(6px) scale(.96); }
+  5%, 17% { opacity: 1; transform: none; }
+  22%, 100% { opacity: 0; transform: translateY(-6px) scale(.96); }
+}
+.story__mini { display: none; }
+html:not(.motion) .story__alt:not(:first-child) { display: none; }
+
+/* Step index: four segments that fill while you scroll through each step. */
+.story__index { display: grid; grid-template-columns: repeat(var(--steps), minmax(0, 1fr)); gap: 12px; width: min(100%, 560px); justify-self: start; }
+.story__index li { display: grid; gap: 10px; font-size: .9rem; color: rgba(20, 32, 46, .4); transition: color .3s var(--ease); }
 .story__index li.is-active { color: var(--ink); }
-.story__index li.is-active::before { opacity: 1; }
+.story__bar { position: relative; height: 2px; border-radius: 2px; overflow: hidden; background: rgba(22, 41, 61, .14); }
+.story__bar span { position: absolute; inset: 0; background: var(--navy); transform-origin: left; transform: scaleX(var(--f, 0)); }
 
 /* ───────────────────────────── diagnoses reel */
 
@@ -738,6 +760,18 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 .wahlarzt-home__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-cards); }
 .fact-card { min-width: 0; overflow-wrap: anywhere; padding: var(--pad-card); border-radius: var(--r-lg); background: var(--sand); color: var(--ink-2); display: grid; gap: 4px; align-content: start; }
 .fact-card__big { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(1.9rem, 3vw, 2.6rem); line-height: 1.05; color: var(--ink); letter-spacing: -0.02em; }
+.fact-card--home { gap: 6px; padding: clamp(22px, 2.4vw, 32px); transition: transform .45s var(--ease-out), box-shadow .45s var(--ease); }
+.fact-card--home .fact-card__big { font-size: clamp(2.2rem, 3.6vw, 3.2rem); margin-top: clamp(18px, 2.4vw, 32px); }
+.fact-card__icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 99px; background: #fff; color: var(--navy); box-shadow: 0 1px 0 #fff inset, 0 8px 18px -12px rgba(22, 41, 61, .5); transition: background-color .3s var(--ease), color .3s var(--ease); }
+.fact-card__icon .ico { width: 20px; height: 20px; }
+.fact-card__ring { padding: 8px; fill: none; stroke-width: 5; transform: rotate(-90deg); overflow: visible; }
+.fact-card__ring circle:first-child { stroke: rgba(22, 41, 61, .12); }
+.fact-card__ring circle + circle { stroke: var(--navy); stroke-linecap: round; stroke-dasharray: var(--ring, 80) 100; }
+.fact-card__num { font-variant-numeric: tabular-nums; }
+@media (hover: hover) {
+  .fact-card--home:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -28px rgba(0, 0, 0, .6); }
+  .fact-card--home:hover .fact-card__icon:not(.fact-card__ring) { background: var(--navy); color: #fff; }
+}
 .fact-card--glass { background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .12); color: #fff; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .fact-card--glass dt { font-size: .82rem; color: var(--sky); }
 .fact-card--glass dd { font-size: 1.05rem; color: #fff; line-height: 1.35; }
@@ -1335,6 +1369,12 @@ a.contact-card--dark:hover { background: var(--ink); }
   .story__texts { gap: 28px; }
   .story__text { grid-area: auto; opacity: 1; transform: none; filter: none; padding-top: 24px; border-top: 1px solid rgba(20, 32, 46, .12); }
   .story__visual, .story__index { display: none; }
+  .story__text { display: grid; grid-template-columns: 1fr 72px; column-gap: 16px; }
+  .story__text > p { grid-column: 1; }
+  .story__mini { display: grid; grid-column: 2; grid-row: 1 / span 2; align-self: start; place-items: center; width: 72px; height: 72px; border-radius: 22px; background: linear-gradient(160deg, rgba(255, 255, 255, .85), rgba(255, 255, 255, .4)); border: 1px solid #fff; box-shadow: 0 14px 28px -18px rgba(22, 41, 61, .45); color: var(--navy); }
+  .story__mini .art { width: 46px; height: 46px; }
+  .story__mini .story__cycle { width: 46px; }
+  .story__text > .story__body { grid-column: 1 / -1; }
   .story__title { font-size: 2.2rem; }
 
   .diagnoses__reel { height: 380px; }
