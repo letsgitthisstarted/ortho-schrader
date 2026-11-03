@@ -14,6 +14,8 @@ import { treatmentPage, treatmentsIndex } from './src/pages/treatments.mjs';
 import { conditionPage, conditionsIndex } from './src/pages/conditions.mjs';
 import { about, wahlarzt, kontakt, impressum, datenschutz, notFound } from './src/pages/misc.mjs';
 import { fonts } from './src/pages/fonts.mjs';
+import { guides } from './src/data/guides.mjs';
+import { guidePage, operationPage } from './src/pages/guides.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const out = join(root, 'dist');
@@ -25,6 +27,8 @@ const pages = [
   ...treatments.map((t) => [`/behandlungen/${t.slug}/`, treatmentPage(t)]),
   ['/beschwerden/', conditionsIndex()],
   ...conditions.map((c) => [`/beschwerden/${c.slug}/`, conditionPage(c)]),
+  ...guides.map((g) => [`/beschwerden/${g.slug}/`, guidePage(g)]),
+  ['/operation/', operationPage()],
   ['/ueber-mich/', about()],
   ['/wahlarzt-kosten/', wahlarzt()],
   ['/kontakt/', kontakt()],

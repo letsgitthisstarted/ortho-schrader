@@ -215,3 +215,41 @@ export function photo({ label, ratio = '4/5', className = '', src }) {
     <figcaption class="photo__label">${icons.sparkle}<span>Foto folgt: ${label}</span></figcaption>
   </figure>`;
 }
+
+// "Stand: 3. November 2026" – dates are written out the way patients read them.
+const longDate = (iso) => new Date(`${iso}T12:00:00`).toLocaleDateString('de-AT', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// Closing block of every medical page: the guidelines it rests on and who answers for it.
+// "Medizinisch geprüft" only appears once site.content.medicallyReviewed is set.
+export function pageSources(list = []) {
+  const c = site.content;
+  return html`<aside class="sources" aria-label="Quellen und Verantwortung">
+  ${list.length ? html`<div class="sources__list">
+    <p class="sources__label">Quellen &amp; weiterführende Informationen</p>
+    <ul>${list.map((s) => html`<li><a href="${s.url}" target="_blank" rel="noopener"><span class="sources__title">${s.title}</span><span class="sources__meta">${s.meta}</span>${icons.arrowUpRight}</a></li>`)}</ul>
+  </div>` : ''}
+  <div class="byline">
+    <img class="byline__photo" src="/assets/img/portrait-thomas-schrader.jpg" alt="" width="56" height="56" loading="lazy">
+    <div>
+      <p class="byline__who">${c.medicallyReviewed ? 'Medizinisch geprüft von' : 'Inhaltlich verantwortlich:'} <a href="/ueber-mich/">${site.name}</a></p>
+      <p class="byline__meta">${site.role}</p>
+      <p class="byline__meta">${c.medicallyReviewed ? `Zuletzt geprüft am ${longDate(c.reviewed)}` : `Stand: ${longDate(c.updated)}`}</p>
+    </div>
+  </div>
+</aside>`;
+}
+
+// What to bring to the first appointment – shown on the costs and contact pages.
+export const firstVisit = [
+  ['E-Card', 'oder Ihre Versicherungskarte – für die Rückerstattung.'],
+  ['Befunde und Arztbriefe', 'zu Ihren Beschwerden, auch ältere.'],
+  ['Röntgen-, MRT- oder CT-Bilder', 'auf CD oder als Zugangslink, nicht nur den schriftlichen Befund.'],
+  ['Ihre Medikamente', 'als Liste, mit bekannten Allergien.'],
+  ['Bequeme Kleidung', '– damit sich das betroffene Gelenk gut untersuchen lässt, fürs Knie etwa eine kurze Hose.'],
+];
+
+export function firstVisitList({ compact = false } = {}) {
+  return html`<ul class="bring${compact ? ' bring--compact' : ''}">
+    ${firstVisit.map(([t, d]) => html`<li data-reveal><span class="bring__icon">${icons.check}</span><span><strong>${t}</strong> ${d}</span></li>`)}
+  </ul>`;
+}

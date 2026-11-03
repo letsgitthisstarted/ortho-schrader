@@ -1,16 +1,72 @@
 // Page shell: <head>, header with mega menus, footer, floating CTA and the booking dialog.
 
 import { html, esc, icons, miniFigure, art } from './lib.mjs';
-import { site, regions, groups } from './data/site.mjs';
+import { site, regions, groups, credentials } from './data/site.mjs';
 import { treatments } from './data/treatments.mjs';
 import { conditions, conditionBySlug } from './data/conditions.mjs';
+import { guides } from './data/guides.mjs';
 
 const regionById = Object.fromEntries(regions.map((r) => [r.id, r]));
+
+const personId = `${site.domain}/#person`;
+const praxisId = `${site.domain}/#praxis`;
+
+// Short reference to the doctor, used as author/reviewer of every medical page.
+export const personRef = { '@type': 'Person', '@id': personId, name: site.name, jobTitle: site.role, url: `${site.domain}/ueber-mich/` };
+
+// The doctor as a person: training, credentials and memberships, so the pages can point to one identity.
+export const personSchema = () => ({
+  '@context': 'https://schema.org',
+  ...personRef,
+  description: `${site.name} ist ${site.role} und Wahlarzt im ${site.ordination.name}. Er operiert als Belegarzt an der ${site.clinic.name}.`,
+  image: `${site.domain}/assets/img/portrait-thomas-schrader.jpg`,
+  worksFor: { '@id': praxisId },
+  affiliation: [
+    { '@type': 'Hospital', name: site.clinic.name, url: site.clinic.url },
+    { '@type': 'MedicalOrganization', name: site.bavaria.name, url: site.bavaria.url },
+  ],
+  alumniOf: credentials.education.map((name) => ({ '@type': 'CollegeOrUniversity', name })),
+  hasCredential: [site.role, ...credentials.diplomas].map((name) => ({ '@type': 'EducationalOccupationalCredential', name })),
+  memberOf: credentials.societies.map(([name, url]) => ({ '@type': 'Organization', name, url })),
+  knowsLanguage: ['de', 'en'],
+  sameAs: site.profiles.map((p) => p.url),
+});
+
+export const websiteSchema = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${site.domain}/#website`,
+  url: `${site.domain}/`,
+  name: `${site.name} – ${site.roleShort}`,
+  inLanguage: site.lang,
+  publisher: { '@id': praxisId },
+});
+
+// Medical page wrapper: what the page is about, who answers for it, when it was last updated and its sources.
+// reviewedBy/lastReviewed only once the texts are approved (site.content.medicallyReviewed).
+export const medicalPageSchema = ({ path, name, description, about, sources = [] }) => ({
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  '@id': `${site.domain}${path}#webpage`,
+  url: `${site.domain}${path}`,
+  name,
+  description,
+  inLanguage: site.lang,
+  isPartOf: { '@id': `${site.domain}/#website` },
+  about,
+  author: personRef,
+  dateModified: site.content.updated,
+  ...(site.content.medicallyReviewed ? { reviewedBy: personRef, lastReviewed: site.content.reviewed } : {}),
+  ...(sources.length ? { citation: sources.map((s) => ({ '@type': 'CreativeWork', name: s.title, url: s.url })) } : {}),
+});
 
 export const physicianSchema = () => ({
   '@context': 'https://schema.org',
   '@type': ['Physician', 'MedicalClinic'],
+  '@id': praxisId,
   name: `${site.name} – ${site.roleShort}`,
+  image: `${site.domain}/assets/img/portrait-thomas-schrader.jpg`,
+  employee: { '@id': personId },
   description: 'Wahlarzt-Ordination für Orthopädie und Unfallchirurgie in Salzburg: konservative Therapie, Injektionen, Stoßwelle, Hüft- und Knieprothetik, Arthroskopie, Hand- und Fußchirurgie.',
   url: site.domain + '/',
   telephone: site.phone.replace(/\s/g, ''),
@@ -190,7 +246,7 @@ function footer() {
       </div>
       <div>
         <p class="site-footer__label">Beschwerden</p>
-        <ul>${conditions.map((c) => html`<li><a href="/beschwerden/${c.slug}/">${c.name}</a></li>`)}</ul>
+        <ul>${conditions.map((c) => html`<li><a href="/beschwerden/${c.slug}/">${c.name}</a></li>`)}${guides.map((g) => html`<li><a href="/beschwerden/${g.slug}/">${g.name}</a></li>`)}</ul>
       </div>
       <div>
         <p class="site-footer__label">Behandlungen</p>
@@ -201,6 +257,7 @@ function footer() {
         <ul>
           <li><a href="/ueber-mich/">Über mich</a></li>
           <li><a href="/wahlarzt-kosten/">Wahlarzt &amp; Kosten</a></li>
+          <li><a href="/operation/">Ihre Operation</a></li>
           <li><a href="/kontakt/">Kontakt &amp; Anfahrt</a></li>
           <li><a href="/impressum/">Impressum</a></li>
           <li><a href="/datenschutz/">Datenschutz</a></li>
@@ -274,7 +331,7 @@ export function bookingForm({ inline = false } = {}) {
     <details class="booking__more">
       <summary>${icons.plus}<span>E-Mail oder Nachricht hinzufügen <span class="field__opt">optional</span></span></summary>
       <div class="field"><label for="${p}-mail">E-Mail <span class="field__opt">optional</span></label><input id="${p}-mail" name="email" type="email" inputmode="email" autocomplete="email" enterkeyhint="done" aria-describedby="${p}-mail-error"><p class="field__error" id="${p}-mail-error" data-field-error="email" hidden></p></div>
-      <div class="field"><label for="${p}-msg">Kurz zu Ihren Beschwerden</label><textarea id="${p}-msg" name="nachricht" rows="3" placeholder="Zum Beispiel: Knieschmerzen rechts seit drei Wochen, vor allem beim Stiegensteigen."></textarea></div>
+      <div class="field"><label for="${p}-msg">Kurz zu Ihren Beschwerden</label><textarea id="${p}-msg" name="nachricht" rows="3" placeholder="Zum Beispiel: Knieschmerzen rechts seit drei Wochen, vor allem beim Stiegensteigen." aria-describedby="${p}-msg-hint"></textarea><p class="field__hint" id="${p}-msg-hint">Ein, zwei Sätze genügen. Befunde und Bilder schicken Sie bitte nicht hier mit – bringen Sie sie zum Termin.</p></div>
     </details>
     <label class="consent"><input type="checkbox" name="consent" required aria-describedby="${p}-consent-error"><span>Meine Angaben dürfen zur Terminvereinbarung verwendet werden (<a href="/datenschutz/">Datenschutz</a>).</span></label>
     <p class="field__error" id="${p}-consent-error" data-field-error="consent" hidden></p>

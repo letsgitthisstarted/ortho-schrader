@@ -38,6 +38,8 @@ The preview tells search engines not to index it (`noindex`), so draft content i
 | Page layouts | `src/pages/*.mjs` |
 | Header, footer, appointment request | `src/layout.mjs` |
 | Body figure, icons, illustrations | `src/lib.mjs` |
+| Kniearthrose / Hüftarthrose pages, "Ihre Operation" page | `src/data/guides.mjs`, `src/pages/guides.mjs` |
+| Guidelines cited under each medical page | `src/data/sources.mjs` |
 | Design (colours, type, all components) | `src/assets/css/main.css` |
 | Interactions (body map, booking, filters, menus) | `src/assets/js/main.js` |
 
@@ -52,6 +54,15 @@ The site follows § 53 Ärztegesetz and the ÖÄK-Verordnung „Arzt und Öffent
 - no product or brand names for drugs or medical devices (e.g. say "PRP", not a brand)
 - **no fixed numbers for doses, repetitions or recovery times** – always "individuell", "nach Befund", "besprechen wir gemeinsam"
 - names or photos of patients only with their documented consent (§ 5 Abs. 4)
+
+## Sources, author line and structured data (E-E-A-T)
+
+- Every condition, treatment and guide page ends with "Quellen & weiterführende Informationen" (AWMF guidelines from `src/data/sources.mjs`, each looked up in the AWMF register on 3 November 2026) and an author line with Thomas's photo.
+- Until Thomas has approved the medical texts, the line reads "Inhaltlich verantwortlich: Thomas Schrader … Stand: …". After his approval set `site.content.medicallyReviewed = true` and `site.content.reviewed` to the date in `src/data/site.mjs`: the line then reads "Medizinisch geprüft von …" and the structured data adds `reviewedBy`/`lastReviewed`. Update `updated` whenever texts change.
+- Pages without a matching guideline (e.g. elbow, shockwave, PRP) show no sources – do not add one that does not fit.
+- Structured data: `Person` (training, credentials, memberships, `sameAs` profiles), `Physician`, `WebSite`, `MedicalWebPage` with author and citations on all medical pages, `ProfilePage` on Über mich.
+- Über mich lists independent profiles ("Unabhängig nachprüfbar", `site.profiles`). Add the official Ärzteliste entry and a DocFinder profile there once they are known.
+- Note on the rules: the ÖÄK-Verordnung itself forbids untrue, unscientific and "aufdringliche und/oder marktschreierische" self-promotion, and false claims of medical exclusivity. It does not list superlatives by name – this site avoids them anyway because they cannot be verified.
 
 ## Patient reviews
 
@@ -111,6 +122,9 @@ Facts marked as assumptions in the content – please confirm or correct:
 7. **Stoßwelle** – the page explains radial and focused shockwave. Which device(s) does the practice have?
 8. **"Ausführlich erklärt" topics** – please review the new in-depth texts on all treatment pages (prosthesis types, knee arthroscopy indications, before/after advice).
 9. **Bereitschaftsdienst KVB** – Über mich now says he still covers shifts in the ärztlicher Bereitschaftsdienst of the KV Bayern. Since when? (A year would let it join the Werdegang timeline.)
+10. **"Ihre Operation" page** – please confirm: anaesthesia talk before the operation date, he remains the treating doctor during the clinic stay, follow-up checks at healthlab, costs via Sonderklasse/private insurance and what is possible without it.
+11. **Ärzteliste / DocFinder** – links to his official Ärzteliste entry and a DocFinder profile, if they exist (for "Unabhängig nachprüfbar" on Über mich).
+12. **Kniearthrose / Hüftarthrose pages** – please review, especially the treatment and joint-replacement sections.
 
 
 ## Appointment system — discussion pending

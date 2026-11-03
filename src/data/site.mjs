@@ -45,6 +45,22 @@ export const site = {
     phoneHref: 'tel:+498613534',
     url: 'https://www.oucc.de/oucc-aerzte-team/thomas-schrader/',
   },
+
+  // Who answers for the medical pages, shown under each of them and in the structured data.
+  // Set medicallyReviewed to true (and update reviewed) only after Thomas has read and approved the texts –
+  // only then do the pages say "Medizinisch geprüft" and tell search engines who reviewed them when.
+  content: {
+    updated: '2026-11-03',
+    reviewed: '2026-11-03',
+    medicallyReviewed: false,
+  },
+
+  // Independent pages where patients can check who he is. Add the Ärzteliste/DocFinder entries once known.
+  profiles: [
+    { label: 'Arztprofil der Privatklinik Wehrle-Diakonissen', host: 'privatklinik-wehrle-diakonissen.at', url: 'https://www.privatklinik-wehrle-diakonissen.at/de/arzt/thomas-schrader' },
+    { label: 'Ärzteteam der OUCC Orthopädie Unfallchirurgie', host: 'oucc.de', url: 'https://www.oucc.de/oucc-aerzte-team/thomas-schrader/' },
+    { label: 'Patientenbewertungen auf Jameda', host: 'jameda.de', url: 'https://www.jameda.de/profil/thomas-schrader-2' },
+  ],
 };
 
 // Body regions for the interactive body map, in figure units (the figure is 300 × 640, centre x = 150).
@@ -131,11 +147,18 @@ export const credentials = {
   ],
   memberships: [
     'Deutsche Gesellschaft für Orthopädie und Unfallchirurgie (DGOU)',
-    'Deutsche Gesellschaft für Orthopädie und Orthopädische Chirurgie (DGOC)',
+    'Deutsche Gesellschaft für Orthopädie und Orthopädische Chirurgie (DGOOC)',
     'Deutsche Assoziation für Fuß und Sprunggelenk (DAF)',
     'Arbeitsgemeinschaft der in Bayern tätigen Notärzte',
   ],
   languages: ['Deutsch', 'Englisch'],
+  // Structured data only: where he studied (from the timeline above).
+  education: ['Ludwig-Maximilians-Universität München', 'Universität Wien'],
+  societies: [
+    ['Deutsche Gesellschaft für Orthopädie und Unfallchirurgie', 'https://dgou.de/'],
+    ['Deutsche Gesellschaft für Orthopädie und Orthopädische Chirurgie', 'https://dgooc.de/'],
+    ['Deutsche Assoziation für Fuß und Sprunggelenk', 'https://www.daf-online.de/'],
+  ],
 };
 
 export const homeFaq = [

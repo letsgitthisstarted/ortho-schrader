@@ -1,9 +1,11 @@
 import { html, icons, art, figure } from '../lib.mjs';
-import { layout } from '../layout.mjs';
+import { layout, medicalPageSchema } from '../layout.mjs';
+import { sourcesFor } from '../data/sources.mjs';
+import { guidesFor } from '../data/guides.mjs';
 import { regions } from '../data/site.mjs';
 import { conditions } from '../data/conditions.mjs';
 import { treatmentBySlug } from '../data/treatments.mjs';
-import { twoTone, pageHero, sectionHead, bodyMap, faqSection, ctaPanel, regionPill, artFor, softBreak } from '../components.mjs';
+import { twoTone, pageHero, sectionHead, bodyMap, faqSection, ctaPanel, regionPill, artFor, softBreak, pageSources } from '../components.mjs';
 
 const regionById = Object.fromEntries(regions.map((r) => [r.id, r]));
 
@@ -55,6 +57,11 @@ ${pageHero({ crumbs, title: c.h1, tone: c.h1b, lead: c.lead })}
         <div class="chips">${x.treatments.map((s) => html`<a class="chip chip--outline" href="/behandlungen/${s}/">${treatmentBySlug[s].name}</a>`)}</div>
       </li>`)}
     </ol>
+    ${guidesFor(c.slug).map((g) => html`<a class="guide-link" href="/beschwerden/${g.slug}/" data-reveal>
+      <span class="guide-link__label">Ausführlich erklärt</span>
+      <span class="guide-link__title">${g.name}: Beschwerden, Diagnose und Behandlung</span>
+      <span class="guide-link__go" aria-hidden="true">${icons.arrow}</span>
+    </a>`)}
   </div>
 </section>
 
@@ -77,6 +84,8 @@ ${pageHero({ crumbs, title: c.h1, tone: c.h1b, lead: c.lead })}
 </section>
 ${faqSection(c.faq, { title: 'Häufige Fragen', tone: `zu ${c.name}` })}
 
+<div class="wrap page-sources">${pageSources(sourcesFor[c.slug])}</div>
+
 ${ctaPanel({ title: `${c.name}?`, tone: 'Lassen Sie es abklären, bevor es chronisch wird.' })}
 `;
 
@@ -87,13 +96,13 @@ ${ctaPanel({ title: `${c.name}?`, tone: 'Lassen Sie es abklären, bevor es chron
     body,
     crumbs,
     faq: c.faq,
-    schema: [{
-      '@context': 'https://schema.org',
-      '@type': 'MedicalWebPage',
+    schema: [medicalPageSchema({
+      path: `/beschwerden/${c.slug}/`,
       name: c.seoTitle,
       description: c.description,
       about: c.causes.map((x) => ({ '@type': 'MedicalCondition', name: x.name })),
-    }],
+      sources: sourcesFor[c.slug],
+    })],
     bodyClass: 'page-condition',
   });
 }

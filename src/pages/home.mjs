@@ -1,5 +1,5 @@
 import { html, icons, art } from '../lib.mjs';
-import { layout, physicianSchema } from '../layout.mjs';
+import { layout, physicianSchema, personSchema, websiteSchema } from '../layout.mjs';
 import { site, homeFaq } from '../data/site.mjs';
 import { twoTone, sectionHead, treatmentTile, pillTile, bodyMap, faqSection, ctaPanel, photo } from '../components.mjs';
 
@@ -209,7 +209,7 @@ ${ctaPanel()}
     description: 'Wahlarzt für Orthopädie und Unfallchirurgie in Salzburg: Behandlung ohne und mit Operation, mit Zeit für Sie. Termine ohne Überweisung im healthlab.',
     body,
     faq: homeFaq,
-    schema: [physicianSchema()],
+    schema: [websiteSchema(), physicianSchema(), personSchema()],
     bodyClass: 'page-home',
   });
 }

@@ -1,7 +1,8 @@
 import { html, icons } from '../lib.mjs';
-import { layout, physicianSchema, bookingForm } from '../layout.mjs';
+import { layout, physicianSchema, personSchema, bookingForm } from '../layout.mjs';
 import { site, timeline, credentials } from '../data/site.mjs';
-import { twoTone, pageHero, sectionHead, steps, faqSection, ctaPanel, photo, crumbsNav } from '../components.mjs';
+import { twoTone, pageHero, sectionHead, steps, faqSection, ctaPanel, photo, crumbsNav, firstVisitList } from '../components.mjs';
+import { oegkWahlarzt } from '../data/sources.mjs';
 
 // ───────────────────────────── Über mich
 
@@ -70,6 +71,15 @@ export function about() {
       <div class="cred-card" data-reveal><p class="cred-card__label">${icons.layers} Mitgliedschaften</p><ul>${credentials.memberships.map((d) => html`<li>${d}</li>`)}</ul></div>
       <div class="cred-card" data-reveal><p class="cred-card__label">${icons.user} Sprachen</p><ul>${credentials.languages.map((d) => html`<li>${d}</li>`)}</ul></div>
     </div>
+    <div class="proof" data-reveal>
+      <div class="proof__head">
+        <p class="proof__title">Unabhängig nachprüfbar</p>
+        <p>Diese Seiten werden nicht von mir betrieben. Dort finden Sie mein Profil – und auf Jameda die Bewertungen von Patient:innen.</p>
+      </div>
+      <ul class="proof__list">
+        ${site.profiles.map((p) => html`<li><a class="proof__link" href="${p.url}" target="_blank" rel="noopener"><span><span class="proof__label">${p.label}</span><span class="proof__host">${p.host}</span></span>${icons.arrowUpRight}</a></li>`)}
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -92,7 +102,7 @@ ${ctaPanel()}
     description: 'Thomas Schrader, Facharzt für Orthopädie und Unfallchirurgie mit über 25 Jahren ärztlicher Erfahrung: Werdegang, Arbeitsweise und Qualifikationen. Wahlarzt im healthlab Salzburg.',
     body,
     crumbs,
-    schema: [physicianSchema()],
+    schema: [{ '@context': 'https://schema.org', '@type': 'ProfilePage', url: `${site.domain}/ueber-mich/`, name: 'Über mich', mainEntity: personSchema() }, physicianSchema()],
     bodyClass: 'page-about',
   });
 }
@@ -147,7 +157,14 @@ ${pageHero({
       ['Honorarnote bezahlen', 'Sie erhalten eine transparente Honorarnote mit allen Leistungen.'],
       ['Einreichung klären', 'Über WAHonline kann die Praxis die bezahlte Honorarnote mit Ihrer Zustimmung übermitteln. Klären Sie bei Ihrem Termin, ob noch eine eigene Einreichung nötig ist.'],
     ])}
-    <p class="refund__source">WAHonline ermöglicht die direkte Einreichung durch die Praxis. <a href="https://www.oegk.at/cdscontent/?contentid=10007.880165&amp;portal=oegkvpportal" target="_blank" rel="noopener">Informationen der ÖGK zu WAHonline</a></p>
+    <p class="refund__source">WAHonline ermöglicht die direkte Einreichung durch die Praxis. <a href="${oegkWahlarzt.url}" target="_blank" rel="noopener">Informationen der ÖGK zu WAHonline</a></p>
+  </div>
+</section>
+
+<section class="section bring-section" id="mitbringen">
+  <div class="wrap bring-section__grid">
+    ${sectionHead({ title: 'Was Sie zum', tone: 'ersten Termin mitbringen.', align: 'stack', text: 'Eine Überweisung brauchen Sie nicht. Mit diesen Unterlagen können wir schon beim ersten Termin konkret werden.' })}
+    ${firstVisitList()}
   </div>
 </section>
 
@@ -203,7 +220,7 @@ ${pageHero({
       <div class="contact-card contact-card--note" data-reveal>
         <span class="contact-card__icon">${icons.clock}</span>
         <span class="contact-card__label">Termine</span>
-        <span class="contact-card__text">Nach Vereinbarung. Bei akuten Beschwerden rufen Sie am besten an – ich bemühe mich um einen kurzfristigen Termin.</span>
+        <span class="contact-card__text">Nach Vereinbarung. Bei akuten Beschwerden rufen Sie am besten an – ich bemühe mich um einen kurzfristigen Termin. <a href="/wahlarzt-kosten/#mitbringen">Was Sie mitbringen</a></span>
       </div>
     </div>
   </div>

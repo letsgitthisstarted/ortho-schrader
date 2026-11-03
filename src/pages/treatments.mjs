@@ -1,10 +1,11 @@
 import { html, icons, art, figure } from '../lib.mjs';
-import { layout } from '../layout.mjs';
+import { layout, medicalPageSchema } from '../layout.mjs';
+import { sourcesFor } from '../data/sources.mjs';
 import { site, regions, groups } from '../data/site.mjs';
 import { treatments, treatmentBySlug, extras } from '../data/treatments.mjs';
 import { conditionBySlug } from '../data/conditions.mjs';
 import { details } from '../data/treatment-details.mjs';
-import { twoTone, pageHero, sectionHead, treatmentTile, steps, faqSection, ctaPanel, artFor, figChip } from '../components.mjs';
+import { twoTone, pageHero, sectionHead, treatmentTile, steps, faqSection, ctaPanel, artFor, figChip, pageSources } from '../components.mjs';
 
 const regionById = Object.fromEntries(regions.map((r) => [r.id, r]));
 const groupById = Object.fromEntries(groups.map((g) => [g.id, g]));
@@ -83,7 +84,12 @@ ${pageHero({
         <span class="note__icon">${icons.euro}</span>
         <div><p class="note__title">Kosten und Kasse</p><p>${costText} <a href="/wahlarzt-kosten/">So funktioniert die Rückerstattung</a>.</p></div>
       </aside>
+      ${t.group === 'operativ' ? html`<aside class="note" data-reveal>
+        <span class="note__icon">${icons.layers}</span>
+        <div><p class="note__title">Ihre Operation Schritt für Schritt</p><p>Von der Entscheidung über die Operation an der ${site.clinic.name} bis zur Nachsorge in der Ordination. <a href="/operation/">So läuft Ihre Operation ab</a>.</p></div>
+      </aside>` : ''}
       </div>
+      ${pageSources(sourcesFor[t.slug])}
     </div>
   </div>
 </section>
@@ -109,9 +115,16 @@ ${ctaPanel({ title: 'Ist das der richtige Weg für Sie?', tone: 'Klären wir es 
     body,
     crumbs,
     faq: t.faq,
-    schema: [{
+    schema: [medicalPageSchema({
+      path: `/behandlungen/${t.slug}/`,
+      name: t.seoTitle,
+      description: t.description,
+      about: { '@id': `${site.domain}/behandlungen/${t.slug}/#procedure` },
+      sources: sourcesFor[t.slug],
+    }), {
       '@context': 'https://schema.org',
       '@type': 'MedicalProcedure',
+      '@id': `${site.domain}/behandlungen/${t.slug}/#procedure`,
       name: t.h1,
       description: t.description,
       howPerformed: t.lead,
@@ -152,6 +165,7 @@ ${pageHero({
       <header class="t-group__head" data-reveal>
         <h2 class="t-group__title display">${g.label}</h2>
         <p>${g.blurb}</p>
+        ${g.id === 'operativ' ? html`<a class="text-link" href="/operation/">So läuft Ihre Operation ab ${icons.arrow}</a>` : ''}
       </header>
       ${((items) => html`<div class="tile-grid" data-count="${items.length}" data-stagger>
         ${items.map((t) => treatmentTile(t.slug, { size: 'md', tone: g.id === 'operativ' ? 'dark' : 'light' }))}
