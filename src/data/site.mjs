@@ -126,8 +126,8 @@ export const credentials = {
   diplomas: [
     'Diplom Sportmedizin',
     'Diplom Sonografie des Bewegungsapparates',
-    'Diplom Notfallmedizin – Notarzt seit 2001',
     'TÜV-zertifizierter Wundexperte (ICW)',
+    'Diplom Notfallmedizin – Notarzt seit 2001',
   ],
   memberships: [
     'Deutsche Gesellschaft für Orthopädie und Unfallchirurgie (DGOU)',

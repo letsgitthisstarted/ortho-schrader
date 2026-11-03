@@ -51,7 +51,7 @@ export function home() {
       <p class="about-home__lead" data-reveal>„Während meiner Weiterbildung zum Facharzt wurde mir klar, dass meine Patientenbetreuung immer auf Augenhöhe und in ehrlicher, souveräner Art und Weise stattfinden soll.“</p>
       <p data-reveal>Seit über 25 Jahren arbeite ich als Arzt, seit 2009 als Facharzt. Weil ich ohne und mit Operation behandle, kann ich Ihnen beide Wege erklären – und wir entscheiden gemeinsam, welcher zu Ihnen passt.</p>
       <dl class="years" data-reveal>
-        <div><dt>1999</dt><dd>ärztlich tätig</dd></div>
+        <div class="years__lead"><dt><span data-count-to="25">25</span>+</dt><dd>Jahre als Arzt</dd></div>
         <div><dt>2001</dt><dd>Notarzt</dd></div>
         <div><dt>2009</dt><dd>Facharzt</dd></div>
         <div><dt>2019</dt><dd>Ordination Salzburg</dd></div>

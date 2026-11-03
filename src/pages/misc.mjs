@@ -14,7 +14,7 @@ export function about() {
     <div class="about-hero__grid">
       <div>
         <h1 class="page-hero__title display" data-split>${twoTone(site.name, 'Facharzt für Orthopädie und Unfallchirurgie.')}</h1>
-        <p class="page-hero__lead" data-reveal>Chirurg, Sportmediziner und seit 2001 Notarzt. Geboren in München, zu Hause in Salzburg – und überzeugt davon, dass gute Medizin mit Zuhören beginnt.</p>
+        <p class="page-hero__lead" data-reveal>Seit über 25 Jahren in Orthopädie und Unfallchirurgie tätig, seit 2009 als Facharzt. Ich behandle ohne und mit Operation – vom Ultraschall in der Ordination bis zum künstlichen Hüft- oder Kniegelenk, das ich selbst einsetze.</p>
         <div class="btn-row" data-reveal>
           <a class="btn btn--dark" href="/kontakt/#termin" data-booking-open>Termin anfragen</a>
           <a class="btn btn--ghost" href="#werdegang">Werdegang</a>
@@ -35,10 +35,10 @@ export function about() {
       </blockquote>
     </div>
     <div class="philosophy">
-      <div class="philosophy__item" data-reveal><p class="philosophy__title">Ich höre zu, bevor ich untersuche.</p><p>Ihre Geschichte – wo, wann, wobei es schmerzt – ist oft der wichtigste Teil der Diagnose.</p></div>
-      <div class="philosophy__item" data-reveal><p class="philosophy__title">Ich erkläre, bevor ich behandle.</p><p>Befunde zeige ich Ihnen am Ultraschall und erkläre sie verständlich. Sie entscheiden mit.</p></div>
-      <div class="philosophy__item" data-reveal><p class="philosophy__title">Ich empfehle, was zu Ihnen passt.</p><p>Weil ich ohne und mit Operation behandle, kann ich Ihnen beide Wege erklären. Die Entscheidung treffen wir gemeinsam.</p></div>
-      <div class="philosophy__item" data-reveal><p class="philosophy__title">Ich sehe den ganzen Menschen.</p><p>Bis heute übernehme ich Dienste im ärztlichen Bereitschaftsdienst der Kassenärztlichen Vereinigung Bayerns und behandle dort Beschwerden aller Art. Diese allgemeinmedizinische Erfahrung nehme ich in jede Untersuchung mit – auch wenn es um Knie oder Rücken geht.</p></div>
+      <div class="philosophy__item" data-reveal><p class="philosophy__title">Zuerst eine genaue Diagnose.</p><p>Ich untersuche gründlich und schalle direkt in der Ordination. Den Befund zeige ich Ihnen am Bildschirm und erkläre, was er bedeutet.</p></div>
+      <div class="philosophy__item" data-reveal><p class="philosophy__title">Ohne und mit Operation.</p><p>Weil ich konservativ behandle und selbst operiere, kann ich Ihnen beide Wege offen gegenüberstellen. Die Entscheidung treffen wir gemeinsam.</p></div>
+      <div class="philosophy__item" data-reveal><p class="philosophy__title">Von der Beratung bis zur Nachsorge.</p><p>Hüft- und Knieprothesen, Arthroskopien und Eingriffe an Hand und Fuß führe ich selbst an der Privatklinik Wehrle-Diakonissen durch – und sehe Sie danach auch zur Kontrolle wieder.</p></div>
+      <div class="philosophy__item" data-reveal><p class="philosophy__title">Den ganzen Menschen im Blick.</p><p>Bis heute übernehme ich Dienste im ärztlichen Bereitschaftsdienst der Kassenärztlichen Vereinigung Bayerns. Diese allgemeinmedizinische Erfahrung nehme ich in jede Untersuchung mit – auch wenn es um Knie oder Rücken geht.</p></div>
     </div>
   </div>
 </section>
@@ -46,7 +46,11 @@ export function about() {
 <section class="section timeline-section" id="werdegang">
   <div class="wrap timeline__grid">
     <div class="timeline__head">
-      ${sectionHead({ title: 'Werdegang', tone: 'von München nach Salzburg.', align: 'stack', text: 'Über 25 Jahre in Chirurgie, Orthopädie und Notfallmedizin, dazu bis heute im allgemeinärztlichen Bereitschaftsdienst – mit Stationen in München, Wien, Basel, Port of Spain, Freilassing und Berchtesgaden.' })}
+      ${sectionHead({ title: 'Werdegang', tone: 'von München nach Salzburg.', align: 'stack', text: 'Chirurgie, Orthopädie und Notfallmedizin, dazu bis heute der allgemeinärztliche Bereitschaftsdienst – mit Stationen in München, Wien, Basel, Port of Spain, Freilassing und Berchtesgaden.' })}
+      <div class="experience" data-reveal>
+        <p class="experience__num"><span data-count-to="25">25</span>+</p>
+        <p class="experience__label">Jahre als Arzt<span>seit 1999 ärztlich tätig,<br>seit 2009 Facharzt</span></p>
+      </div>
     </div>
     <ol class="timeline" data-timeline>
       <span class="timeline__line" aria-hidden="true"><span data-timeline-fill></span></span>
@@ -85,7 +89,7 @@ ${ctaPanel()}
   return layout({
     path: '/ueber-mich/',
     title: 'Über mich | Thomas Schrader, Orthopäde in Salzburg',
-    description: 'Thomas Schrader, Facharzt für Orthopädie und Unfallchirurgie, Sportmediziner und Notarzt: Werdegang und Arbeitsweise. Wahlarzt im healthlab Salzburg.',
+    description: 'Thomas Schrader, Facharzt für Orthopädie und Unfallchirurgie mit über 25 Jahren ärztlicher Erfahrung: Werdegang, Arbeitsweise und Qualifikationen. Wahlarzt im healthlab Salzburg.',
     body,
     crumbs,
     schema: [physicianSchema()],

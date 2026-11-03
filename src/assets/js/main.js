@@ -305,7 +305,8 @@
   /* ───────────── count-up numbers (e.g. "bis 80 %") – the ring next to them fills along */
   $$('[data-count-to]').forEach((el) => {
     const to = Number(el.dataset.countTo);
-    const ring = $('[data-count-ring]', el.closest('.fact-card') ?? document);
+    const card = el.closest('.fact-card');
+    const ring = card && $('[data-count-ring]', card);
     const set = (v) => { el.textContent = String(Math.round(v)); ring?.style.setProperty('--ring', v.toFixed(2)); };
     if (reduced) return;
     set(0);
