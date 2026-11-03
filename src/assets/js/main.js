@@ -462,7 +462,11 @@
     $$('[data-bk-next]', form).forEach((b) => b.addEventListener('click', () => go(step + 1)));
     // A mouse or touch choice moves on by itself; keyboard users (click with detail 0) use Weiter.
     // 'click' rather than 'change': choosing the already selected option again must still move on.
-    const auto = (e, n) => { if (e.detail > 0) setTimeout(() => go(n), 180); };
+    // iOS Safari forwards a tap on a label to its radio with detail 0, like a keyboard press,
+    // so a recent pointerdown counts as a tap too.
+    let pointerAt = 0;
+    form.addEventListener('pointerdown', () => { pointerAt = Date.now(); });
+    const auto = (e, n) => { if (e.detail > 0 || Date.now() - pointerAt < 1500) setTimeout(() => go(n), 180); };
     $$('[data-bk-auto]', form).forEach((r) => r.addEventListener('click', (e) => auto(e, 2)));
     const fieldError = (name, message) => {
       const input = form.elements[name];
