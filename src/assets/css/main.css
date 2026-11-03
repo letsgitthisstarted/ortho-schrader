@@ -676,17 +676,50 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 
 /* ───────────────────────────── network */
 
-.network__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-cards); }
-.net-card { display: grid; gap: 14px; align-content: start; padding: var(--pad-card); border-radius: var(--r-lg); background: var(--mist); }
-.net-card:nth-child(2) { background: linear-gradient(165deg, var(--navy-2), var(--navy)); color: rgba(255, 255, 255, .8); }
-.net-card:nth-child(2) .net-card__title, .net-card:nth-child(2) .text-link { color: #fff; }
-.net-card:nth-child(2) .net-card__kicker { color: var(--sky); }
-.net-card:nth-child(3) { background: #fff; border: 1px solid var(--line-2); }
+.network__grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); grid-template-rows: 1fr 1fr; gap: var(--gap-cards); }
+.net-card { position: relative; display: grid; gap: 14px; align-content: start; padding: var(--pad-card); border-radius: var(--r-lg); background: var(--mist); }
+.net-card p { min-width: 0; }
 .net-card__kicker { display: inline-flex; align-items: center; gap: 8px; font-size: .88rem; color: var(--slate); }
 .net-card__kicker .ico { width: 17px; height: 17px; }
-.net-card__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: 1.7rem; line-height: 1.1; color: var(--ink); letter-spacing: -0.02em; }
-.net-card__meta { font-size: .9rem; color: var(--slate); }
-.net-card .text-link { justify-self: start; margin-top: 4px; }
+.net-card__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: 1.55rem; line-height: 1.1; color: var(--ink); letter-spacing: -0.02em; }
+
+/* Lead tile: the practice, where most patients actually go. */
+.net-card--lead { grid-row: span 2; grid-template-rows: auto 1fr auto; gap: clamp(20px, 2vw, 28px); padding: var(--pad-panel); border-radius: var(--r-xl); background: linear-gradient(165deg, var(--navy-2), var(--navy)); color: rgba(255, 255, 255, .8); }
+.net-card--lead .net-card__body { display: grid; gap: 14px; align-content: start; max-width: 40rem; }
+.net-card--lead .net-card__kicker { color: var(--sky); }
+.net-card--lead .net-card__title { font-size: clamp(2rem, 3.4vw, 2.9rem); color: #fff; }
+.net-card__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.net-card__chips li { padding: 7px 14px; border-radius: 99px; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .14); font-size: .9rem; color: #fff; transition: background .3s var(--ease), border-color .3s var(--ease); }
+.net-card__map { position: relative; isolation: isolate; display: block; overflow: hidden; min-height: 190px; border-radius: var(--r-md); background: #dfe8ee; }
+.net-card__map img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(.35) contrast(.92) brightness(1.05); transition: transform .9s var(--ease-out); }
+.net-card__map::after { content: ''; position: absolute; inset: 0; background: var(--sky); mix-blend-mode: multiply; opacity: .22; pointer-events: none; }
+.net-card__map .map__pin { z-index: 2; }
+.net-card__address { position: absolute; z-index: 2; left: 12px; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 8px; padding: 10px 10px 10px 14px; border-radius: var(--r-sm); background: rgba(255, 255, 255, .94); font-size: .92rem; color: var(--ink); }
+.net-card__address > .ico { width: 17px; height: 17px; flex: none; color: var(--navy); }
+.net-card__go { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 99px; background: var(--navy); color: #fff; font-size: .86rem; white-space: nowrap; }
+.net-card__go .ico { width: 15px; height: 15px; transition: transform .3s var(--ease); }
+.net-card__credit { margin-top: -14px; font-size: .72rem; color: rgba(255, 255, 255, .5); }
+.net-card__credit a { text-decoration: underline; }
+
+/* Side tiles: whole card is the link. */
+.net-card--side { grid-template-rows: auto 1fr auto; border: 1px solid transparent; transition: background-color .35s var(--ease), border-color .35s var(--ease), transform .45s var(--ease-out); }
+.net-card--side + .net-card--side { background: #fff; border-color: var(--line-2); }
+.net-card--side p:not(.net-card__kicker) { padding-right: 36px; }
+.net-card--side .net-card__title { align-self: end; padding-top: 12px; }
+.net-card__ext { position: absolute; top: var(--pad-card); right: var(--pad-card); display: grid; place-items: center; width: 36px; height: 36px; border-radius: 99px; background: #fff; color: var(--navy); transition: background-color .3s var(--ease), color .3s var(--ease); }
+.net-card--side + .net-card--side .net-card__ext { background: var(--mist); }
+.net-card__ext .ico { width: 17px; height: 17px; transition: transform .35s var(--ease-out); }
+
+@media (hover: hover) {
+  .net-card__map:hover img { transform: scale(1.05); }
+  .net-card__map:hover .net-card__go .ico { transform: translateX(3px); }
+  .net-card--lead:hover .net-card__chips li { background: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .22); }
+  .net-card--side:hover { transform: translateY(-3px); background: #dde6ec; }
+  .net-card--side + .net-card--side:hover { background: var(--mist); border-color: transparent; }
+  .net-card--side:hover .net-card__ext { background: var(--navy); color: #fff; }
+  .net-card--side:hover .net-card__ext .ico { transform: translate(2px, -2px); }
+}
+.net-card--side:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
 
 /* ───────────────────────────── wahlarzt (home) & fact cards */
 
@@ -1250,7 +1283,10 @@ a.contact-card--dark:hover { background: var(--ink); }
   .article__toc { position: static; display: none; }
   .finder__stage { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .finder__figure { display: none; }
-  .network__grid, .creds__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .creds__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .network__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; }
+  .net-card--lead { grid-column: 1 / -1; grid-row: auto; }
+  .net-card__map { min-height: 220px; }
   .perks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .site-footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .t-visual__panel { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; }
@@ -1533,3 +1569,11 @@ main > .section:last-child:not(.network-index):not(.timeline-section) { padding-
 /* Small phones: compact header (kept last so the tablet header rules above cannot override it). */
 @media (max-width: 480px) { .site-header__bar { gap: 12px; } .site-header__actions .btn__more, .site-header__actions .btn__swap { display: none; } }
 @media (max-width: 360px) { .site-header__bar { gap: 8px; } .site-header .brand__name { font-size: 1.2rem; white-space: nowrap; } .site-header__actions { gap: 8px; } .site-header__actions .btn--cta { padding: 0 14px; } }
+
+@media (max-width: 760px) {
+  .net-card__map { min-height: 200px; }
+  .net-card__address { font-size: .88rem; }
+  .net-card__go { flex: none; padding: 0; width: 32px; height: 32px; justify-content: center; }
+  .net-card__go-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .net-card__chips li { padding: 6px 12px; font-size: .86rem; }
+}

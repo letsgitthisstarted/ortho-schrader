@@ -205,7 +205,7 @@ ${pageHero({
   </div>
 </section>
 
-<section class="section locations">
+<section class="section locations" id="anfahrt">
   <div class="wrap">
     ${sectionHead({ title: 'So finden', tone: 'Sie mich.' })}
     <figure class="map-photo" data-reveal>

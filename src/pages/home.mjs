@@ -131,24 +131,34 @@ ${bodyMap()}
   <div class="wrap">
     ${sectionHead({ title: 'Kurze Wege,', tone: 'gutes Netzwerk.', text: 'Diagnose, Therapie, Operation und Nachsorge greifen ineinander. Wo ein anderes Fachgebiet gefragt ist, arbeite ich mit spezialisierten Kolleg:innen zusammen.' })}
     <div class="network__grid">
-      <article class="net-card" data-reveal>
-        <p class="net-card__kicker">${icons.door} Ordination</p>
-        <h3 class="net-card__title">${site.ordination.name}</h3>
-        <p>Medizin, Therapie und Training unter einem Dach: Physiotherapie, medizinische Trainingstherapie, ambulante Reha, Orthopädietechnik und Neurochirurgie im selben Haus.</p>
-        <p class="net-card__meta">${site.ordination.street}, ${site.ordination.city}</p>
+      <article class="net-card net-card--lead" data-reveal>
+        <div class="net-card__body">
+          <p class="net-card__kicker">${icons.door} Ordination</p>
+          <h3 class="net-card__title">${site.ordination.name}</h3>
+          <p>Hier finden Untersuchung, Beratung und die meisten Behandlungen statt. Medizin, Therapie und Training sind unter einem Dach:</p>
+          <ul class="net-card__chips">
+            <li>Physiotherapie</li><li>Medizinische Trainingstherapie</li><li>Ambulante Reha</li><li>Orthopädietechnik</li><li>Neurochirurgie</li>
+          </ul>
+        </div>
+        <a class="net-card__map" href="/kontakt/#anfahrt" aria-label="Anfahrt zum ${site.ordination.name}, ${site.ordination.street}">
+          <img src="/assets/img/map-healthlab.jpg" alt="" width="1800" height="640" loading="lazy" decoding="async">
+          <span class="map__pin" style="left:50%;top:42%" aria-hidden="true"><span></span></span>
+          <span class="net-card__address" aria-hidden="true">${icons.pin} ${site.ordination.street}, ${site.ordination.zip} ${site.ordination.city}<span class="net-card__go"><span class="net-card__go-text">Anfahrt</span>${icons.arrow}</span></span>
+        </a>
+        <p class="net-card__credit">Kartendaten © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap-Mitwirkende</a></p>
       </article>
-      <article class="net-card" data-reveal>
+      <a class="net-card net-card--side" href="${site.clinic.url}" target="_blank" rel="noopener" data-reveal>
         <p class="net-card__kicker">${icons.shield} Operationen</p>
         <h3 class="net-card__title">${site.clinic.name}</h3>
-        <p>Hüft- und Knieprothesen, Kniearthroskopien und kleinere Eingriffe an Hand und Fuß führe ich hier als Belegarzt selbst durch.</p>
-        <a class="text-link" href="${site.clinic.url}" target="_blank" rel="noopener">Zur Klinik ${icons.arrowUpRight}</a>
-      </article>
-      <article class="net-card" data-reveal>
+        <p>Hüft- und Knieprothesen, Kniearthroskopien und kleinere Eingriffe an Hand und Fuß operiere ich hier als Belegarzt selbst.</p>
+        <span class="net-card__ext" aria-hidden="true">${icons.arrowUpRight}</span>
+      </a>
+      <a class="net-card net-card--side" href="${site.bavaria.url}" target="_blank" rel="noopener" data-reveal>
         <p class="net-card__kicker">${icons.pin} Bayern</p>
         <h3 class="net-card__title">${site.bavaria.short}</h3>
-        <p>In der OUCC-Gemeinschaftspraxis im ${site.bavaria.location}, in der ich als Facharzt tätig bin, arbeite ich mit Spezialist:innen für Schulter, Wirbelsäule und Kreuzband zusammen – dort auch für gesetzlich Versicherte aus Deutschland.</p>
-        <a class="text-link" href="${site.bavaria.url}" target="_blank" rel="noopener">OUCC-Profil ${icons.arrowUpRight}</a>
-      </article>
+        <p>Facharzttätigkeit im ${site.bavaria.location} – dort auch für gesetzlich Versicherte aus Deutschland.</p>
+        <span class="net-card__ext" aria-hidden="true">${icons.arrowUpRight}</span>
+      </a>
     </div>
   </div>
 </section>
