@@ -1,6 +1,6 @@
 import { html, icons, art, figure } from '../lib.mjs';
 import { layout, medicalPageSchema } from '../layout.mjs';
-import { sourcesFor } from '../data/sources.mjs';
+import { sourcesFor, focusFor } from '../data/sources.mjs';
 import { site, regions, groups } from '../data/site.mjs';
 import { treatments, treatmentBySlug, extras } from '../data/treatments.mjs';
 import { conditionBySlug } from '../data/conditions.mjs';
@@ -89,7 +89,7 @@ ${pageHero({
         <div><p class="note__title">Ihre Operation Schritt für Schritt</p><p>Von der Entscheidung über die Operation an der ${site.clinic.name} bis zur Nachsorge in der Ordination. <a href="/operation/">So läuft Ihre Operation ab</a>.</p></div>
       </aside>` : ''}
       </div>
-      ${pageSources(sourcesFor[t.slug])}
+      ${pageSources(sourcesFor[t.slug], { focus: focusFor(t.slug) })}
     </div>
   </div>
 </section>

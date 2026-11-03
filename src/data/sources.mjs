@@ -46,3 +46,24 @@ export const sourcesFor = {
   fusschirurgie: [g.hallux],
   'wirbelsaeulen-infiltration': [g.kreuzschmerz],
 };
+
+// Second part of the author line ("Facharzt für … · <focus> · Zuletzt aktualisiert …"): what someone in Salzburg
+// would search for on that page. Only what he actually does – no "Spezialist" claims.
+const kneeHip = 'Orthopäde für Knie und Hüfte in Salzburg';
+const focus = {
+  knieschmerzen: kneeHip,
+  hueftschmerzen: kneeHip,
+  kniearthrose: kneeHip,
+  hueftarthrose: kneeHip,
+  arthrosetherapie: kneeHip,
+  knieprothese: 'Knie- und Hüftprothetik in Salzburg',
+  hueftprothese: 'Knie- und Hüftprothetik in Salzburg',
+  kniearthroskopie: 'Kniechirurgie in Salzburg',
+  handschmerzen: 'Handchirurgie in Salzburg',
+  handchirurgie: 'Handchirurgie in Salzburg',
+  fussschmerzen: 'Fußchirurgie in Salzburg',
+  fusschirurgie: 'Fußchirurgie in Salzburg',
+  sportmedizin: 'Sportmediziner in Salzburg',
+  operation: 'Belegarzt an der Privatklinik Wehrle-Diakonissen',
+};
+export const focusFor = (slug) => focus[slug] ?? 'Wahlarzt für Orthopädie in Salzburg';

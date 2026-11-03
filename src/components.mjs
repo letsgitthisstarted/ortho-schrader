@@ -220,20 +220,20 @@ export function photo({ label, ratio = '4/5', className = '', src }) {
 const longDate = (iso) => new Date(`${iso}T12:00:00`).toLocaleDateString('de-AT', { day: 'numeric', month: 'long', year: 'numeric' });
 
 // Closing block of every medical page: the guidelines it rests on and who answers for it.
-// "Medizinisch geprüft" only appears once site.content.medicallyReviewed is set.
-export function pageSources(list = []) {
+// "Medizinisch geprüft von" only appears once site.content.medicallyReviewed is set; until then it says who is responsible.
+export function pageSources(list = [], { focus } = {}) {
   const c = site.content;
-  return html`<aside class="sources" aria-label="Quellen und Verantwortung">
+  return html`<aside class="sources" aria-label="Quellen und medizinische Prüfung">
   ${list.length ? html`<div class="sources__list">
     <p class="sources__label">Quellen &amp; weiterführende Informationen</p>
     <ul>${list.map((s) => html`<li><a href="${s.url}" target="_blank" rel="noopener"><span class="sources__title">${s.title}</span><span class="sources__meta">${s.meta}</span>${icons.arrowUpRight}</a></li>`)}</ul>
   </div>` : ''}
   <div class="byline">
-    <img class="byline__photo" src="/assets/img/portrait-thomas-schrader.jpg" alt="" width="56" height="56" loading="lazy">
-    <div>
-      <p class="byline__who">${c.medicallyReviewed ? 'Medizinisch geprüft von' : 'Inhaltlich verantwortlich:'} <a href="/ueber-mich/">${site.name}</a></p>
-      <p class="byline__meta">${site.role}</p>
-      <p class="byline__meta">${c.medicallyReviewed ? `Zuletzt geprüft am ${longDate(c.reviewed)}` : `Stand: ${longDate(c.updated)}`}</p>
+    <img class="byline__photo" src="/assets/img/portrait-thomas-schrader.jpg" alt="" width="76" height="76" loading="lazy">
+    <div class="byline__text">
+      <p class="byline__label">${c.medicallyReviewed ? 'Medizinisch geprüft von' : 'Inhaltlich verantwortlich'}</p>
+      <p class="byline__name"><a href="/ueber-mich/">${site.name}</a></p>
+      <p class="byline__meta">${site.role}${focus ? ` · ${focus}` : ''} · Zuletzt aktualisiert am ${longDate(c.medicallyReviewed ? c.reviewed : c.updated)}</p>
     </div>
   </div>
 </aside>`;

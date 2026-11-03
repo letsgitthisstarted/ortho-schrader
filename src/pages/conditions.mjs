@@ -1,6 +1,6 @@
 import { html, icons, art, figure } from '../lib.mjs';
 import { layout, medicalPageSchema } from '../layout.mjs';
-import { sourcesFor } from '../data/sources.mjs';
+import { sourcesFor, focusFor } from '../data/sources.mjs';
 import { guidesFor } from '../data/guides.mjs';
 import { regions } from '../data/site.mjs';
 import { conditions } from '../data/conditions.mjs';
@@ -84,7 +84,7 @@ ${pageHero({ crumbs, title: c.h1, tone: c.h1b, lead: c.lead })}
 </section>
 ${faqSection(c.faq, { title: 'Häufige Fragen', tone: `zu ${c.name}` })}
 
-<div class="wrap page-sources">${pageSources(sourcesFor[c.slug])}</div>
+<div class="wrap page-sources">${pageSources(sourcesFor[c.slug], { focus: focusFor(c.slug) })}</div>
 
 ${ctaPanel({ title: `${c.name}?`, tone: 'Lassen Sie es abklären, bevor es chronisch wird.' })}
 `;

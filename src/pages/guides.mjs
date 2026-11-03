@@ -4,7 +4,7 @@ import { site, regions } from '../data/site.mjs';
 import { treatments, treatmentBySlug } from '../data/treatments.mjs';
 import { conditionBySlug } from '../data/conditions.mjs';
 import { operation } from '../data/guides.mjs';
-import { sourcesFor } from '../data/sources.mjs';
+import { sourcesFor, focusFor } from '../data/sources.mjs';
 import { pageHero, sectionHead, treatmentTile, steps, faqSection, ctaPanel, pageSources } from '../components.mjs';
 
 // In-depth condition page (Kniearthrose, Hüftarthrose): article with table of contents, like the treatment pages.
@@ -33,7 +33,7 @@ ${pageHero({ crumbs, title: g.h1, tone: g.h1b, lead: g.lead })}
         <span class="note__icon">${icons.pin}</span>
         <div><p class="note__title">Andere Ursachen für ${parent.name}</p><p>Nicht jeder Schmerz ist Arthrose. <a href="/beschwerden/${parent.slug}/">Alle häufigen Ursachen für ${parent.name}</a></p></div>
       </aside>
-      ${pageSources(sourcesFor[g.slug])}
+      ${pageSources(sourcesFor[g.slug], { focus: focusFor(g.slug) })}
     </div>
   </div>
 </section>
@@ -113,7 +113,7 @@ ${pageHero({ crumbs, title: 'Ihre Operation', tone: 'von der Entscheidung bis zu
 
 ${faqSection(operation.faq, { title: 'Fragen', tone: 'rund um die Operation' })}
 
-<div class="wrap page-sources">${pageSources()}</div>
+<div class="wrap page-sources">${pageSources([], { focus: focusFor('operation') })}</div>
 
 ${ctaPanel({ title: 'Eine Operation steht im Raum?', tone: 'Besprechen wir Ihre Möglichkeiten.' })}
 `;

@@ -1660,11 +1660,12 @@ main > .section:last-child:not(.network-index):not(.timeline-section) { padding-
 /* ───────────────────────────── sources, byline and proof (E-E-A-T) */
 
 /* After the FAQ the block sits under the question list, in the same column. */
-.page-sources { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); gap: clamp(32px, 6vw, 96px); margin-top: calc(var(--section) * -0.35); margin-bottom: var(--section); }
-.page-sources > .sources { grid-column: 2; }
+/* Sections are spaced by main > * + * (var(--section)); the sources follow the FAQ closer, as part of it. */
+.page-sources { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); gap: clamp(32px, 6vw, 96px); }
+main > .page-sources { margin-top: clamp(40px, 5vw, 64px); }
+.page-sources > .sources { grid-column: 2; padding-top: 0; border-top: 0; }
 .sources { display: grid; gap: 20px; padding-top: 28px; border-top: 1px solid var(--line-2); }
 .article__body .sources { margin-top: 40px; }
-.byline { justify-self: start; }
 .sources__label { font-size: .88rem; color: var(--slate); margin-bottom: 12px; }
 .sources ul { display: grid; gap: 8px; }
 .sources li a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; align-items: center; padding: 14px 18px; border-radius: var(--r-md); background: var(--sand); color: var(--ink); transition: background-color .25s var(--ease); }
@@ -1673,11 +1674,14 @@ main > .section:last-child:not(.network-index):not(.timeline-section) { padding-
 .sources__meta { grid-row: 2; font-size: .84rem; color: var(--slate); }
 .sources li a .ico { grid-column: 2; grid-row: 1 / span 2; width: 18px; height: 18px; color: var(--slate); transition: transform .3s var(--ease), color .25s; }
 .sources li a:hover .ico { transform: translate(2px, -2px); color: var(--ink); }
-.byline { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-radius: var(--r-md); border: 1px solid var(--line-2); }
-.byline__photo { flex: none; width: 56px; height: 56px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; background: var(--mist); }
-.byline__who { font-weight: 500; color: var(--ink); }
-.byline__who a { text-decoration: underline; text-decoration-color: var(--sky); text-underline-offset: 3px; }
-.byline__meta { font-size: .86rem; line-height: 1.45; color: var(--slate); }
+.byline { display: flex; align-items: center; gap: 22px; padding: 22px 26px; border-radius: var(--r-lg); background: var(--mist); }
+.byline__photo { flex: none; width: 76px; height: 76px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; background: #fff; }
+.byline__text { display: grid; gap: 3px; min-width: 0; }
+.byline__label { font-size: .86rem; letter-spacing: .02em; color: var(--slate); }
+.byline__name { font-size: 1.2rem; font-weight: 550; line-height: 1.25; color: var(--ink); }
+.byline__name a { transition: color .2s; }
+.byline__name a:hover { color: var(--navy); text-decoration: underline; text-decoration-color: var(--sky); text-underline-offset: 3px; }
+.byline__meta { font-size: .9rem; line-height: 1.45; color: var(--slate); text-wrap: pretty; }
 
 .proof { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); gap: 24px 48px; margin-top: var(--gap-cards); padding: var(--pad-panel); border-radius: var(--r-xl); background: var(--sand); }
 .proof__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(1.5rem, 2.2vw, 1.9rem); line-height: 1.15; color: var(--ink); margin-bottom: 10px; }
@@ -1736,6 +1740,8 @@ main > .section:last-child:not(.network-index):not(.timeline-section) { padding-
   .page-sources > .sources { grid-column: 1; }
 }
 @media (max-width: 760px) {
+  .byline { gap: 16px; padding: 18px; }
+  .byline__photo { width: 60px; height: 60px; }
   .proof__list, .bring-section__grid, .op-path__grid, .op-places__grid { grid-template-columns: minmax(0, 1fr); }
   .guide-link { padding: var(--pad-card); }
   .guide-link__go { width: 40px; height: 40px; }
