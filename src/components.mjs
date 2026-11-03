@@ -17,7 +17,9 @@ export function crumbsNav(crumbs) {
 }
 
 // Two-tone headline: first phrase in ink, second phrase in the muted tone.
-export const twoTone = (a, b) => html`<span class="tt-a">${a}</span>${b ? html` <span class="tt-b">${b}</span>` : ''}`;
+// Long compounds ("Ellenbogenschmerzen") get a soft hyphen so large type can break at the joint instead of overflowing.
+const tt = (x) => (typeof x === 'string' ? softBreak(x) : x);
+export const twoTone = (a, b) => html`<span class="tt-a">${tt(a)}</span>${b ? html` <span class="tt-b">${tt(b)}</span>` : ''}`;
 
 export function pageHero({ crumbs, title, tone, lead, ticks = [], ctas = true, aside }) {
   return html`<section class="page-hero">
@@ -47,7 +49,7 @@ export function sectionHead({ title, tone, text, id, align = 'split', link }) {
 }
 
 // Long compound names may only break at their natural joint (Eigenblut-therapie, not Eigenblutthera-pie).
-export const softBreak = (name) => name.replace(/(Eigenblut|Stoßwellen|Hyaluron|Knie|Hüft|Fuß|Hand|Ellenbogen|Schulter|Rücken)(therapie|säure|arthroskopie|prothese|chirurgie|schmerzen)/g, '$1\u00AD$2');
+export const softBreak = (name) => name.replace(/(Eigenblut|Stoßwellen|Hyaluron|Knie|Hüft|Fuß|Hand|Ellenbogen|Schulter|Rücken)(therapie|säure|arthroskopie|arthrose|prothese|chirurgie|schmerzen)/g, '$1\u00AD$2');
 
 export function treatmentTile(slug, { size = 'sm', tone = 'light' } = {}) {
   const t = treatmentBySlug[slug];

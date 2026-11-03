@@ -1670,7 +1670,7 @@ main > .page-sources { margin-top: clamp(40px, 5vw, 64px); }
 .sources ul { display: grid; gap: 8px; }
 .sources li a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; align-items: center; padding: 14px 18px; border-radius: var(--r-md); background: var(--sand); color: var(--ink); transition: background-color .25s var(--ease); }
 .sources li a:hover { background: var(--sand-2); }
-.sources__title { font-weight: 500; line-height: 1.35; }
+.sources__title { font-weight: 500; line-height: 1.35; hyphens: auto; overflow-wrap: break-word; }
 .sources__meta { grid-row: 2; font-size: .84rem; color: var(--slate); }
 .sources li a .ico { grid-column: 2; grid-row: 1 / span 2; width: 18px; height: 18px; color: var(--slate); transition: transform .3s var(--ease), color .25s; }
 .sources li a:hover .ico { transform: translate(2px, -2px); color: var(--ink); }
