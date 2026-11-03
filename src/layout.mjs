@@ -114,7 +114,7 @@ function header(path) {
     </nav>
     <div class="site-header__actions">
       <a class="header-phone" href="${site.phoneHref}" aria-label="Ordination anrufen: ${site.phone}">${icons.phone}<span>${site.phone}</span></a>
-      <a class="btn btn--dark btn--cta" href="/kontakt/#termin" data-booking-open>Termin anfragen<span class="btn__swap" aria-hidden="true">${icons.calendar}${icons.arrow}</span></a>
+      <a class="btn btn--dark btn--cta" href="/kontakt/#termin" data-booking-open><span>Termin<span class="btn__more"> anfragen</span></span><span class="btn__swap" aria-hidden="true">${icons.calendar}${icons.arrow}</span></a>
       <button class="menu-toggle" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle><span class="sr">Menü</span>${icons.menu}</button>
     </div>
   </div>

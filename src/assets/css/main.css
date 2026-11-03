@@ -248,6 +248,8 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 .site-header__actions { display: flex; align-items: center; gap: 14px; }
 .header-phone { display: inline-flex; align-items: center; gap: 8px; font-size: .92rem; font-weight: 500; color: var(--ink); }
 .header-phone .ico { width: 17px; height: 17px; }
+@media (max-width: 480px) { .site-header__bar { gap: 12px; } .site-header__actions .btn__more, .site-header__actions .btn__swap { display: none; } }
+@media (max-width: 360px) { .site-header .brand__name { font-size: 1.3rem; white-space: nowrap; } .site-header__actions .btn--cta { padding: 0 14px; } }
 .menu-toggle { display: none; width: 44px; height: 44px; border-radius: 999px; place-items: center; background: var(--sand); color: var(--ink); }
 
 /* mega menus */
@@ -1182,7 +1184,10 @@ a.contact-card--dark:hover { background: var(--ink); }
 @media (max-width: 1020px) {
   .nav { display: none; }
   .menu-toggle { display: grid; }
-  .site-header__actions .btn { display: none; }
+  /* Phones and tablets: the appointment button stays in the bar instead of the phone icon (the phone number is in the menu). */
+  .header-phone { display: none; }
+  .site-header__actions { gap: 10px; }
+  .site-header__actions .btn--cta { --h: 44px; padding: 0 18px; gap: 8px; font-size: .95rem; box-shadow: none; }
   .reviews__head, .hero__grid, .page-hero__grid, .section-head--split, .bodymap__head, .finder__intro, .wahlarzt-home__head, .t-group__head, .about-hero__grid { grid-template-columns: minmax(0, 1fr); align-items: start; }
   .wahlarzt-home__head .btn { grid-column: auto; }
   .bodymap__stage { grid-template-columns: minmax(0, 1fr); }
