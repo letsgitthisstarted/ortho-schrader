@@ -257,8 +257,7 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 .site-header__actions { display: flex; align-items: center; gap: 14px; }
 .header-phone { display: inline-flex; align-items: center; gap: 8px; font-size: .92rem; font-weight: 500; color: var(--ink); }
 .header-phone .ico { width: 17px; height: 17px; }
-@media (max-width: 480px) { .site-header__bar { gap: 12px; } .site-header__actions .btn__more, .site-header__actions .btn__swap { display: none; } }
-@media (max-width: 360px) { .site-header .brand__name { font-size: 1.3rem; white-space: nowrap; } .site-header__actions .btn--cta { padding: 0 14px; } }
+
 .menu-toggle { display: none; width: 44px; height: 44px; border-radius: 999px; place-items: center; background: var(--sand); color: var(--ink); }
 
 /* mega menus */
@@ -535,15 +534,15 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 .tile--dark { background: linear-gradient(165deg, #33566b 0%, var(--navy-2) 50%, var(--navy) 100%); color: #fff; }
 .tile--dark .badge { background: rgba(255, 255, 255, .12); color: #fff; }
 .tile__badges { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 6px; }
-.tile__art { position: absolute; inset: 20% 14% 32%; z-index: -1; display: grid; place-items: center; pointer-events: none; transition: transform 0.59s var(--ease-out); }
+/* The drawing fills the space between badges and text (in the flow), so a long title can never run into it. */
+.tile__art { position: relative; flex: 1 1 0; min-height: 96px; margin-block: 6px 10px; display: grid; place-items: center; pointer-events: none; transition: transform 0.59s var(--ease-out); }
 .tile__art .art { width: 100%; height: 100%; }
 .tile--light .tile__art { color: var(--navy); }
 .tile--dark .tile__art { color: var(--sky); }
-.tile--lg .tile__art { inset: 10% 6% 26% 30%; }
-.tile--md .tile__art { inset: 14% 20% 40%; }
+.tile--lg .tile__art { margin-block: 12px 20px; }
 .tile:hover .tile__art { transform: translateY(-6px) scale(1.04); }
 .tile__body { position: relative; z-index: 1; margin-top: auto; display: grid; gap: 8px; padding-right: 56px; }
-.tile__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: 1.55rem; line-height: 1.08; letter-spacing: -0.02em; hyphens: auto; -webkit-hyphens: auto; overflow-wrap: break-word; }
+.tile__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: 1.55rem; line-height: 1.08; letter-spacing: -0.02em; hyphens: manual; -webkit-hyphens: manual; overflow-wrap: break-word; }
 .tile--lg .tile__title { font-size: clamp(2rem, 3vw, 2.7rem); }
 .tile__text { font-size: .97rem; line-height: 1.45; max-width: 36ch; }
 .tile--light .tile__text { color: var(--ink-2); }
@@ -704,7 +703,7 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
 .wahlarzt-home__head { display: grid; gap: 20px; justify-items: start; }
 .wahlarzt-home__head p { max-width: 60ch; }
 .wahlarzt-home__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-cards); }
-.fact-card { padding: var(--pad-card); border-radius: var(--r-lg); background: var(--sand); color: var(--ink-2); display: grid; gap: 4px; align-content: start; }
+.fact-card { min-width: 0; overflow-wrap: anywhere; padding: var(--pad-card); border-radius: var(--r-lg); background: var(--sand); color: var(--ink-2); display: grid; gap: 4px; align-content: start; }
 .fact-card__big { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(1.9rem, 3vw, 2.6rem); line-height: 1.05; color: var(--ink); letter-spacing: -0.02em; }
 .fact-card--glass { background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .12); color: #fff; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .fact-card--glass dt { font-size: .82rem; color: var(--sky); }
@@ -723,6 +722,8 @@ h2.display { font-size: clamp(2.15rem, 4.3vw, 3.65rem); }
   font-size: 1.12rem; font-weight: 500; color: var(--ink); line-height: 1.35;
 }
 .acc summary::-webkit-details-marker { display: none; }
+/* Long compound words in a question wrap instead of pushing the icon off screen. */
+.acc summary > span:first-child, .acc summary > h3 { min-width: 0; overflow-wrap: break-word; }
 .acc__icon { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 99px; background: var(--sand); transition: transform 0.29s var(--ease), background-color .3s; }
 .acc__icon .ico { width: 16px; height: 16px; }
 .acc[open] .acc__icon { transform: rotate(45deg); background: var(--navy); color: #fff; }
@@ -864,7 +865,7 @@ legend.booking__q { margin-bottom: 18px; }
 .booking__more .field { margin-top: 10px; }
 .booking__step.is-active { gap: 14px; }
 @media (max-width: 760px) {
-  .booking { padding: 14px 18px 18px; }
+  .booking-dialog .booking { padding: 14px 18px 18px; }
   .booking__head { margin-bottom: 14px; }
   .booking__step-count { margin: -4px 0 10px; }
   legend.booking__q { font-size: 1.65rem; margin-bottom: 12px; }
@@ -1004,7 +1005,7 @@ legend.booking__q { margin-bottom: 18px; }
 .cause-list { border-top: 1px solid var(--line-2); }
 .cause { display: grid; grid-template-columns: 64px minmax(0, 1fr) minmax(0, .9fr); gap: 16px 32px; align-items: start; padding: 28px 0; border-bottom: 1px solid var(--line-2); }
 .cause__num { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: 1.5rem; color: var(--slate); line-height: 1.2; }
-.cause__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(1.45rem, 2.3vw, 1.85rem); line-height: 1.15; color: var(--ink); letter-spacing: -0.015em; margin-bottom: 8px; }
+.cause__title { overflow-wrap: break-word; font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(1.45rem, 2.3vw, 1.85rem); line-height: 1.15; color: var(--ink); letter-spacing: -0.015em; margin-bottom: 8px; }
 .cause__body p { max-width: 56ch; }
 .cause .chips { justify-content: flex-end; padding-top: 4px; }
 
@@ -1041,7 +1042,9 @@ legend.booking__q { margin-bottom: 18px; }
 .region-card__fig .figure { height: var(--fig-h); width: auto; max-width: 100%; aspect-ratio: 348 / 648; }
 .region-card__body { display: grid; gap: 4px; position: relative; z-index: 1; }
 .region-card__title { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: clamp(1.2rem, 1.7vw, 1.5rem); color: var(--ink); line-height: 1.1; }
-.region-card__text { font-size: .9rem; color: var(--slate); padding-right: 52px; }
+.region-card__text { font-size: .9rem; color: var(--slate); padding-right: 64px; overflow-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; }
+.region-card--more { background: var(--mist); }
+.region-card--more .figure { opacity: .55; }
 .region-card .tile__go { position: absolute; right: 16px; bottom: 18px; color: var(--ink); z-index: 1; }
 .region-card:hover .tile__go { background: var(--navy); color: #fff; border-color: var(--navy); }
 
@@ -1215,16 +1218,22 @@ a.contact-card--dark:hover { background: var(--ink); }
   .mega__all .ico { width: 16px; height: 16px; transition: transform .3s var(--ease); }
   .mega__all:hover .ico { transform: translateX(3px); }
   .bodymap__stage { grid-template-columns: 180px minmax(0, 1fr) minmax(280px, 340px); }
-  .region-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .region-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-@media (max-width: 1020px) {
+/* Below 1180px the five menu items no longer fit on one line, so the menu button takes over. */
+@media (max-width: 1180px) {
   .nav { display: none; }
   .menu-toggle { display: grid; }
   /* Phones and tablets: the appointment button stays in the bar instead of the phone icon (the phone number is in the menu). */
   .header-phone { display: none; }
   .site-header__actions { gap: 10px; }
   .site-header__actions .btn--cta { --h: 44px; padding: 0 18px; gap: 8px; font-size: .95rem; box-shadow: none; }
+  .bento, .bento--flip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bento .tile--lg, .bento--flip .tile--lg { grid-column: 1 / -1; grid-row: auto; min-height: 380px; }
+}
+
+@media (max-width: 1020px) {
   .reviews__head, .hero__grid, .page-hero__grid, .section-head--split, .bodymap__head, .finder__intro, .wahlarzt-home__head, .t-group__head, .about-hero__grid { grid-template-columns: minmax(0, 1fr); align-items: start; }
   .wahlarzt-home__head .btn { grid-column: auto; }
   .bodymap__stage { grid-template-columns: minmax(0, 1fr); }
@@ -1235,8 +1244,6 @@ a.contact-card--dark:hover { background: var(--ink); }
   .bodymap__region .ico { display: none; }
   .bodymap__region[aria-selected='true'] { padding-left: 18px; background: #fff; color: var(--navy); }
   .bodymap__figure { width: min(80%, 340px); }
-  .bento, .bento--flip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .bento .tile--lg, .bento--flip .tile--lg { grid-column: 1 / -1; grid-row: auto; min-height: 380px; }
   .story__stage { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .diagnoses__grid, .about-home__grid, .faq__grid, .cta__grid, .article__grid, .network-index__grid, .timeline__grid, .personal__grid, .refund__grid, .contact__grid { grid-template-columns: minmax(0, 1fr); }
   .faq__title, .timeline__head { position: static; }
@@ -1272,6 +1279,12 @@ a.contact-card--dark:hover { background: var(--ink); }
   .tile { min-height: 210px; padding: var(--pad-tile); }
   .tile__title { font-size: 1.25rem; }
   .tile__body { padding-right: 0; }
+  .tile--lg .tile__body { padding-right: 60px; }
+  /* Phones: the drawing sits in the tile's flow above the text, so it can never run into a title. */
+  .tile { min-height: 0; }
+  .tile .tile__art { position: relative; inset: auto; flex: none; height: 104px; margin-block: 4px 8px; }
+  .tile--lg .tile__art, .tile-grid .tile__art { height: 150px; }
+  .bento .tile--lg, .bento--flip .tile--lg, .tile-row .tile, .tile-grid .tile { min-height: 0; }
   .tile:not(.tile--lg) .tile__go { display: none; }
   .tile:not(.tile--lg) .badge:nth-child(2) { display: none; }
   .tile-row, .tile-grid { grid-template-columns: minmax(0, 1fr); }
@@ -1308,6 +1321,13 @@ a.contact-card--dark:hover { background: var(--ink); }
   .region-card__fig { --fig-h: 160px; }
   .region-card__title { font-size: 1.2rem; }
   .region-card__text { display: none; }
+  /* Two-up on phones: the whole card is the link, so the arrow goes (as on small tiles) and long titles break at the word joint. */
+  .region-card .tile__go { display: none; }
+  .note { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  /* Sand bands get the same even padding as the other panels on phones. */
+  main > .timeline-section, main > .network-index { padding-block: var(--pad-panel); }
+  .timeline-section > .wrap, .network-index > .wrap { padding-inline: var(--pad-panel); }
+  .region-card__title { hyphens: manual; -webkit-hyphens: manual; }
   .timeline__item { grid-template-columns: minmax(0, 1fr); gap: 6px; padding-left: 36px; }
   .site-footer__grid { grid-template-columns: minmax(0, 1fr); }
   .field-row, .booking__options--grid { grid-template-columns: minmax(0, 1fr); }
@@ -1325,12 +1345,13 @@ a.contact-card--dark:hover { background: var(--ink); }
 }
 
 /* Audit refinements: narrow-screen wrapping, form feedback, contact arrival panel */
-@media (max-width: 420px) { .display { overflow-wrap: anywhere; hyphens: auto; -webkit-hyphens: auto; } }
+/* Headings never hyphenate; a word only breaks if it could not fit at all. */
+@media (max-width: 420px) { .display { overflow-wrap: break-word; } }
 .network-index__list, .network-index__list li > div, .options__col { min-width: 0; }
 .network-index__list li { grid-template-columns: 56px minmax(0, 1fr); }
 .options__network { grid-template-columns: 56px minmax(0, 1fr); }
 .option-link { grid-template-columns: 52px minmax(0, 1fr) auto; }
-.network-index__list p, .options__network p, .option-link__title { overflow-wrap: anywhere; hyphens: auto; -webkit-hyphens: auto; }
+.network-index__list p, .options__network p, .option-link__title { overflow-wrap: break-word; }
 .hero__practice { font-size: .95rem; color: var(--ink-2); }
 .booking__step-count { font-size: .9rem; color: var(--slate); margin: -8px 0 20px; }
 .booking__error:empty { display: none; }
@@ -1338,6 +1359,7 @@ a.contact-card--dark:hover { background: var(--ink); }
 .field input::placeholder, .field textarea::placeholder { color: var(--slate); opacity: 1; }
 .consent input[aria-invalid='true'] { outline: 2px solid #a3402b; outline-offset: 3px; }
 .bodymap__region { color: rgba(255, 255, 255, .85); }
+.location .arrival { border-radius: var(--r-md); }
 .arrival { display: grid; gap: 16px; align-content: center; background: #fff; border-radius: var(--r-lg); padding: var(--pad-card); }
 .arrival h3 { font-family: var(--ff-serif); font-weight: var(--serif-weight); font-size: 2rem; color: var(--ink); }
 .arrival a { text-decoration: underline; text-underline-offset: 3px; }
@@ -1448,6 +1470,7 @@ a.contact-card--dark:hover { background: var(--ink); }
   .map-photo__label { left: 50%; top: calc(50% - 30px); transform: translate(-50%, -100%); text-align: center; }
   .map-photo__credit { bottom: auto; top: 8px; }
 }
+@media (max-width: 480px) { .map-photo { aspect-ratio: 1 / 1; } }
 
 /* ───────────────────────────── about: quote over the operating-room photo */
 
@@ -1486,9 +1509,14 @@ main > .section:last-child:not(.network-index):not(.timeline-section) { padding-
 .section-head--split .section-head__side p { max-width: 60ch; }
 
 /* Treatment groups: complete rows whatever the number of cards (data-count is set per group). */
-@media (min-width: 1021px) {
+/* Four across only where each card keeps room for its drawing and title; otherwise two by two. */
+@media (min-width: 1240px) {
   .tile-grid[data-count='4'] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .tile-grid[data-count='4'] .tile__art { inset: 13% 22% 50%; }
+}
+@media (min-width: 761px) and (max-width: 1239px) {
+  .tile-grid[data-count='4'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1021px) {
   .tile-grid[data-count='5'] > :first-child { grid-column: span 2; }
 }
 @media (min-width: 761px) and (max-width: 1020px) {
@@ -1498,7 +1526,10 @@ main > .section:last-child:not(.network-index):not(.timeline-section) { padding-
 @media (min-width: 761px) {
   .tile-grid[data-count='1'] { grid-template-columns: minmax(0, 1fr); }
   .tile-grid[data-count='1'] .tile { min-height: 300px; }
-  .tile-grid[data-count='1'] .tile__art { inset: 12% 8% 12% 58%; }
+  .tile-grid[data-count='1'] .tile__art { position: absolute; inset: 12% 8% 12% 58%; margin: 0; }
   .tile-grid[data-count='1'] .tile__body { max-width: 52%; }
 }
 
+/* Small phones: compact header (kept last so the tablet header rules above cannot override it). */
+@media (max-width: 480px) { .site-header__bar { gap: 12px; } .site-header__actions .btn__more, .site-header__actions .btn__swap { display: none; } }
+@media (max-width: 360px) { .site-header__bar { gap: 8px; } .site-header .brand__name { font-size: 1.2rem; white-space: nowrap; } .site-header__actions { gap: 8px; } .site-header__actions .btn--cta { padding: 0 14px; } }

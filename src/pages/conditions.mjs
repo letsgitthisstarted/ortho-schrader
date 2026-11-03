@@ -3,13 +3,13 @@ import { layout } from '../layout.mjs';
 import { regions } from '../data/site.mjs';
 import { conditions } from '../data/conditions.mjs';
 import { treatmentBySlug } from '../data/treatments.mjs';
-import { twoTone, pageHero, sectionHead, bodyMap, faqSection, ctaPanel, regionPill, artFor } from '../components.mjs';
+import { twoTone, pageHero, sectionHead, bodyMap, faqSection, ctaPanel, regionPill, artFor, softBreak } from '../components.mjs';
 
 const regionById = Object.fromEntries(regions.map((r) => [r.id, r]));
 
 const treatmentLink = (slug) => {
   const t = treatmentBySlug[slug];
-  return html`<li><a class="option-link" href="/behandlungen/${slug}/"><span class="option-link__art">${artFor(slug)}</span><span class="option-link__text"><span class="option-link__title">${t.name}</span><span class="option-link__desc">${t.teaser}</span></span>${icons.arrow}</a></li>`;
+  return html`<li><a class="option-link" href="/behandlungen/${slug}/"><span class="option-link__art">${artFor(slug)}</span><span class="option-link__text"><span class="option-link__title">${softBreak(t.name)}</span><span class="option-link__desc">${t.teaser}</span></span>${icons.arrow}</a></li>`;
 };
 
 export function conditionPage(c) {
@@ -116,11 +116,19 @@ ${bodyMap({ id: 'bodymap', heading: false })}
       ${conditions.map((c) => html`<a class="region-card" href="/beschwerden/${c.slug}/">
         <span class="region-card__fig">${figure({ id: `rc-${c.slug}`, regions, lit: [c.region], marks: [c.region] })}</span>
         <span class="region-card__body">
-          <span class="region-card__title">${c.name}</span>
+          <span class="region-card__title">${softBreak(c.name)}</span>
           <span class="region-card__text">${c.causes.slice(0, 3).map((x) => x.name.replace(/\s*\(.*\)/, '')).join(', ')} und mehr</span>
         </span>
         <span class="tile__go" aria-hidden="true">${icons.arrow}</span>
       </a>`)}
+      <a class="region-card region-card--more" href="/kontakt/#termin" data-booking-open>
+        <span class="region-card__fig">${figure({ id: 'rc-andere', regions, marks: [] })}</span>
+        <span class="region-card__body">
+          <span class="region-card__title">Andere Beschwerden</span>
+          <span class="region-card__text">Nicht dabei? Beschreiben Sie es kurz in Ihrer Terminanfrage.</span>
+        </span>
+        <span class="tile__go" aria-hidden="true">${icons.arrow}</span>
+      </a>
     </div>
   </div>
 </section>

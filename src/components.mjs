@@ -46,6 +46,9 @@ export function sectionHead({ title, tone, text, id, align = 'split', link }) {
   </header>`;
 }
 
+// Long compound names may only break at their natural joint (Eigenblut-therapie, not Eigenblutthera-pie).
+export const softBreak = (name) => name.replace(/(Eigenblut|Stoßwellen|Hyaluron|Knie|Hüft|Fuß|Hand|Ellenbogen|Schulter|Rücken)(therapie|säure|arthroskopie|prothese|chirurgie|schmerzen)/g, '$1\u00AD$2');
+
 export function treatmentTile(slug, { size = 'sm', tone = 'light' } = {}) {
   const t = treatmentBySlug[slug];
   const x = extras[slug] ?? {};
@@ -53,7 +56,7 @@ export function treatmentTile(slug, { size = 'sm', tone = 'light' } = {}) {
     <span class="tile__badges">${(x.badges ?? []).map((b) => html`<span class="badge">${b}</span>`)}</span>
     <span class="tile__art">${artFor(slug)}</span>
     <span class="tile__body">
-      <span class="tile__title">${t.name}</span>
+      <span class="tile__title">${softBreak(t.name)}</span>
       ${size !== 'sm' ? html`<span class="tile__text">${t.teaser}</span>` : ''}
     </span>
     <span class="tile__go" aria-hidden="true">${icons.arrow}</span>

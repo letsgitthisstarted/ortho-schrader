@@ -162,7 +162,7 @@ ${bodyMap()}
     </div>
     <div class="wahlarzt-home__facts">
       <div class="fact-card" data-reveal><p class="fact-card__big">Direkt</p><p>Ohne Überweisung – Sie können direkt zu mir kommen.</p></div>
-      <div class="fact-card" data-reveal><p class="fact-card__big">bis 80 %</p><p>des Kassentarifs erstattet Ihre Krankenkasse (ÖGK, BVAEB, SVS).</p></div>
+      <div class="fact-card" data-reveal><p class="fact-card__big">bis 80 %</p><p>des Kassentarifs erstattet Ihre Krankenkasse (ÖGK, BVAEB, SVS).</p></div>
       <div class="fact-card" data-reveal><p class="fact-card__big">Zeitnah</p><p>Termine in der Regel zeitnah, bei akuten Beschwerden nach Möglichkeit kurzfristig.</p></div>
     </div>
   </div>

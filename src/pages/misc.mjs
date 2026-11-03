@@ -96,7 +96,7 @@ ${ctaPanel()}
 // ───────────────────────────── Wahlarzt & Kosten
 
 const wahlarztFaq = [
-  ['Wie viel bekomme ich von der Krankenkasse zurück?', 'Die Kasse erstattet bis zu 80 % des Betrags, den sie einem Vertragsarzt für dieselbe Leistung bezahlen würde. Wie viel das in Euro ist, hängt von der Leistung und Ihrer Kasse ab – das Honorar ist in der Regel höher als dieser Tarif.'],
+  ['Wie viel bekomme ich von der Krankenkasse zurück?', 'Die Kasse erstattet bis zu 80 % des Betrags, den sie einem Vertragsarzt für dieselbe Leistung bezahlen würde. Wie viel das in Euro ist, hängt von der Leistung und Ihrer Kasse ab – das Honorar ist in der Regel höher als dieser Tarif.'],
   ['Wie reiche ich die Honorarnote ein?', 'Bezahlte Honorarnoten können mit Ihrer Zustimmung über WAHonline direkt von einer Wahlarztpraxis an die Krankenversicherung übermittelt werden. Fragen Sie bei Ihrem Termin nach, wie die Einreichung für Sie erfolgt. Falls Sie selbst einreichen, nutzen Sie das Portal Ihrer Kasse oder den Postweg. Bereits übermittelte Rechnungen bitte nicht doppelt einreichen.'],
   ['Übernimmt meine private Zusatzversicherung die Kosten?', 'Viele ambulante Zusatzversicherungen übernehmen den Rest des Wahlarzthonorars ganz oder teilweise. Operationen an der Privatklinik werden über die Sonderklasse abgerechnet. Fragen Sie am besten vorab bei Ihrer Versicherung nach.'],
   ['Brauche ich eine Überweisung?', 'Nein. Sie können direkt zu mir kommen. Für bestimmte Untersuchungen wie ein MRT stelle ich Ihnen bei Bedarf eine Zuweisung aus.'],
@@ -133,7 +133,7 @@ ${pageHero({
       ${sectionHead({ title: 'So funktioniert', tone: 'die Rückerstattung.', align: 'stack', text: 'Von der Honorarnote bis zur Erstattung – wir besprechen, welcher Weg für Sie passt.' })}
       <div class="refund__calc" data-reveal>
         <p class="refund__calc-label">Rechenbeispiel</p>
-        <p>Würde eine Untersuchung beim Vertragsarzt der Kasse <strong>50 €</strong> kosten, erstattet die Kasse Ihnen davon bis zu <strong>40 €</strong> (80 %) – unabhängig davon, wie hoch das Wahlarzthonorar ist.</p>
+        <p>Würde eine Untersuchung beim Vertragsarzt der Kasse <strong>50 €</strong> kosten, erstattet die Kasse Ihnen davon bis zu <strong>40 €</strong> (80 %) – unabhängig davon, wie hoch das Wahlarzthonorar ist.</p>
         <p class="refund__calc-note">Beispielwerte zur Veranschaulichung, keine tatsächlichen Tarife.</p>
       </div>
     </div>
@@ -170,7 +170,7 @@ ${pageHero({
   crumbs,
   title: 'Kontakt',
   tone: 'und Terminanfrage.',
-  lead: 'Am schnellsten erreichen Sie mich telefonisch. Oder Sie schicken mir Ihre Anfrage in vier kurzen Schritten – ich melde mich so bald wie möglich bei Ihnen.',
+  lead: 'Am schnellsten erreichen Sie mich telefonisch. Oder Sie schicken mir Ihre Anfrage in drei kurzen Schritten – ich melde mich so bald wie möglich bei Ihnen.',
   ctas: false,
 })}
 
