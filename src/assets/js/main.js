@@ -413,14 +413,20 @@
   };
 
   /* ───────────── floating CTA */
+  // Appointment and call stay one tap away: the dock only steps aside while another
+  // "Termin anfragen" button (or the inline form) is fully on screen, or the header shows its own.
   const float = $('[data-float-cta]');
   const hasInline = !!$('.booking--inline');
-  const visibleCtas = new Set();
-  const fio = new IntersectionObserver((entries) => { entries.forEach((en) => { if (en.isIntersecting) visibleCtas.add(en.target); else visibleCtas.delete(en.target); }); onScrollFloat(); });
-  $$('.site-footer, .cta').forEach((el) => fio.observe(el));
+  const pageCtas = $$('main [data-booking-open], .booking--inline');
+  const onScreen = (el) => {
+    const r = el.getBoundingClientRect();
+    if (!r.height) return false;
+    return el.matches('.booking--inline') ? r.bottom > 120 && r.top < innerHeight - 120 : r.top >= 0 && r.bottom <= innerHeight;
+  };
   function onScrollFloat() {
     if (!float) return;
-    const show = !hasInline && scrollY > innerHeight * 0.9 && !visibleCtas.size && !menuOpen() && !document.body.classList.contains('booking-open');
+    const headerShowsCta = !header.classList.contains('is-hidden') && scrollY < innerHeight * 0.5;
+    const show = !headerShowsCta && !pageCtas.some(onScreen) && !menuOpen() && !document.body.classList.contains('booking-open');
     float.classList.toggle('is-visible', show);
     float.inert = !show;
   }

@@ -218,6 +218,7 @@ function footer() {
 function floatingCta() {
   return html`<div class="float-cta" data-float-cta>
   <a class="float-cta__btn" href="/kontakt/#termin" data-booking-open>Termin anfragen ${icons.arrow}</a>
+  <a class="float-cta__call" href="${site.phoneHref}" aria-label="Ordination anrufen: ${site.phone}">${icons.phone}<span>Anrufen</span></a>
 </div>`;
 }
 
