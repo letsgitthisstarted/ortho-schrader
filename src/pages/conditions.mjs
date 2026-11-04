@@ -1,11 +1,11 @@
 import { html, icons, art, figure } from '../lib.mjs';
 import { layout, medicalPageSchema } from '../layout.mjs';
 import { sourcesFor, focusFor } from '../data/sources.mjs';
-import { guidesFor } from '../data/guides.mjs';
+import { guides, guidesFor } from '../data/guides.mjs';
 import { regions } from '../data/site.mjs';
 import { conditions } from '../data/conditions.mjs';
 import { treatmentBySlug } from '../data/treatments.mjs';
-import { twoTone, pageHero, sectionHead, bodyMap, faqSection, ctaPanel, regionPill, artFor, softBreak, pageSources } from '../components.mjs';
+import { twoTone, pageHero, sectionHead, bodyMap, faqSection, ctaPanel, regionPill, artFor, softBreak, pageSources, guideLink } from '../components.mjs';
 
 const regionById = Object.fromEntries(regions.map((r) => [r.id, r]));
 
@@ -28,11 +28,11 @@ ${pageHero({ crumbs, title: c.h1, tone: c.h1b, lead: c.lead })}
       <p data-reveal>Eine erste Orientierung. Sie ersetzt keine Untersuchung – hilft aber, Ihre Beschwerden einzuordnen.</p>
     </div>
     <div class="finder__stage">
-      <div class="finder__options" role="tablist" aria-label="Wo oder wann schmerzt es?">
+      <div class="finder__options" role="tablist" aria-orientation="vertical" aria-label="Wo oder wann schmerzt es?">
         ${c.finder.map(([q], i) => html`<button class="finder__opt${i === 0 ? ' is-active' : ''}" role="tab" id="fd-tab-${i}" aria-selected="${i === 0}" aria-controls="fd-panel-${i}" tabindex="${i === 0 ? 0 : -1}" data-finder-opt="${i}">${q}</button>`)}
       </div>
       <div class="finder__answer">
-        ${c.finder.map(([q, a], i) => html`<div class="finder__card${i === 0 ? ' is-active' : ''}" role="tabpanel" id="fd-panel-${i}" aria-labelledby="fd-tab-${i}" data-finder-card="${i}"${i === 0 ? '' : ' hidden'}>
+        ${c.finder.map(([q, a], i) => html`<div class="finder__card${i === 0 ? ' is-active' : ''}" role="tabpanel" tabindex="0" id="fd-panel-${i}" aria-labelledby="fd-tab-${i}" data-finder-card="${i}"${i === 0 ? '' : ' hidden'}>
           <p class="finder__card-q">${q}</p>
           <p class="finder__card-a">${a}</p>
         </div>`)}
@@ -46,7 +46,7 @@ ${pageHero({ crumbs, title: c.h1, tone: c.h1b, lead: c.lead })}
 
 <section class="section causes">
   <div class="wrap">
-    ${sectionHead({ title: 'Häufige Ursachen', tone: 'und was dahintersteckt.', text: 'Die genaue Ursache kläre ich mit Gespräch, Untersuchung und Ultraschall – meist schon beim ersten Termin.' })}
+    ${sectionHead({ title: 'Häufige Ursachen', tone: 'und was dahintersteckt.', text: 'Die Ursache kläre ich mit Gespräch, Untersuchung und Ultraschall – oft schon beim ersten Termin, wenn nötig ergänzt durch Röntgen oder MRT.' })}
     <ol class="cause-list">
       ${c.causes.map((x, i) => html`<li class="cause" data-reveal>
         <span class="cause__num">${String(i + 1).padStart(2, '0')}</span>
@@ -54,14 +54,10 @@ ${pageHero({ crumbs, title: c.h1, tone: c.h1b, lead: c.lead })}
           <h3 class="cause__title">${x.name}</h3>
           <p>${x.text}</p>
         </div>
-        <div class="chips">${x.treatments.map((s) => html`<a class="chip chip--outline" href="/behandlungen/${s}/">${treatmentBySlug[s].name}</a>`)}</div>
+        ${x.treatments.length ? html`<div class="chips">${x.treatments.map((s) => html`<a class="chip chip--outline" href="/behandlungen/${s}/">${treatmentBySlug[s].name}</a>`)}</div>` : ''}
       </li>`)}
     </ol>
-    ${guidesFor(c.slug).map((g) => html`<a class="guide-link" href="/beschwerden/${g.slug}/" data-reveal>
-      <span class="guide-link__label">Ausführlich erklärt</span>
-      <span class="guide-link__title">${g.name}: Beschwerden, Diagnose und Behandlung</span>
-      <span class="guide-link__go" aria-hidden="true">${icons.arrow}</span>
-    </a>`)}
+    ${guidesFor(c.slug).map(guideLink)}
   </div>
 </section>
 
@@ -71,8 +67,9 @@ ${pageHero({ crumbs, title: c.h1, tone: c.h1b, lead: c.lead })}
     <div class="options__grid">
       <div class="options__col options__col--light" data-reveal>
         <p class="options__label">Ohne Operation</p>
+        ${c.activeFirst && c.extraConservative ? html`<ul class="options__extra">${c.extraConservative.map((e) => html`<li>${icons.check}${e}</li>`)}</ul>` : ''}
         <ul>${c.conservative.map(treatmentLink)}</ul>
-        ${c.extraConservative ? html`<ul class="options__extra">${c.extraConservative.map((e) => html`<li>${icons.check}${e}</li>`)}</ul>` : ''}
+        ${!c.activeFirst && c.extraConservative ? html`<ul class="options__extra">${c.extraConservative.map((e) => html`<li>${icons.check}${e}</li>`)}</ul>` : ''}
       </div>
       <div class="options__col options__col--dark" data-reveal>
         <p class="options__label">Mit Operation</p>
@@ -82,7 +79,7 @@ ${pageHero({ crumbs, title: c.h1, tone: c.h1b, lead: c.lead })}
     </div>
   </div>
 </section>
-${faqSection(c.faq, { title: 'Häufige Fragen', tone: `zu ${c.name}` })}
+${faqSection(c.faq, { title: 'Häufige Fragen', tone: `rund um ${c.name}` })}
 
 <div class="wrap page-sources">${pageSources(sourcesFor[c.slug], { focus: focusFor(c.slug) })}</div>
 
@@ -139,6 +136,7 @@ ${bodyMap({ id: 'bodymap', heading: false })}
         <span class="tile__go" aria-hidden="true">${icons.arrow}</span>
       </a>
     </div>
+    <div class="guide-links">${guides.map(guideLink)}</div>
   </div>
 </section>
 ${ctaPanel()}

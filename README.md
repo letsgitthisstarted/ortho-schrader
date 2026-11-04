@@ -5,7 +5,7 @@ Static website for the Wahlarzt practice in Salzburg. No framework, no dependenc
 ## Run it
 
 ```bash
-npm run dev        # builds and serves http://localhost:4321, rebuilds when src/ changes
+npm run dev        # builds a preview and serves http://localhost:4321 (this computer only), rebuilds when src/ changes
 npm run build      # writes the finished site into dist/
 npm run check      # checks generated pages, links, anchors, ARIA references and share image
 ```
@@ -26,7 +26,7 @@ Upload the contents of `dist/` to any static host (GitHub Pages, Netlify, Cloudf
 npm run deploy     # builds a no-index preview and publishes it to the gh-pages branch
 ```
 
-The preview tells search engines not to index it (`noindex`), so draft content is not intended for search indexing. For the real launch, build without `NOINDEX` and point the domain to the host.
+The preview tells search engines not to index it (`noindex` on every page; robots.txt stays open so crawlers can read that). `npm run deploy` runs the page/link check before publishing. The preview is still publicly reachable – noindex is not access control. For the real launch, build without `NOINDEX` and point the domain to the host.
 
 ## Where things live
 
@@ -47,19 +47,25 @@ Adding a treatment = one new entry in `treatments.mjs` (plus a claim/badges entr
 
 ## Wording rules for medical content
 
-The site follows § 53 Ärztegesetz and the ÖÄK-Verordnung „Arzt und Öffentlichkeit 2014“:
+Required by § 53 Ärztegesetz and the ÖÄK-Verordnung „Arzt und Öffentlichkeit 2014“:
 
 - factual and in line with current medical knowledge – no promises of success, no superlatives
 - no comparisons with or criticism of other doctors (also not implicitly, e.g. "bei mir statt monatelang warten")
+- names or photos of patients only with their documented consent (§ 5 Abs. 4)
+
+House style on top of that (stricter than the law, kept on purpose):
+
 - no product or brand names for drugs or medical devices (e.g. say "PRP", not a brand)
 - **no fixed numbers for doses, repetitions or recovery times** – always "individuell", "nach Befund", "besprechen wir gemeinsam"
-- names or photos of patients only with their documented consent (§ 5 Abs. 4)
+- written for patients, not doctors: say what is possible and what the evidence roughly shows, without textbook caveats. Where the evidence is mixed (e.g. hyaluronic acid outside the knee, PRP at tendons), say so in one plain sentence.
+- no warning boxes – except the short emergency note on the sports-injury page (Rettung 144)
 
 ## Sources, author line and structured data (E-E-A-T)
 
 - Every condition, treatment and guide page ends with "Quellen & weiterführende Informationen" (AWMF guidelines from `src/data/sources.mjs`, each looked up in the AWMF register on 3 November 2026) and an author line with Thomas's photo.
-- Until Thomas has approved the medical texts, the line reads "Inhaltlich verantwortlich: Thomas Schrader … Stand: …". After his approval set `site.content.medicallyReviewed = true` and `site.content.reviewed` to the date in `src/data/site.mjs`: the line then reads "Medizinisch geprüft von …" and the structured data adds `reviewedBy`/`lastReviewed`. Update `updated` whenever texts change.
-- Pages without a matching guideline (e.g. elbow, shockwave, PRP) show no sources – do not add one that does not fit.
+- Until Thomas has approved the medical texts, a normal build (`npm run build`) shows "Inhaltlich verantwortlich: Thomas Schrader … Stand: …". After his approval set `site.content.medicallyReviewed = true` and `site.content.reviewed` to the date in `src/data/site.mjs`: the line then reads "Medizinisch geprüft von … Geprüft am …" and the structured data adds `reviewedBy`/`lastReviewed`. Update `updated` whenever texts change (it is also the sitemap's `lastmod`).
+- Preview builds (`npm run dev`, `npm run deploy`) already show the "Medizinisch geprüft" look while `previewAsReviewed` is true, so Thomas sees the final state. A live build never does that before the real approval.
+- Pages without a matching guideline (e.g. elbow, shockwave, spine infiltration) show no sources – do not add one that does not fit. PRP cites the knee guideline because it covers PRP for knee arthrosis. Guidelines whose validity has ended carry "Stand …, in Überarbeitung" in `sources.mjs`.
 - Structured data: `Person` (training, credentials, memberships, `sameAs` profiles), `Physician`, `WebSite`, `MedicalWebPage` with author and citations on all medical pages, `ProfilePage` on Über mich.
 - Über mich lists independent profiles ("Unabhängig nachprüfbar", `site.profiles`). Add the official Ärzteliste entry and a DocFinder profile there once they are known.
 - Note on the rules: the ÖÄK-Verordnung itself forbids untrue, unscientific and "aufdringliche und/oder marktschreierische" self-promotion, and false claims of medical exclusivity. It does not list superlatives by name – this site avoids them anyway because they cannot be verified.
@@ -92,20 +98,20 @@ Still needed: Thomas with a patient / at the ultrasound, the treatment room at h
 - Homepage: hero and practice details → introduction (face first) → interactive body map → "Ihr Weg" story → treatments → network → Wahlarzt & Kosten → FAQ.
 - Mobile body-map results appear immediately after the region selector, above the figure (which then shrinks to at most 300px).
 - Contact map: `src/assets/img/map-healthlab.jpg` is a static OpenStreetMap excerpt served from this site, so visitors' browsers contact no map service (no cookie banner or privacy-policy entry needed). The page shows the required OpenStreetMap attribution. Regenerate it only if the address changes: `clang -fobjc-arc -framework AppKit scripts/generate-map.m -o /tmp/ortho-map && /tmp/ortho-map` (macOS).
-- Treatment pages: an "Ausführlich erklärt" section of expandable topics (`src/data/treatment-details.mjs`), then notes for related complaints, "Ohne Zeitdruck, ganzheitlich" and costs.
+- Treatment pages: an "Ausführlich erklärt" section of expandable topics (`src/data/treatment-details.mjs`), then notes for related complaints ("Anwendungsgebiete"), "Ohne Zeitdruck, ganzheitlich" and costs. Keep the main text and the expandable topics saying the same thing when wording changes.
 - SEO: titles about 60 characters and descriptions up to about 155, main search term first; structured data for physician, procedures, breadcrumbs and FAQs.
 - Social cards use the checked-in `src/assets/img/social-card.png`. The optional macOS generator is `scripts/generate-social-card.m`; normal builds need no image tooling.
 
 ## Before going live
 
 - [x] Remove sample patient reviews from the homepage.
-- [ ] Appointment delivery: deliberately deferred. The form still prepares an e-mail; no request is stored or sent by the website. See the booking discussion below.
+- [ ] **Appointment delivery: launch blocker.** The form still prepares an e-mail; no request is stored or sent by the website, although the button says "Anfrage senden". Before going live either connect real online booking (planned) or relabel it "E-Mail vorbereiten" and say so before the patient starts.
 - [ ] Impressum: exact specialist title (as registered with the Ärztekammer) + issuing country, UID number (marked yellow on the page).
 - [ ] Datenschutz: confirm the actual hosting provider, processing/retention details and health-data handling with legal review (still visibly marked as a draft).
 - [ ] Real photos (see above). The remaining portrait/personal-image slots are still placeholders; do not substitute invented photos of the doctor or patients.
-- [ ] **"Medizinisch geprüft von" is switched on for the preview only** (`site.content.medicallyReviewed` in `src/data/site.mjs`). Thomas has not reviewed the texts yet: either he reviews them before launch (then set `reviewed` to that date) or switch it back to `false`.
+- [ ] **Medical review:** once Thomas has approved the texts, set `medicallyReviewed: true` and `reviewed` to that date in `src/data/site.mjs`. Until then only previews show "Medizinisch geprüft von"; a live build says "Inhaltlich verantwortlich". After later substantive text changes, ask him again before moving the date.
 - [ ] Thomas to approve medical wording before public launch, including the cost notes per treatment (e.g. "Hyaluronsäure wird von gesetzlichen Krankenkassen in der Regel nicht übernommen").
-- [ ] Decide with Thomas whether any emergency hint (e.g. 144) is wanted. Urgent-care boxes on every complaint page were tried and removed (branch `codex-audit`).
+- [ ] Thomas to approve the emergency wording: the sports-injury page has a short note (Rettung 144) at the end of its notes and a half-sentence in the intro; the back-pain FAQ names warning signs; the booking option "Sportverletzung oder Unfall" points to 144. Urgent-care boxes on every complaint page were tried and removed (branch `codex-audit`).
 - [ ] Confirm the actual WAHonline process, prices, OUCC contact/location, and procedures listed below. No prices or practice-specific electronic submission promises have been invented.
 - [ ] Domain `ortho-schrader.com` → host; submit `sitemap.xml` in Google Search Console.
 - [ ] Google Business Profile for healthlab / Alpenstraße 99, docfinder.at, herold.at – same name/address/phone everywhere.
@@ -126,6 +132,10 @@ Facts marked as assumptions in the content – please confirm or correct:
 10. **"Ihre Operation" page** – please confirm: anaesthesia talk before the operation date, he remains the treating doctor during the clinic stay, follow-up checks at healthlab, costs via Sonderklasse/private insurance and what is possible without it.
 11. **Ärzteliste / DocFinder** – links to his official Ärzteliste entry and a DocFinder profile, if they exist (for "Unabhängig nachprüfbar" on Über mich).
 12. **Kniearthrose / Hüftarthrose pages** – please review, especially the treatment and joint-replacement sections.
+13. **Hyaluronsäure outside the knee** – does he offer it for the hip or small joints? The page now says the evidence there is weaker and it is only used in selected cases.
+14. **PRP** – which preparation kit is used, and for which tendon problems does he offer it?
+15. **Spinal infiltrations** – image guidance (ultrasound, X-ray/CT or none), medicines used, and what he refers on. Needed for a short, accurate procedure and risk paragraph.
+16. **Risk/aftercare notes** – a short approved paragraph per group (injections, spine, prostheses, arthroscopy, hand/foot): main risks, realistic limits, and what to do if something worrying happens afterwards.
 
 
 ## Appointment system — discussion pending

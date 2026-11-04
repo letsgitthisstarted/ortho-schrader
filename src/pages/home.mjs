@@ -187,7 +187,7 @@ ${bodyMap()}
       <div class="fact-card fact-card--home">
         <svg class="fact-card__icon fact-card__ring" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="18"/><circle cx="22" cy="22" r="18" pathLength="100" data-count-ring/></svg>
         <p class="fact-card__big">bis <span class="fact-card__num" data-count-to="80">80</span>&nbsp;%</p>
-        <p>des Kassentarifs erstattet Ihre Krankenkasse (ÖGK, BVAEB, SVS).</p>
+        <p>des Kassentarifs erstattet die ÖGK. Bei BVAEB und SVS gelten eigene Regeln.</p>
       </div>
       <div class="fact-card fact-card--home">
         <span class="fact-card__icon" aria-hidden="true">${icons.calendar}</span>

@@ -1,10 +1,11 @@
 // Check the generated site's routes, anchors, accessibility references and metadata.
-// Usage: npm run build && npm run check
+// Usage: npm run build && npm run check   (for a sub-folder build: BASE=/name/ node scripts/check-site.mjs)
 import assert from 'node:assert/strict';
 import { readdir, readFile, stat } from 'node:fs/promises';
 import { resolve, dirname, join } from 'node:path';
 
 const root = resolve('dist');
+const BASE = process.env.BASE ?? '/';
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
   return (await Promise.all(entries.map((e) => e.isDirectory() ? walk(join(dir, e.name)) : join(dir, e.name)))).flat();
@@ -28,7 +29,8 @@ for (const [file, { html }] of pages) {
   for (const [, raw] of html.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
     if (/^(?:[a-z]+:|\/\/)/i.test(raw)) continue;
     const [pathname, fragment] = raw.split('#');
-    let target = pathname ? (pathname.startsWith('/') ? join(root, decodeURIComponent(pathname)) : resolve(dirname(file), decodeURIComponent(pathname))) : file;
+    const local = BASE !== '/' && pathname.startsWith(BASE) ? pathname.slice(BASE.length - 1) : pathname;
+    let target = local ? (local.startsWith('/') ? join(root, decodeURIComponent(local)) : resolve(dirname(file), decodeURIComponent(local))) : file;
     const info = await stat(target).catch(() => null);
     assert(info, `Missing target ${raw}: ${file}`);
     if (info.isDirectory()) target = join(target, 'index.html');

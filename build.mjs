@@ -18,6 +18,17 @@ import { guides } from './src/data/guides.mjs';
 import { guidePage, operationPage } from './src/pages/guides.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
+
+// Environment flags: only "1", "true" or "yes" switch them on (NOINDEX=0 stays off).
+const flag = (name) => /^(1|true|yes)$/i.test(process.env[name] ?? '');
+// Preview builds (NOINDEX=1 for GitHub Pages, PREVIEW=1 for the dev server) show the final look to Thomas.
+const NOINDEX = flag('NOINDEX');
+const PREVIEW = NOINDEX || flag('PREVIEW');
+
+// "Medizinisch geprüft von" is shown only once Thomas has really approved the texts (site.content.medicallyReviewed),
+// or in a preview with previewAsReviewed. A normal build for going live therefore never claims a review that did not happen.
+site.content.showReviewed = site.content.medicallyReviewed || (PREVIEW && !!site.content.previewAsReviewed);
+if (!PREVIEW && !site.content.medicallyReviewed) console.warn('Note: texts not yet medically reviewed – pages say "Inhaltlich verantwortlich".');
 const out = join(root, 'dist');
 const BASE = process.env.BASE ?? '/';
 
@@ -37,11 +48,10 @@ const pages = [
   ['/schriften/', fonts()],
 ];
 
-// Root-relative links are written as "/…"; rebase them when hosting under a sub-path.
-const rebase = (s) => (BASE === '/' ? s : s.replace(/(href|src)="\/(?!\/)/g, `$1="${BASE}`));
+// Root-relative links are written as "/…"; rebase them when hosting under a sub-path (also url('/…') in inline CSS).
+const rebase = (s) => (BASE === '/' ? s : s.replace(/(href|src)="\/(?!\/)/g, `$1="${BASE}`).replace(/url\((['"]?)\/(?!\/)/g, `url($1${BASE}`));
 
-// Preview builds (NOINDEX=1) ask search engines to stay away until the site goes live.
-const NOINDEX = !!process.env.NOINDEX;
+// Preview builds (NOINDEX=1) ask search engines not to index the pages until the site goes live.
 const finalize = (html) => {
   const out = rebase(html);
   return NOINDEX ? out.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex, nofollow">') : out;
@@ -59,12 +69,14 @@ await writeFile(join(out, '404.html'), finalize(notFound()));
 
 await cp(join(root, 'src/assets'), join(out, 'assets'), { recursive: true });
 
-const today = new Date().toISOString().slice(0, 10);
+// lastmod is the date the texts were last changed (site.content.updated), not the build date.
+const lastmod = site.content.updated;
 await writeFile(join(out, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pages.filter(([p]) => !['/impressum/', '/datenschutz/', '/schriften/'].includes(p)).map(([p]) => `  <url><loc>${site.domain}${p}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
+${pages.filter(([p]) => !['/impressum/', '/datenschutz/', '/schriften/'].includes(p)).map(([p]) => `  <url><loc>${site.domain}${p}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n')}
 </urlset>
 `);
-await writeFile(join(out, 'robots.txt'), NOINDEX ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\n\nSitemap: ${site.domain}/sitemap.xml\n`);
+// The preview must stay crawlable: a crawler blocked by robots.txt never sees the pages' noindex.
+await writeFile(join(out, 'robots.txt'), NOINDEX ? 'User-agent: *\nAllow: /\n' : `User-agent: *\nAllow: /\n\nSitemap: ${site.domain}/sitemap.xml\n`);
 
 console.log(`Built ${pages.length + 1} pages into dist/ (base ${BASE}${NOINDEX ? ', noindex' : ''})`);

@@ -7,6 +7,8 @@ import { conditions, conditionBySlug } from './data/conditions.mjs';
 import { guides } from './data/guides.mjs';
 
 const regionById = Object.fromEntries(regions.map((r) => [r.id, r]));
+// Footer: the main topics of the practice, chosen on purpose rather than the first entries of the list.
+const footerTreatments = ['arthrosetherapie', 'knieprothese', 'hueftprothese', 'kniearthroskopie', 'kortison-infiltration', 'hyaluronsaeure', 'stosswellentherapie', 'sportmedizin'];
 
 const personId = `${site.domain}/#person`;
 const praxisId = `${site.domain}/#praxis`;
@@ -43,7 +45,7 @@ export const websiteSchema = () => ({
 });
 
 // Medical page wrapper: what the page is about, who answers for it, when it was last updated and its sources.
-// reviewedBy/lastReviewed only once the texts are approved (site.content.medicallyReviewed).
+// reviewedBy/lastReviewed only once the texts are approved (site.content.showReviewed, see build.mjs).
 export const medicalPageSchema = ({ path, name, description, about, sources = [] }) => ({
   '@context': 'https://schema.org',
   '@type': 'MedicalWebPage',
@@ -56,7 +58,7 @@ export const medicalPageSchema = ({ path, name, description, about, sources = []
   about,
   author: personRef,
   dateModified: site.content.updated,
-  ...(site.content.medicallyReviewed ? { reviewedBy: personRef, lastReviewed: site.content.reviewed } : {}),
+  ...(site.content.showReviewed ? { reviewedBy: personRef, lastReviewed: site.content.reviewed } : {}),
   ...(sources.length ? { citation: sources.map((s) => ({ '@type': 'CreativeWork', name: s.title, url: s.url })) } : {}),
 });
 
@@ -71,7 +73,9 @@ export const physicianSchema = () => ({
   url: site.domain + '/',
   telephone: site.phone.replace(/\s/g, ''),
   email: site.email,
-  medicalSpecialty: ['Orthopedic', 'Musculoskeletal', 'SportsMedicine'],
+  // Only values from schema.org's MedicalSpecialty list; orthopaedics and sports medicine are in description/knowsAbout.
+  medicalSpecialty: ['https://schema.org/Musculoskeletal', 'https://schema.org/Surgical'],
+  knowsAbout: ['Orthopädie', 'Unfallchirurgie', 'Sportmedizin'],
   isAcceptingNewPatients: true,
   address: {
     '@type': 'PostalAddress',
@@ -250,7 +254,7 @@ function footer() {
       </div>
       <div>
         <p class="site-footer__label">Behandlungen</p>
-        <ul>${treatments.slice(0, 8).map((t) => html`<li><a href="/behandlungen/${t.slug}/">${t.name}</a></li>`)}<li><a href="/behandlungen/">Alle Behandlungen</a></li></ul>
+        <ul>${footerTreatments.map((s) => treatments.find((t) => t.slug === s)).map((t) => html`<li><a href="/behandlungen/${t.slug}/">${t.name}</a></li>`)}<li><a href="/behandlungen/">Alle Behandlungen</a></li></ul>
       </div>
       <div>
         <p class="site-footer__label">Praxis</p>
@@ -285,12 +289,12 @@ export function bookingForm({ inline = false } = {}) {
   const reasons = [
     ['abklaerung', 'Abklärung von Beschwerden', 'Schmerzen, die ich untersuchen lassen möchte'],
     ['zweitmeinung', 'Zweitmeinung zu einer Operation', 'Mir wurde eine OP empfohlen'],
-    ['injektion', 'Injektion oder Stoßwelle', 'Ich weiß schon, welche Behandlung ich möchte'],
-    ['verletzung', 'Sportverletzung oder Unfall', 'Es ist vor Kurzem passiert'],
+    ['injektion', 'Injektion oder Stoßwelle', 'Ich interessiere mich für eine bestimmte Behandlung'],
+    ['verletzung', 'Sportverletzung oder Unfall', 'Es ist vor Kurzem passiert – bei schweren Verletzungen bitte Rettung 144 oder Notaufnahme'],
     ['kontrolle', 'Kontrolle oder Nachsorge', 'Ich war schon in Behandlung'],
   ];
   const p = inline ? 'bk-inline' : 'bk';
-  return html`<form class="booking${inline ? ' booking--inline' : ''}" data-booking novalidate>
+  return html`<form class="booking${inline ? ' booking--inline' : ''}" data-booking data-mail="${site.email}" novalidate>
   <div class="booking__head">
     <button type="button" class="booking__back" data-bk-back aria-label="Zurück" hidden>${icons.back}</button>
     <div class="booking__progress" aria-hidden="true"><span data-bk-progress></span></div>
@@ -331,7 +335,7 @@ export function bookingForm({ inline = false } = {}) {
     <details class="booking__more">
       <summary>${icons.plus}<span>E-Mail oder Nachricht hinzufügen <span class="field__opt">optional</span></span></summary>
       <div class="field"><label for="${p}-mail">E-Mail <span class="field__opt">optional</span></label><input id="${p}-mail" name="email" type="email" inputmode="email" autocomplete="email" enterkeyhint="done" aria-describedby="${p}-mail-error"><p class="field__error" id="${p}-mail-error" data-field-error="email" hidden></p></div>
-      <div class="field"><label for="${p}-msg">Kurz zu Ihren Beschwerden</label><textarea id="${p}-msg" name="nachricht" rows="3" placeholder="Zum Beispiel: Knieschmerzen rechts seit drei Wochen, vor allem beim Stiegensteigen." aria-describedby="${p}-msg-hint"></textarea><p class="field__hint" id="${p}-msg-hint">Ein, zwei Sätze genügen. Befunde und Bilder schicken Sie bitte nicht hier mit – bringen Sie sie zum Termin.</p></div>
+      <div class="field"><label for="${p}-msg">Kurz zu Ihren Beschwerden</label><textarea id="${p}-msg" name="nachricht" rows="3" maxlength="800" placeholder="Zum Beispiel: Knieschmerzen rechts seit drei Wochen, vor allem beim Stiegensteigen." aria-describedby="${p}-msg-hint"></textarea><p class="field__hint" id="${p}-msg-hint">Ein, zwei Sätze genügen. Befunde und Bilder schicken Sie bitte nicht hier mit – bringen Sie sie zum Termin.</p></div>
     </details>
     <label class="consent"><input type="checkbox" name="consent" required aria-describedby="${p}-consent-error"><span>Meine Angaben dürfen zur Terminvereinbarung verwendet werden (<a href="/datenschutz/">Datenschutz</a>).</span></label>
     <p class="field__error" id="${p}-consent-error" data-field-error="consent" hidden></p>
@@ -344,6 +348,7 @@ export function bookingForm({ inline = false } = {}) {
     <p class="booking__q" tabindex="-1">Danke<span data-bk-name></span>.</p>
     <p class="booking__text">Ihre Anfrage ist in Ihrem E-Mail-Programm vorbereitet. Schicken Sie sie ab – ich melde mich so bald wie möglich mit einem Terminvorschlag.</p>
     <p class="booking__text">Eilig? Rufen Sie direkt an: <a href="${site.phoneHref}">${site.phone}</a></p>
+    <p class="booking__again"><button type="button" class="link-btn" data-bk-retry>E-Mail nicht geöffnet? Erneut versuchen</button><button type="button" class="link-btn" data-bk-edit>Angaben ändern</button></p>
   </div>
 </form>`;
 }

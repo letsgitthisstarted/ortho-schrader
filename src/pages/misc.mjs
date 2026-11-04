@@ -99,7 +99,7 @@ ${ctaPanel()}
   return layout({
     path: '/ueber-mich/',
     title: 'Über mich | Thomas Schrader, Orthopäde in Salzburg',
-    description: 'Thomas Schrader, Facharzt für Orthopädie und Unfallchirurgie mit über 25 Jahren ärztlicher Erfahrung: Werdegang, Arbeitsweise und Qualifikationen. Wahlarzt im healthlab Salzburg.',
+    description: 'Thomas Schrader, Facharzt für Orthopädie und Unfallchirurgie mit über 25 Jahren Erfahrung: Werdegang, Arbeitsweise und Qualifikationen. Wahlarzt in Salzburg.',
     body,
     crumbs,
     schema: [{ '@context': 'https://schema.org', '@type': 'ProfilePage', url: `${site.domain}/ueber-mich/`, name: 'Über mich', mainEntity: personSchema() }, physicianSchema()],
@@ -110,7 +110,7 @@ ${ctaPanel()}
 // ───────────────────────────── Wahlarzt & Kosten
 
 const wahlarztFaq = [
-  ['Wie viel bekomme ich von der Krankenkasse zurück?', 'Die Kasse erstattet bis zu 80 % des Betrags, den sie einem Vertragsarzt für dieselbe Leistung bezahlen würde. Wie viel das in Euro ist, hängt von der Leistung und Ihrer Kasse ab – das Honorar ist in der Regel höher als dieser Tarif.'],
+  ['Wie viel bekomme ich von der Krankenkasse zurück?', 'Die ÖGK erstattet bis zu 80 % des Betrags, den sie einem Vertragsarzt für dieselbe Leistung bezahlen würde. BVAEB und SVS haben eigene Regeln, etwa mit Selbstbehalten. Wie viel das in Euro ist, hängt von der Leistung und Ihrer Kasse ab – das Honorar ist in der Regel höher als dieser Tarif.'],
   ['Wie reiche ich die Honorarnote ein?', 'Bezahlte Honorarnoten können mit Ihrer Zustimmung über WAHonline direkt von einer Wahlarztpraxis an die Krankenversicherung übermittelt werden. Fragen Sie bei Ihrem Termin nach, wie die Einreichung für Sie erfolgt. Falls Sie selbst einreichen, nutzen Sie das Portal Ihrer Kasse oder den Postweg. Bereits übermittelte Rechnungen bitte nicht doppelt einreichen.'],
   ['Übernimmt meine private Zusatzversicherung die Kosten?', 'Viele ambulante Zusatzversicherungen übernehmen den Rest des Wahlarzthonorars ganz oder teilweise. Operationen an der Privatklinik werden über die Sonderklasse abgerechnet. Fragen Sie am besten vorab bei Ihrer Versicherung nach.'],
   ['Brauche ich eine Überweisung?', 'Nein. Sie können direkt zu mir kommen. Für bestimmte Untersuchungen wie ein MRT stelle ich Ihnen bei Bedarf eine Zuweisung aus.'],
@@ -147,7 +147,7 @@ ${pageHero({
       ${sectionHead({ title: 'So funktioniert', tone: 'die Rückerstattung.', align: 'stack', text: 'Von der Honorarnote bis zur Erstattung – wir besprechen, welcher Weg für Sie passt.' })}
       <div class="refund__calc" data-reveal>
         <p class="refund__calc-label">Rechenbeispiel</p>
-        <p>Würde eine Untersuchung beim Vertragsarzt der Kasse <strong>50 €</strong> kosten, erstattet die Kasse Ihnen davon bis zu <strong>40 €</strong> (80 %) – unabhängig davon, wie hoch das Wahlarzthonorar ist.</p>
+        <p>Würde eine Untersuchung beim Vertragsarzt der Kasse <strong>50 €</strong> kosten, erstattet die ÖGK Ihnen davon bis zu <strong>40 €</strong> (80 %) – unabhängig davon, wie hoch das Wahlarzthonorar ist. BVAEB und SVS rechnen nach eigenen Regeln.</p>
         <p class="refund__calc-note">Beispielwerte zur Veranschaulichung, keine tatsächlichen Tarife.</p>
       </div>
     </div>
@@ -174,7 +174,7 @@ ${ctaPanel()}
   return layout({
     path: '/wahlarzt-kosten/',
     title: 'Wahlarzt in Salzburg: Kosten & Rückerstattung | Orthopädie',
-    description: 'Was ist ein Wahlarzt, was kostet ein Termin und wie funktioniert die Rückerstattung durch ÖGK, BVAEB und SVS? Antworten für Ihren Termin in Salzburg.',
+    description: 'Was ist ein Wahlarzt, was kostet ein Termin und wie funktioniert die Rückerstattung durch die Krankenkasse? Antworten für Ihren Termin in Salzburg.',
     body,
     crumbs,
     faq: wahlarztFaq,

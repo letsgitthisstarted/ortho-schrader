@@ -5,7 +5,8 @@ import { site, regions, groups } from '../data/site.mjs';
 import { treatments, treatmentBySlug, extras } from '../data/treatments.mjs';
 import { conditionBySlug } from '../data/conditions.mjs';
 import { details } from '../data/treatment-details.mjs';
-import { twoTone, pageHero, sectionHead, treatmentTile, steps, faqSection, ctaPanel, artFor, figChip, pageSources } from '../components.mjs';
+import { guides } from '../data/guides.mjs';
+import { twoTone, pageHero, sectionHead, treatmentTile, steps, faqSection, ctaPanel, artFor, figChip, pageSources, tocMobile, guideLink } from '../components.mjs';
 
 const regionById = Object.fromEntries(regions.map((r) => [r.id, r]));
 const groupById = Object.fromEntries(groups.map((g) => [g.id, g]));
@@ -55,6 +56,7 @@ ${pageHero({
       <a class="btn btn--dark btn--block" href="/kontakt/#termin" data-booking-open>Termin anfragen</a>
     </aside>
     <div class="article__body">
+      ${tocMobile(toc)}
       ${t.sections.map((s) => html`<section class="prose-block" id="${s.id}">
         <h2 class="prose-block__title" data-reveal>${s.title}</h2>
         ${s.steps ? steps(s.steps) : html`<div class="prose" data-reveal>${s.html}</div>`}
@@ -72,13 +74,13 @@ ${pageHero({
       <div class="notes">
       ${t.conditions?.length ? html`<aside class="note note--conditions" data-reveal>
         <span class="note__icon">${icons.pin}</span>
-        <div><p class="note__title">Hilft unter anderem bei</p>
+        <div><p class="note__title">${t.slug === 'ultraschall' ? 'Eingesetzt unter anderem bei' : 'Anwendungsgebiete'}</p>
           <div class="chips">${t.conditions.map((c) => html`<a class="chip chip--outline" href="/beschwerden/${c}/">${conditionBySlug[c].name}</a>`)}</div>
         </div>
       </aside>` : ''}
       <aside class="note" data-reveal>
         <span class="note__icon">${icons.clock}</span>
-        <div><p class="note__title">Ohne Zeitdruck, ganzheitlich betrachtet</p><p>Für Ihre Entscheidung gibt es keinen Zeitdruck. Ich betrachte nicht nur die schmerzende Stelle, sondern auch Haltung, Bewegung, Alltag und Ihre Ziele – und erkläre Ihnen alle Möglichkeiten, ohne und mit Operation. Fragen sind jederzeit willkommen, auch nach dem Termin.</p></div>
+        <div><p class="note__title">${t.slug === 'sportmedizin' ? 'Rasch abgeklärt, ganzheitlich betrachtet' : 'Ohne Zeitdruck, ganzheitlich betrachtet'}</p><p>${t.slug === 'sportmedizin' ? 'Nach einer frischen Verletzung ist eine rasche Abklärung sinnvoll; für geplante Behandlungen nehmen wir uns die Zeit, die Sie brauchen.' : 'Bei geplanten Behandlungen gibt es für Ihre Entscheidung keinen Zeitdruck.'} Ich betrachte nicht nur die schmerzende Stelle, sondern auch Haltung, Bewegung, Alltag und Ihre Ziele – und erkläre Ihnen alle Möglichkeiten, ohne und mit Operation. Fragen sind jederzeit willkommen, auch nach dem Termin.</p></div>
       </aside>
       <aside class="note" data-reveal>
         <span class="note__icon">${icons.euro}</span>
@@ -88,7 +90,12 @@ ${pageHero({
         <span class="note__icon">${icons.layers}</span>
         <div><p class="note__title">Ihre Operation Schritt für Schritt</p><p>Von der Entscheidung über die Operation an der ${site.clinic.name} bis zur Nachsorge in der Ordination. <a href="/operation/">So läuft Ihre Operation ab</a>.</p></div>
       </aside>` : ''}
+      ${t.urgent ? html`<aside class="note note--urgent" role="note" data-reveal>
+        <span class="note__icon">${icons.alert}</span>
+        <div><p class="note__title">${t.urgent[0]}</p><p>${t.urgent[1]}</p></div>
+      </aside>` : ''}
       </div>
+      ${(() => { const list = guides.filter((g) => g.treatments.includes(t.slug)); return list.length ? html`<div class="guide-links">${list.map(guideLink)}</div>` : ''; })()}
       ${pageSources(sourcesFor[t.slug], { focus: focusFor(t.slug) })}
     </div>
   </div>
@@ -123,12 +130,13 @@ ${ctaPanel({ title: 'Ist das der richtige Weg für Sie?', tone: 'Klären wir es 
       sources: sourcesFor[t.slug],
     }), {
       '@context': 'https://schema.org',
-      '@type': 'MedicalProcedure',
+      // Operations are typed SurgicalProcedure; procedureType only takes the two MedicalProcedureType values.
+      '@type': t.group === 'operativ' ? 'SurgicalProcedure' : 'MedicalProcedure',
       '@id': `${site.domain}/behandlungen/${t.slug}/#procedure`,
       name: t.h1,
       description: t.description,
       howPerformed: t.lead,
-      procedureType: t.group === 'operativ' ? 'https://schema.org/SurgicalProcedure' : percutaneous.includes(t.slug) ? 'https://schema.org/PercutaneousProcedure' : 'https://schema.org/NoninvasiveProcedure',
+      ...(t.group === 'operativ' ? {} : { procedureType: percutaneous.includes(t.slug) ? 'https://schema.org/PercutaneousProcedure' : 'https://schema.org/NoninvasiveProcedure' }),
       bodyLocation: t.regions.map((id) => regionById[id].label).join(', '),
       relevantSpecialty: 'https://schema.org/Musculoskeletal',
       url: `${site.domain}/behandlungen/${t.slug}/`,
@@ -152,7 +160,7 @@ ${pageHero({
   crumbs,
   title: 'Behandlungen',
   tone: 'von der Spritze bis zum neuen Gelenk.',
-  lead: 'Ich behandle das gesamte Spektrum der Orthopädie und Unfallchirurgie – mit dem Grundsatz: konservativ, so lange es sinnvoll ist, operativ, wenn es der bessere Weg ist. Hier finden Sie alle Behandlungen im Überblick.',
+  lead: 'Von der ersten Abklärung bis zur Operation an Hüfte, Knie, Hand und Fuß – mit dem Grundsatz: konservativ, so lange es sinnvoll ist, operativ, wenn es der bessere Weg ist. Hier finden Sie alle Behandlungen im Überblick.',
 })}
 
 <section class="section t-index" data-filter-root>

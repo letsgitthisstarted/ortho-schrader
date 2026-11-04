@@ -5,7 +5,7 @@ import { treatments, treatmentBySlug } from '../data/treatments.mjs';
 import { conditionBySlug } from '../data/conditions.mjs';
 import { operation } from '../data/guides.mjs';
 import { sourcesFor, focusFor } from '../data/sources.mjs';
-import { pageHero, sectionHead, treatmentTile, steps, faqSection, ctaPanel, pageSources } from '../components.mjs';
+import { pageHero, sectionHead, treatmentTile, steps, faqSection, ctaPanel, pageSources, tocMobile } from '../components.mjs';
 
 // In-depth condition page (Kniearthrose, Hüftarthrose): article with table of contents, like the treatment pages.
 export function guidePage(g) {
@@ -25,6 +25,7 @@ ${pageHero({ crumbs, title: g.h1, tone: g.h1b, lead: g.lead })}
       <a class="btn btn--dark btn--block" href="/kontakt/#termin" data-booking-open>Termin anfragen</a>
     </aside>
     <div class="article__body">
+      ${tocMobile(toc)}
       ${g.sections.map((s) => html`<section class="prose-block" id="${s.id}">
         <h2 class="prose-block__title" data-reveal>${s.title}</h2>
         <div class="prose" data-reveal>${s.html}</div>
@@ -121,7 +122,7 @@ ${ctaPanel({ title: 'Eine Operation steht im Raum?', tone: 'Besprechen wir Ihre 
   return layout({
     path: '/operation/',
     title: 'Ihre Operation: Ablauf & Nachsorge | Orthopäde Salzburg',
-    description: 'Hüft- und Knieprothese, Arthroskopie, Hand- und Fußchirurgie: So läuft Ihre Operation bei Thomas Schrader ab – von der Entscheidung bis zur Nachsorge in Salzburg.',
+    description: 'Hüft- und Knieprothese, Arthroskopie, Hand- und Fußchirurgie: So läuft Ihre Operation ab – von der Entscheidung bis zur Nachsorge in Salzburg.',
     body,
     crumbs,
     faq: operation.faq,

@@ -21,7 +21,7 @@ export const treatments = [
     sections: [
       {
         id: 'wann', title: 'Wann eine Kortison-Infiltration infrage kommt',
-        html: `<p>Kortison wirkt stark entzündungshemmend. Als Infiltration wirkt es dort, wo es gebraucht wird – ohne den ganzen Körper zu belasten wie eine Tablettenkur. Infrage kommt es, wenn eine Entzündung die Beschwerden antreibt, zum Beispiel bei:</p>
+        html: `<p>Kortison wirkt stark entzündungshemmend. Als Infiltration wirkt es dort, wo es gebraucht wird – der übrige Körper wird dabei deutlich weniger belastet als bei Kortison in Tablettenform. Infrage kommt es, wenn eine Entzündung die Beschwerden antreibt, zum Beispiel bei:</p>
 <ul>
 <li><strong>Arthrose mit Reizzustand</strong> an Knie, Hüfte, Schulter oder Daumensattelgelenk</li>
 <li><strong>Schleimbeutelentzündung</strong> an Schulter, Hüfte oder Ellenbogen</li>
@@ -43,8 +43,8 @@ export const treatments = [
       },
       {
         id: 'erwarten', title: 'Was Sie erwarten können',
-        html: `<p>Viele Patient:innen spüren nach einigen Tagen eine deutliche Erleichterung. Wie stark und wie lange die Wirkung anhält, ist allerdings sehr unterschiedlich. Kortison beruhigt die Entzündung – Knorpel aufbauen oder eine Sehne reparieren kann es nicht. Deshalb gehört die Infiltration meist zu einem Plan mit Bewegung, Physiotherapie oder anderen Bausteinen wie <a href="/behandlungen/stosswellentherapie/">Stoßwelle</a>.</p>
-<p>Ob und wann eine Infiltration wiederholt werden kann, entscheide ich individuell und zurückhaltend.</p>`,
+        html: `<p>Viele Patient:innen spüren nach einigen Tagen eine deutliche Erleichterung. Wie lange sie anhält, ist unterschiedlich. Kortison beruhigt die Entzündung – Knorpel aufbauen oder eine Sehne reparieren kann es nicht. Bei Sehnenbeschwerden gebe ich es an die Sehnenscheide oder in den Schleimbeutel, nie in die Sehne selbst. Meist gehört die Infiltration zu einem Plan mit Bewegung, Physiotherapie oder anderen Bausteinen wie <a href="/behandlungen/stosswellentherapie/">Stoßwelle</a>.</p>
+<p>Ob und wann eine Infiltration wiederholt werden kann, entscheide ich individuell.</p>`,
       },
       {
         id: 'risiken', title: 'Mögliche Nebenwirkungen',
@@ -66,11 +66,11 @@ export const treatments = [
     name: 'Hyaluronsäure',
     h1: 'Hyaluronsäure-Injektion',
     seoTitle: 'Hyaluronsäure bei Arthrose in Salzburg | Thomas Schrader',
-    description: 'Hyaluronsäure bei Arthrose von Knie, Hüfte und kleinen Gelenken: Wirkung, Ablauf und Kosten. Wahlarzt-Ordination für Orthopädie Thomas Schrader in Salzburg.',
-    teaser: 'Für mehr Gleitfähigkeit in arthrotischen Gelenken – an Knie, Hüfte und kleinen Gelenken.',
+    description: 'Hyaluronsäure bei Arthrose, vor allem am Knie: Wirkung, Ablauf, Studienlage und Kosten. Wahlarzt-Ordination für Orthopädie Thomas Schrader in Salzburg.',
+    teaser: 'Für mehr Gleitfähigkeit in arthrotischen Gelenken – vor allem am Knie.',
     regions: ['knie', 'huefte', 'hand', 'fuss', 'schulter'],
     lead: 'Hyaluronsäure ist ein natürlicher Bestandteil der Gelenkflüssigkeit – sie macht sie zäh, elastisch und gleitfähig. Bei Arthrose nimmt ihre Qualität ab. Eine Hyaluronsäure-Injektion („Hyaluronspritze“) soll die Gleitfähigkeit im Gelenk verbessern und so Schmerzen bei Bewegung lindern – vor allem bei leichter bis mittlerer Arthrose.',
-    facts: [['Ort', 'ambulant in der Ordination'], ['Geeignet für', 'Knie, Hüfte und kleine Gelenke'], ['Präzision', 'bei Bedarf ultraschallgezielt'], ['Planung', 'individuell nach Stadium']],
+    facts: [['Ort', 'ambulant in der Ordination'], ['Geeignet für', 'vor allem Kniearthrose'], ['Präzision', 'bei Bedarf ultraschallgezielt'], ['Planung', 'individuell nach Stadium']],
     sections: [
       {
         id: 'fuer-wen', title: 'Für wen Hyaluronsäure infrage kommt',
@@ -88,7 +88,7 @@ export const treatments = [
       },
       {
         id: 'erwarten', title: 'Was Sie erwarten können',
-        html: `<p>Hyaluronsäure wirkt nicht sofort; eine mögliche Besserung baut sich über einige Wochen auf. Wie gut und wie lange sie wirkt, ist von Mensch zu Mensch verschieden – manche profitieren deutlich, andere weniger. Am besten wirkt sie als Teil eines Gesamtplans mit Bewegung und Muskelaufbau. Mehr dazu unter <a href="/behandlungen/arthrosetherapie/">Arthrose ohne Operation behandeln</a>.</p>`,
+        html: `<p>Hyaluronsäure wirkt nicht sofort; die Besserung baut sich über einige Wochen auf. Am meisten Erfahrung gibt es bei leichter bis mittlerer Kniearthrose. Die Studienlage ist dort gemischt: Manche Patient:innen profitieren deutlich, andere weniger. An der Hüfte und an kleinen Gelenken ist die Studienlage schwächer; dort setze ich sie nur in ausgewählten Fällen ein. Am besten wirkt sie als Teil eines Gesamtplans mit Bewegung und Muskelaufbau. Mehr dazu unter <a href="/behandlungen/arthrosetherapie/">Arthrose ohne Operation behandeln</a>.</p>`,
       },
       {
         id: 'kosten', title: 'Kosten',
@@ -96,7 +96,7 @@ export const treatments = [
       },
     ],
     faq: [
-      ['Wie schnell wirkt Hyaluronsäure?', 'Eine mögliche Besserung entwickelt sich meist über einige Wochen. Wie ausgeprägt sie ist, ist individuell verschieden.'],
+      ['Wie schnell wirkt Hyaluronsäure?', 'Nicht sofort – die Besserung baut sich meist über einige Wochen auf.'],
       ['Muss die Behandlung wiederholt werden?', 'Das hängt davon ab, wie gut und wie lange sie bei Ihnen wirkt. Ob und wann eine Auffrischung sinnvoll ist, besprechen wir gemeinsam.'],
       ['Zahlt die Krankenkasse Hyaluronsäure?', 'In der Regel nicht. Private Zusatzversicherungen erstatten je nach Tarif einen Teil – am besten vorab nachfragen.'],
     ],
@@ -113,18 +113,18 @@ export const treatments = [
     description: 'Eigenbluttherapie (PRP) bei beginnender Arthrose, Tennisellenbogen und Sehnenreizungen: Ablauf, Studienlage und Kosten. Orthopädie in Salzburg.',
     teaser: 'Plasma aus dem eigenen Blut – bei beginnender Arthrose und hartnäckigen Sehnenreizungen.',
     regions: ['knie', 'ellenbogen', 'fuss', 'huefte', 'schulter'],
-    lead: 'Bei der Eigenbluttherapie wird aus einer kleinen Menge Ihres eigenen Blutes plättchenreiches Plasma (PRP) gewonnen und gezielt injiziert. Die darin enthaltenen Wachstumsfaktoren sollen Entzündungen dämpfen und körpereigene Heilungsprozesse unterstützen. Verwendet wird ausschließlich Material aus Ihrem eigenen Körper.',
-    facts: [['Ort', 'ambulant in der Ordination'], ['Material', 'ausschließlich körpereigen'], ['Präzision', 'bei Sehnen ultraschallgezielt'], ['Planung', 'individuell nach Befund']],
+    lead: 'Bei der Eigenbluttherapie wird aus einer kleinen Menge Ihres eigenen Blutes plättchenreiches Plasma (PRP) gewonnen und gezielt injiziert. Die darin enthaltenen Wachstumsfaktoren sollen Entzündungen dämpfen und körpereigene Heilungsprozesse unterstützen. Der Wirkstoff stammt aus Ihrem eigenen Blut.',
+    facts: [['Ort', 'ambulant in der Ordination'], ['Material', 'aus dem eigenen Blut'], ['Präzision', 'bei Sehnen ultraschallgezielt'], ['Planung', 'individuell nach Befund']],
     sections: [
       {
         id: 'einsatz', title: 'Wann die Eigenbluttherapie infrage kommt',
         html: `<ul>
-<li><strong>Beginnende Arthrose</strong> an Knie, Hüfte oder Sprunggelenk</li>
+<li><strong>Beginnende Arthrose</strong>, vor allem am Knie</li>
 <li><strong>Tennis- und Golferellenbogen</strong>, wenn Schonung und Übungen nicht ausreichen</li>
 <li><strong>Reizungen von Patella- und Achillessehne</strong></li>
 <li><strong>Fersenschmerz</strong> durch eine gereizte Sehnenplatte (Plantarfasziitis)</li>
 </ul>
-<p>Gerade an Sehnen, an denen andere Injektionen ungünstig sein können, ist das Eigenblut eine mögliche Alternative.</p>`,
+<p>Gerade an Sehnen, an denen andere Injektionen ungünstig sein können, ist das Eigenblut eine Alternative.</p>`,
       },
       {
         id: 'ablauf', title: 'So läuft die Behandlung ab',
@@ -137,7 +137,7 @@ export const treatments = [
       },
       {
         id: 'studien', title: 'Was die Studien sagen',
-        html: `<p>Die Datenlage hat sich in den letzten Jahren deutlich erweitert, besonders bei beginnender Kniearthrose und beim Tennisellenbogen. Die Ergebnisse sind aber nicht einheitlich, und nicht alle sprechen gleich gut an. Ich empfehle die Eigenbluttherapie dort, wo sie nach aktuellem Wissen sinnvoll erscheint – und sage Ihnen auch, wenn ein anderer Weg mehr verspricht.</p>`,
+        html: `<p>Am besten untersucht ist die beginnende Kniearthrose: Hier nennt die deutsche Leitlinie PRP als Möglichkeit, wenn andere Maßnahmen nicht ausreichen. Bei Sehnenbeschwerden wie dem Tennisellenbogen oder an der Achillessehne sind die Ergebnisse gemischt; dort setze ich PRP vor allem ein, wenn Übungen und Belastungsanpassung allein nicht reichen. Ich empfehle die Eigenbluttherapie dort, wo sie nach aktuellem Wissen sinnvoll ist – und sage Ihnen auch, wenn ein anderer Weg mehr verspricht.</p>`,
       },
       {
         id: 'kosten', title: 'Kosten',
@@ -146,8 +146,8 @@ export const treatments = [
     ],
     faq: [
       ['Ist die Eigenbluttherapie schmerzhaft?', 'Die Blutabnahme kennen Sie. Die Injektion selbst ist kurz; an Sehnen kann danach für einige Zeit ein Druckgefühl bestehen.'],
-      ['Wann merke ich eine Wirkung?', 'Eine mögliche Besserung entwickelt sich über Wochen, weil sich das Gewebe erst umbauen muss. Wie stark sie ausfällt, ist individuell verschieden.'],
-      ['Gibt es Nebenwirkungen?', 'Da nur körpereigenes Material verwendet wird, sind Unverträglichkeiten sehr unwahrscheinlich. Eine vorübergehende Reizung an der Injektionsstelle ist möglich.'],
+      ['Wann merke ich eine Wirkung?', 'Die Besserung entwickelt sich meist über einige Wochen.'],
+      ['Gibt es Nebenwirkungen?', 'Weil der Wirkstoff aus Ihrem eigenen Blut stammt, sind allergische Reaktionen sehr unwahrscheinlich. Wie bei jeder Injektion sind eine vorübergehende Reizung, ein kleiner Bluterguss oder sehr selten eine Infektion möglich.'],
     ],
     conditions: ['knieschmerzen', 'ellenbogenschmerzen', 'fussschmerzen', 'hueftschmerzen'],
     related: ['hyaluronsaeure', 'stosswellentherapie', 'kortison-infiltration'],
@@ -159,11 +159,11 @@ export const treatments = [
     name: 'Infiltrationen an der Wirbelsäule',
     h1: 'Infiltrationen an der Wirbelsäule',
     seoTitle: 'Wirbelsäulen-Infiltration in Salzburg | Thomas Schrader',
-    description: 'Facetten- und ISG-Infiltration bei Rückenschmerzen: gezielt an der Schmerzquelle behandeln, kombiniert mit Physiotherapie und Training. Salzburg.',
-    teaser: 'Facetten- und ISG-Infiltrationen – Rückenschmerzen gezielt an der Quelle behandeln.',
+    description: 'Facetten- und ISG-Infiltration bei Rückenschmerzen: Schmerzen lindern und Bewegung wieder möglich machen, kombiniert mit Physiotherapie und Training. Salzburg.',
+    teaser: 'Facetten- und ISG-Infiltrationen – damit Bewegung und Training wieder möglich werden.',
     regions: ['ruecken'],
-    lead: 'Rückenschmerzen gehen häufig von kleinen Strukturen aus: den Wirbelgelenken (Facettengelenken), dem Kreuz-Darmbein-Gelenk (ISG) oder einer gereizten Nervenwurzel. Bei einer Infiltration – umgangssprachlich „Spritze in den Rücken“ – wird ein Betäubungsmittel, je nach Befund mit einem entzündungshemmenden Zusatz, gezielt an diese Stelle gebracht. Das kann Schmerzen lindern und gleichzeitig zeigen, woher sie tatsächlich kommen.',
-    facts: [['Ort', 'ambulant in der Ordination'], ['Ziel', 'Schmerz an der Quelle behandeln'], ['Kombination', 'mit Physiotherapie und Training'], ['Planung', 'individuell nach Befund']],
+    lead: 'Rückenschmerzen können von verschiedenen Strukturen ausgehen, etwa von den kleinen Wirbelgelenken (Facettengelenken), dem Kreuz-Darmbein-Gelenk (ISG) oder einer gereizten Nervenwurzel. Bei einer Infiltration – umgangssprachlich „Spritze in den Rücken“ – wird ein Betäubungsmittel, je nach Befund mit einem entzündungshemmenden Zusatz, gezielt an diese Stelle gebracht. Das kann Schmerzen lindern, damit Bewegung und Training wieder leichter fallen.',
+    facts: [['Ort', 'ambulant in der Ordination'], ['Ziel', 'Schmerz lindern, Bewegung ermöglichen'], ['Kombination', 'mit Physiotherapie und Training'], ['Planung', 'individuell nach Befund']],
     sections: [
       {
         id: 'arten', title: 'Welche Infiltrationen es gibt',
@@ -177,7 +177,7 @@ export const treatments = [
       {
         id: 'ablauf', title: 'So läuft die Behandlung ab',
         steps: [
-          ['Genaue Untersuchung', 'Gezielte Tests grenzen ein, woher der Schmerz kommt. Vorhandene MRT- oder Röntgenbilder sehen wir uns gemeinsam an.'],
+          ['Genaue Untersuchung', 'Gezielte Tests grenzen ein, woher der Schmerz kommen kann. Vorhandene MRT- oder Röntgenbilder sehen wir uns gemeinsam an.'],
           ['Infiltration', 'Im Liegen und nach Desinfektion – meist in wenigen Minuten erledigt.'],
           ['Kurze Nachbeobachtung', 'Sie bleiben kurz in der Ordination, bevor Sie nach Hause gehen.'],
           ['Aktiv werden', 'Die schmerzärmere Zeit nutzen wir für Physiotherapie und Training – im healthlab direkt im selben Haus.'],
@@ -209,7 +209,7 @@ export const treatments = [
     h1: 'Stoßwellentherapie (ESWT)',
     seoTitle: 'Stoßwellentherapie (ESWT) in Salzburg | Thomas Schrader',
     description: 'Stoßwellentherapie bei Fersensporn, Kalkschulter, Tennisellenbogen und Sehnenreizungen – ohne Spritze und ohne Operation. Orthopädie in Salzburg.',
-    teaser: 'Schallwellen von außen regen die Heilung an – ohne Spritze und ohne Schnitt.',
+    teaser: 'Energiereiche Schallwellen von außen – bei hartnäckigen Sehnenreizungen, ohne Spritze und ohne Schnitt.',
     regions: ['schulter', 'ellenbogen', 'huefte', 'knie', 'fuss'],
     lead: 'Bei der Stoßwellentherapie (ESWT) werden energiereiche Schallwellen von außen über die Haut in das schmerzende Gewebe geleitet. Sie sollen die Durchblutung und den Stoffwechsel anregen, Kalkablagerungen lockern und chronische Reizungen an Sehnenansätzen beruhigen – ohne Spritze, ohne Schnitt, ambulant in der Ordination.',
     facts: [['Ort', 'ambulant in der Ordination'], ['Ohne', 'Spritze und Schnitt'], ['Im Alltag', 'meist ohne Ausfallzeit'], ['Planung', 'mehrere Sitzungen, individuell']],
@@ -223,7 +223,7 @@ export const treatments = [
 <li><strong>Reizungen von Achilles- und Patellasehne</strong></li>
 <li><strong>Schmerzen an der Hüftaußenseite</strong> durch gereizte Sehnenansätze</li>
 </ul>
-<p>Für einige dieser Beschwerden ist die Wirksamkeit in Studien gut untersucht – vor allem, wenn Schonung, Einlagen und Übungen allein nicht ausreichen.</p>`,
+<p>Gut belegt ist die Stoßwelle beim Fersenschmerz und bei der Kalkschulter – vor allem, wenn Schonung, Einlagen und Übungen allein nicht ausreichen. Ob sie für Sie infrage kommt, besprechen wir nach der Untersuchung.</p>`,
       },
       {
         id: 'ablauf', title: 'So läuft eine Sitzung ab',
@@ -235,7 +235,7 @@ export const treatments = [
       },
       {
         id: 'erwarten', title: 'Was Sie erwarten können',
-        html: `<p>Die Stoßwelle setzt einen Reiz – der Körper braucht danach Zeit, um das Gewebe umzubauen. Eine mögliche Besserung entwickelt sich daher oft erst über Wochen nach der Behandlung. Nicht in jedem Fall ist die Stoßwelle geeignet, etwa in der Schwangerschaft oder bei bestimmten Vorerkrankungen. Das klären wir vorab.</p>`,
+        html: `<p>Die Stoßwelle setzt einen Reiz – der Körper braucht danach Zeit, um das Gewebe umzubauen. Die Besserung entwickelt sich daher meist über einige Wochen nach der Behandlung. Direkt danach kann die Stelle für kurze Zeit gerötet oder druckempfindlich sein. Nicht in jedem Fall ist die Stoßwelle geeignet, etwa in der Schwangerschaft oder bei bestimmten Vorerkrankungen. Das klären wir vorab.</p>`,
       },
     ],
     faq: [
@@ -266,12 +266,12 @@ export const treatments = [
 <li><strong>Injektionen</strong> – <a href="/behandlungen/kortison-infiltration/">Kortison</a> bei Reizzuständen, <a href="/behandlungen/hyaluronsaeure/">Hyaluronsäure</a> oder <a href="/behandlungen/eigenbluttherapie/">Eigenblut</a>, je nach Befund.</li>
 <li><strong>Medikamente</strong> – gezielt und zeitlich begrenzt, wenn Schmerzen Bewegung verhindern.</li>
 <li><strong>Hilfsmittel</strong> – Einlagen, Bandagen oder Orthesen, angepasst von der Orthopädietechnik im healthlab.</li>
-<li><strong>Gewicht</strong> – weniger Körpergewicht entlastet vor allem Knie und Hüfte.</li>
+<li><strong>Gewicht</strong> – bei Übergewicht entlastet schon etwas weniger Körpergewicht vor allem Knie und Hüfte.</li>
 </ul>`,
       },
       {
         id: 'stadien', title: 'Was in welchem Stadium hilft',
-        html: `<p>In frühen Stadien stehen Training und Gewicht im Vordergrund, ergänzt durch Injektionen, wenn sie sinnvoll sind. Bei fortgeschrittener Arthrose geht es darum, Beschwerden zu lindern und Beweglichkeit zu erhalten – und gemeinsam abzuwägen, ob und wann ein Gelenkersatz infrage kommt.</p>`,
+        html: `<p>In frühen Stadien stehen Training und, wenn nötig, das Gewicht im Vordergrund, ergänzt durch Injektionen, wenn sie sinnvoll sind. Bei fortgeschrittener Arthrose geht es darum, Beschwerden zu lindern und Beweglichkeit zu erhalten – und gemeinsam abzuwägen, ob und wann ein Gelenkersatz infrage kommt.</p>`,
       },
       {
         id: 'op', title: 'Und wann eine Operation?',
@@ -281,7 +281,7 @@ export const treatments = [
     faq: [
       ['Kann man Arthrose rückgängig machen?', 'Verlorener Knorpel wächst nicht nach. Schmerzen und Beweglichkeit lassen sich aber häufig deutlich verbessern.'],
       ['Ist Bewegung bei Arthrose schädlich?', 'In der Regel nicht – gelenkschonende Bewegung wie Radfahren oder Schwimmen ist meist sogar hilfreich. Was für Sie passt, besprechen wir individuell.'],
-      ['Wann ist der richtige Zeitpunkt für eine Prothese?', 'Das entscheiden Sie – nicht das Röntgenbild. Wenn Sie Ihr Leben wegen des Gelenks stark einschränken müssen, wägen wir die Möglichkeiten gemeinsam ab.'],
+      ['Wann ist der richtige Zeitpunkt für eine Prothese?', 'Den Ausschlag geben Ihre Beschwerden, nicht das Röntgenbild allein. Wenn Sie Ihr Leben wegen des Gelenks stark einschränken müssen und andere Behandlungen nicht mehr ausreichen, wägen wir die Möglichkeiten gemeinsam ab – mit Untersuchung und Bildern.'],
     ],
     conditions: ['knieschmerzen', 'hueftschmerzen', 'handschmerzen', 'fussschmerzen', 'schulterschmerzen'],
     related: ['hyaluronsaeure', 'kortison-infiltration', 'knieprothese'],
@@ -421,13 +421,13 @@ export const treatments = [
     description: 'Kniearthroskopie bei Meniskusriss, freiem Gelenkkörper oder Knorpelschaden: wann sie sinnvoll ist, Ablauf und Nachbehandlung. Orthopäde in Salzburg.',
     teaser: 'Gelenkspiegelung über kleine Zugänge – bei Meniskusriss, freien Gelenkkörpern und Blockaden.',
     regions: ['knie'],
-    lead: 'Bei einer Kniearthroskopie – auch Kniespiegelung genannt – wird das Kniegelenk über kleine Hautschnitte mit einer Kamera untersucht und behandelt. Typische Gründe sind ein Meniskusriss, der das Knie blockiert, oder freie Gelenkkörper. Wichtig ist eine sorgfältige Indikation: Nicht jedes schmerzende Knie profitiert von einer Arthroskopie.',
+    lead: 'Bei einer Kniearthroskopie – auch Kniespiegelung genannt – wird das Kniegelenk über kleine Hautschnitte mit einer Kamera untersucht und behandelt. Typische Gründe sind ein Meniskusriss, der das Knie richtig blockiert, ein frischer Riss, der sich nähen lässt, oder freie Gelenkkörper. Wichtig ist eine sorgfältige Indikation: Nicht jedes schmerzende Knie profitiert von einer Arthroskopie.',
     facts: [['Ort', 'Privatklinik Wehrle-Diakonissen'], ['Zugang', 'über kleine Hautschnitte'], ['Ziel', 'so viel Meniskus wie möglich erhalten'], ['Planung', 'individuell nach Befund']],
     sections: [
       {
         id: 'wann', title: 'Wann eine Arthroskopie infrage kommt',
         html: `<ul>
-<li>Das Knie <strong>blockiert</strong> oder klemmt – häufig durch einen eingeschlagenen Meniskusriss</li>
+<li>Das Knie ist <strong>blockiert</strong> und lässt sich nicht mehr ganz strecken – häufig durch einen eingeschlagenen Meniskusriss</li>
 <li>Ein <strong>frischer Meniskusriss</strong>, der sich möglicherweise nähen lässt</li>
 <li><strong>Freie Gelenkkörper</strong>, die das Gelenk reizen</li>
 <li>Bestimmte <strong>umschriebene Knorpelschäden</strong></li>
@@ -435,7 +435,7 @@ export const treatments = [
       },
       {
         id: 'nicht', title: 'Wann eher nicht',
-        html: `<p>Bei Kniearthrose ohne Blockaden zeigt eine Arthroskopie nach heutigem Wissen meist keinen Vorteil gegenüber gezielter Physiotherapie. In diesem Fall bespreche ich mit Ihnen, welche <a href="/behandlungen/arthrosetherapie/">Behandlungen ohne Operation</a> sinnvoll sind.</p>`,
+        html: `<p>Bei Kniearthrose und verschleißbedingten Meniskusrissen – auch wenn das Knie gelegentlich hakt oder knackt – zeigt eine Arthroskopie nach heutigem Wissen meist keinen Vorteil gegenüber gezielter Physiotherapie. In diesem Fall bespreche ich mit Ihnen, welche <a href="/behandlungen/arthrosetherapie/">Behandlungen ohne Operation</a> sinnvoll sind.</p>`,
       },
       {
         id: 'meniskus', title: 'Meniskus: erhalten, wo es geht',
@@ -447,7 +447,7 @@ export const treatments = [
       },
     ],
     faq: [
-      ['Muss ein Meniskusriss operiert werden?', 'Nicht immer. Viele, vor allem verschleißbedingte Risse lassen sich ohne Operation behandeln. Eine Operation kommt eher bei Blockaden oder bestimmten Rissformen infrage.'],
+      ['Muss ein Meniskusriss operiert werden?', 'Nicht immer. Viele, vor allem verschleißbedingte Risse lassen sich ohne Operation behandeln. Eine Operation kommt eher bei einer echten Blockade oder bei frischen, nähbaren Rissen infrage.'],
       ['Wie lange bin ich nach einer Kniearthroskopie im Krankenstand?', 'Das hängt vom Eingriff und von Ihrer Tätigkeit ab. Einen realistischen Zeitraum besprechen wir vor der Operation.'],
     ],
     conditions: ['knieschmerzen'],
@@ -464,7 +464,7 @@ export const treatments = [
     teaser: 'Kleine, ambulante Eingriffe bei Karpaltunnel, schnellendem Finger und Ganglion.',
     regions: ['hand'],
     lead: 'Eingeschlafene Finger in der Nacht oder ein Finger, der hängen bleibt und dann springt: Viele Beschwerden an der Hand lassen sich zunächst mit Schiene oder Infiltration behandeln. Reicht das nicht, kann ein kurzer, ambulanter Eingriff in örtlicher Betäubung helfen.',
-    facts: [['Setting', 'ambulant'], ['Betäubung', 'örtlich'], ['Zuerst', 'Schiene oder Infiltration'], ['Planung', 'individuell nach Befund']],
+    facts: [['Ort', 'ambulant'], ['Betäubung', 'örtlich'], ['Zuerst', 'Schiene oder Infiltration'], ['Planung', 'individuell nach Befund']],
     sections: [
       {
         id: 'karpaltunnel', title: 'Karpaltunnelsyndrom',
@@ -476,7 +476,7 @@ export const treatments = [
       },
       {
         id: 'ganglion', title: 'Ganglion und Daumensattelgelenk',
-        html: `<p>Ganglien („Überbeine“) sind gutartig und müssen nicht immer entfernt werden – nur, wenn sie stören oder auf einen Nerv drücken. Bei Arthrose des Daumensattelgelenks stehen Schiene, Infiltrationen und <a href="/behandlungen/hyaluronsaeure/">Hyaluronsäure</a> an erster Stelle.</p>`,
+        html: `<p>Ganglien („Überbeine“) sind gutartig und müssen nicht immer entfernt werden – nur, wenn sie stören oder auf einen Nerv drücken. Bei Arthrose des Daumensattelgelenks helfen zuerst eine Schiene, gezielte Übungen und kleine Anpassungen im Alltag; eine <a href="/behandlungen/kortison-infiltration/">Infiltration</a> kann einen Reizzustand beruhigen.</p>`,
       },
       {
         id: 'danach', title: 'Nach dem Eingriff',
@@ -541,7 +541,9 @@ export const treatments = [
     description: 'Sportverletzungen und Überlastung abklären und behandeln: Sportmediziner und Unfallchirurg in Salzburg, mit Physiotherapie und Training im selben Haus.',
     teaser: 'Rasche Abklärung nach Sportverletzung oder Unfall – und ein Plan zurück zum Sport.',
     regions: ['knie', 'fuss', 'schulter'],
-    lead: 'Ein Verdrehtrauma beim Skifahren, ein Stich in der Wade beim Laufen oder eine Schulter nach dem Sturz vom Rad: Nach einer Verletzung zählt eine rasche, genaue Diagnose. Als Sportmediziner und Unfallchirurg mit langjähriger notärztlicher Erfahrung sehe ich Sie nach Möglichkeit kurzfristig.',
+    // Small emergency note, last of the notes under the article: acute injuries can need the ambulance, not a booked appointment.
+    urgent: ['Schwere Verletzung? Rettung 144', 'Starke Schmerzen nach einem Unfall, ein Bein, das Sie nicht belasten können, eine Fehlstellung, eine größere offene Wunde, Taubheit oder Lähmungen: Bitte nicht auf einen Termin warten – rufen Sie die Rettung (144) oder fahren Sie in die nächste Notaufnahme.'],
+    lead: 'Ein Verdrehtrauma beim Skifahren, ein Stich in der Wade beim Laufen oder eine Schulter nach dem Sturz vom Rad: Nach einer Verletzung zählt eine rasche, genaue Diagnose. Als Sportmediziner und Unfallchirurg mit langjähriger notärztlicher Erfahrung sehe ich Sie nach Möglichkeit kurzfristig – bei schweren Verletzungen ist die Notaufnahme der richtige erste Weg.',
     facts: [['Termine', 'nach Möglichkeit kurzfristig'], ['Diagnose', 'Untersuchung und Ultraschall'], ['Erfahrung', 'Notarzt seit 2001'], ['Qualifikation', 'Diplom Sportmedizin']],
     sections: [
       {
@@ -584,7 +586,7 @@ export const extras = {
   'kortison-infiltration': { claim: 'Gezielt gegen Entzündung.', badges: ['ambulant', 'ultraschallgezielt'] },
   hyaluronsaeure: { claim: 'Für mehr Gleitfähigkeit im Gelenk.', badges: ['bei Arthrose', 'ambulant'] },
   eigenbluttherapie: { claim: 'Mit Plasma aus dem eigenen Blut.', badges: ['körpereigen', 'ambulant'] },
-  'wirbelsaeulen-infiltration': { claim: 'Rückenschmerzen an der Quelle behandeln.', badges: ['ambulant', 'mit Training kombiniert'] },
+  'wirbelsaeulen-infiltration': { claim: 'Schmerz lindern, Bewegung ermöglichen.', badges: ['ambulant', 'mit Training kombiniert'] },
   stosswellentherapie: { claim: 'Ohne Spritze, ohne Schnitt.', badges: ['ohne Spritze', 'ambulant'] },
   arthrosetherapie: { claim: 'Das eigene Gelenk möglichst lange erhalten.', badges: ['ohne OP', 'individueller Plan'] },
   ultraschall: { claim: 'Der Befund, direkt beim Termin.', badges: ['strahlenfrei', 'beim ersten Termin'] },

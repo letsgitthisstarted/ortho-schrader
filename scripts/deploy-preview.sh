@@ -6,6 +6,8 @@ cd "$(dirname "$0")/.."
 REPO_URL=$(git remote get-url origin)
 NAME=$(basename -s .git "$REPO_URL")
 BASE="/$NAME/" NOINDEX=1 node build.mjs
+node --check src/assets/js/main.js           # stop before publishing if the site script has a syntax error
+BASE="/$NAME/" node scripts/check-site.mjs  # … or a page or link is broken
 cd dist
 touch .nojekyll
 rm -rf .git

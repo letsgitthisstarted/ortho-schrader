@@ -47,12 +47,14 @@ export const site = {
   },
 
   // Who answers for the medical pages, shown under each of them and in the structured data.
-  // Set medicallyReviewed to true (and update reviewed) only after Thomas has read and approved the texts –
-  // only then do the pages say "Medizinisch geprüft" and tell search engines who reviewed them when.
+  // Set medicallyReviewed to true (and reviewed to that date) only after Thomas has read and approved the texts –
+  // only then does a normal build say "Medizinisch geprüft" and tell search engines who reviewed them when.
+  // previewAsReviewed shows that final look in preview builds only (dev server, GitHub Pages preview).
   content: {
-    updated: '2026-11-03',
-    reviewed: '2026-11-03',
-    medicallyReviewed: true, // PREVIEW ONLY: switched on to show Thomas the final look – he has not reviewed the texts yet. Set back to false if the site goes live before his review.
+    updated: '2026-11-04',
+    reviewed: '2026-11-04',
+    medicallyReviewed: false, // Thomas has not reviewed the texts yet.
+    previewAsReviewed: true,
   },
 
   // Independent pages where patients can check who he is. Add the Ärzteliste/DocFinder entries once known.
@@ -92,21 +94,21 @@ export const regions = [
     condition: 'rueckenschmerzen',
     blurb: 'Kreuzschmerzen, Schmerzen mit Ausstrahlung ins Bein oder ein steifer Nacken.',
     causes: ['Wirbelgelenke', 'Kreuz-Darmbein-Gelenk (ISG)', 'Bandscheibenvorfall', 'Muskuläre Verspannung'],
-    treatments: ['wirbelsaeulen-infiltration', 'arthrosetherapie'],
+    treatments: ['wirbelsaeulen-infiltration'],
   },
   {
     id: 'huefte', label: 'Hüfte', points: [[188, 338], [112, 338]], r: 36, chip: [188, 338, 'right'],
     condition: 'hueftschmerzen',
     blurb: 'Leistenschmerz, Schmerzen an der Außenseite oder ein Anlaufschmerz nach dem Sitzen.',
     causes: ['Hüftarthrose', 'Gereizte Sehnenansätze', 'Ausstrahlung aus dem Rücken'],
-    treatments: ['hueftprothese', 'hyaluronsaeure', 'stosswellentherapie'],
+    treatments: ['arthrosetherapie', 'stosswellentherapie', 'hueftprothese'],
   },
   {
     id: 'knie', label: 'Knie', points: [[178, 472], [122, 472]], r: 30, chip: [122, 472, 'left'],
     condition: 'knieschmerzen',
     blurb: 'Schmerzen beim Stiegensteigen, ein blockierendes Knie oder Schwellung nach dem Sport.',
     causes: ['Kniearthrose', 'Meniskusriss', 'Kniescheibenschmerz', 'Bandverletzung'],
-    treatments: ['kniearthroskopie', 'knieprothese', 'hyaluronsaeure', 'kortison-infiltration'],
+    treatments: ['arthrosetherapie', 'kortison-infiltration', 'kniearthroskopie', 'knieprothese'],
   },
   {
     id: 'fuss', label: 'Fuß', points: [[174, 608], [126, 608]], r: 28, chip: [174, 608, 'right'],
@@ -164,7 +166,7 @@ export const credentials = {
 export const homeFaq = [
   ['Brauche ich eine Überweisung?', 'Nein. In eine Wahlarzt-Ordination können Sie direkt kommen. Vorhandene Befunde, Röntgen- oder MRT-Bilder bringen Sie bitte mit.'],
   ['Wie schnell bekomme ich einen Termin?', 'In der Regel zeitnah. Bei akuten Beschwerden bemühe ich mich um einen kurzfristigen Termin – rufen Sie am besten an.'],
-  ['Was zahlt die Krankenkasse?', 'Sie bezahlen die Honorarnote zunächst selbst. Für erstattungsfähige Leistungen ist eine Einreichung bei Ihrer Krankenkasse möglich – über die Praxis mit WAHonline oder, falls nötig, durch Sie selbst. Den Ablauf klären wir bei Ihrem Termin. Die Kasse erstattet bis zu 80 % des Betrags, den sie einem Vertragsarzt für dieselbe Leistung bezahlen würde. Private Zusatzversicherungen übernehmen je nach Tarif einen Teil oder den Rest.'],
+  ['Was zahlt die Krankenkasse?', 'Sie bezahlen die Honorarnote zunächst selbst. Für erstattungsfähige Leistungen ist eine Einreichung bei Ihrer Krankenkasse möglich – über die Praxis mit WAHonline oder, falls nötig, durch Sie selbst. Den Ablauf klären wir bei Ihrem Termin. Die ÖGK erstattet bis zu 80 % des Betrags, den sie einem Vertragsarzt für dieselbe Leistung bezahlen würde; BVAEB und SVS haben eigene Regeln. Private Zusatzversicherungen übernehmen je nach Tarif einen Teil oder den Rest.'],
   ['Operieren Sie selbst?', 'Ja. Hüft- und Knieprothesen, Kniearthroskopien sowie kleinere Eingriffe an Hand und Fuß führe ich selbst an der Privatklinik Wehrle-Diakonissen in Salzburg durch – von der Beratung bis zur Nachsorge.'],
   ['Was, wenn ich eine Schulter- oder Wirbelsäulenoperation brauche?', 'Für Operationen an Schulter, Ellenbogen und Wirbelsäule sowie für den Kreuzbandersatz arbeite ich mit spezialisierten Kolleg:innen in Salzburg und Bayern zusammen. Abklärung, Vorbereitung und Nachbehandlung können bei mir bleiben.'],
   ['Behandeln Sie auch Patient:innen aus Deutschland?', 'Ja. In Salzburg als Wahlarzt – privat Versicherte reichen die Rechnung bei ihrer Versicherung ein. Gesetzlich Versicherte aus Bayern behandle ich auch in der OUCC-Gemeinschaftspraxis, die mit allen Kassen abrechnet.'],

@@ -1,15 +1,17 @@
 // Sources shown under "Quellen & weiterführende Informationen" on medical pages.
-// Only guidelines that were looked up in the AWMF register (register.awmf.org) on 3 November 2026.
+// Only guidelines that were looked up in the AWMF register (register.awmf.org) on 3 and 4 November 2026.
 // A page without a fitting guideline simply shows no sources – never add one that does not match.
 
-const awmf = (id, title) => ({ title, meta: `AWMF-Register ${id}`, url: `https://register.awmf.org/de/leitlinien/detail/${id}` });
+// status: shown for guidelines whose validity has ended and that are being revised (AWMF register, checked 4 November 2026).
+// Re-check before launch: 187-060 (Impingement) is valid until 19 Nov 2026, 005-003 (Karpaltunnel) until 31 Jan 2027.
+const awmf = (id, title, status) => ({ title, meta: `AWMF-Register ${id}${status ? ` · ${status}` : ''}`, url: `https://register.awmf.org/de/leitlinien/detail/${id}` });
 
 export const guidelines = {
   gonarthrose: awmf('187-050', 'S3-Leitlinie Gonarthrose'),
   knieTep: awmf('187-004', 'S2k-Leitlinie Indikation Knieendoprothese'),
-  koxarthrose: awmf('187-049', 'S2k-Leitlinie Koxarthrose'),
-  hueftTep: awmf('187-001', 'S3-Leitlinie Indikationskriterien zur Hüfttotalendoprothese bei Coxarthrose (EKIT-Hüfte)'),
-  kreuzschmerz: awmf('nvl-007', 'Nationale VersorgungsLeitlinie Nicht-spezifischer Kreuzschmerz'),
+  koxarthrose: awmf('187-049', 'S2k-Leitlinie Koxarthrose', 'Stand 2019, in Überarbeitung'),
+  hueftTep: awmf('187-001', 'S3-Leitlinie Indikationskriterien zur Hüfttotalendoprothese bei Coxarthrose (EKIT-Hüfte)', 'Stand 2021, in Überarbeitung'),
+  kreuzschmerz: awmf('nvl-007', 'Nationale VersorgungsLeitlinie Nicht-spezifischer Kreuzschmerz', 'Stand 2017, in Überarbeitung'),
   impingement: awmf('187-060', 'S2e-Leitlinie Subakromiales Impingement'),
   rotatorenmanschette: awmf('187-055', 'S2k-Leitlinie Rotatorenmanschettenruptur'),
   karpaltunnel: awmf('005-003', 'S3-Leitlinie Diagnostik und Therapie des Karpaltunnelsyndroms'),
@@ -40,11 +42,11 @@ export const sourcesFor = {
   hueftprothese: [g.hueftTep, g.koxarthrose],
   arthrosetherapie: [g.gonarthrose, g.koxarthrose],
   hyaluronsaeure: [g.gonarthrose],
+  eigenbluttherapie: [g.gonarthrose],
   'kortison-infiltration': [g.gonarthrose, g.impingement],
   kniearthroskopie: [g.gonarthrose],
   handchirurgie: [g.karpaltunnel],
   fusschirurgie: [g.hallux],
-  'wirbelsaeulen-infiltration': [g.kreuzschmerz],
 };
 
 // Second part of the author line ("Facharzt für … · <focus> · Zuletzt aktualisiert …"): what someone in Salzburg

@@ -49,7 +49,9 @@ export function sectionHead({ title, tone, text, id, align = 'split', link }) {
 }
 
 // Long compound names may only break at their natural joint (Eigenblut-therapie, not Eigenblutthera-pie).
-export const softBreak = (name) => name.replace(/(Eigenblut|Stoßwellen|Hyaluron|Knie|Hüft|Fuß|Hand|Ellenbogen|Schulter|Rücken)(therapie|säure|arthroskopie|arthrose|prothese|chirurgie|schmerzen)/g, '$1\u00AD$2');
+export const softBreak = (name) => name
+  .replace(/(Eigenblut|Stoßwellen|Hyaluron|Knie|Hüft|Fuß|Hand|Ellenbogen|Schulter|Rücken)(therapie|säure|arthroskopie|arthrose|prothese|chirurgie|schmerzen)/g, '$1\u00AD$2')
+  .replace(/(Bewegungs|Sport|Tennis|Golfer|Wirbelsäulen|Kortison)(apparates|apparat|verletzungen|verletzung|medizin|ellenbogen|infiltration)/g, '$1\u00AD$2');
 
 export function treatmentTile(slug, { size = 'sm', tone = 'light' } = {}) {
   const t = treatmentBySlug[slug];
@@ -94,7 +96,7 @@ export function bodyMap({ id = 'bodymap', heading = true } = {}) {
     </header>` : ''}
     <p class="sr" data-bodymap-status role="status" aria-live="polite" aria-atomic="true"></p>
     <div class="bodymap__stage">
-      <ul class="bodymap__list" role="tablist" aria-label="Körperregionen">
+      <ul class="bodymap__list" role="tablist" aria-orientation="vertical" aria-label="Körperregionen">
         ${regions.map((r, i) => html`<li role="presentation"><button class="bodymap__region" role="tab" id="${id}-tab-${r.id}" aria-selected="false" aria-controls="${id}-panel-${r.id}" data-region="${r.id}" tabindex="${i === 0 ? 0 : -1}">
           <span class="bodymap__region-label">${r.label}</span>${icons.arrow}
         </button></li>`)}
@@ -118,7 +120,7 @@ export function bodyMap({ id = 'bodymap', heading = true } = {}) {
           <ul class="bodymap__causes">${r.causes.map((c) => html`<li>${c}</li>`)}</ul>
           <p class="bodymap__card-label">Behandlungen</p>
           <div class="chips">${r.treatments.map((s) => html`<a class="chip" href="/behandlungen/${s}/">${treatmentBySlug[s].name}</a>`)}</div>
-          <a class="btn btn--light btn--block" href="/beschwerden/${r.condition}/">Mehr zu ${conditionBySlug[r.condition].name} ${icons.arrow}</a>
+          <a class="btn btn--light btn--block" href="/beschwerden/${r.condition}/">Mehr erfahren: ${conditionBySlug[r.condition].name} ${icons.arrow}</a>
         </div>`)}
       </div>
     </div>
@@ -222,7 +224,7 @@ export function photo({ label, ratio = '4/5', className = '', src }) {
 const longDate = (iso) => new Date(`${iso}T12:00:00`).toLocaleDateString('de-AT', { day: 'numeric', month: 'long', year: 'numeric' });
 
 // Closing block of every medical page: the guidelines it rests on and who answers for it.
-// "Medizinisch geprüft von" only appears once site.content.medicallyReviewed is set; until then it says who is responsible.
+// "Medizinisch geprüft von" only appears once site.content.showReviewed is set (see build.mjs); until then it says who is responsible.
 export function pageSources(list = [], { focus } = {}) {
   const c = site.content;
   return html`<aside class="sources" aria-label="Quellen und medizinische Prüfung">
@@ -233,13 +235,26 @@ export function pageSources(list = [], { focus } = {}) {
   <div class="byline">
     <img class="byline__photo" src="/assets/img/portrait-thomas-schrader.jpg" alt="" width="76" height="76" loading="lazy">
     <div class="byline__text">
-      <p class="byline__label">${c.medicallyReviewed ? 'Medizinisch geprüft von' : 'Inhaltlich verantwortlich'}</p>
+      <p class="byline__label">${c.showReviewed ? 'Medizinisch geprüft von' : 'Inhaltlich verantwortlich'}</p>
       <p class="byline__name"><a href="/ueber-mich/">${site.name}</a></p>
-      <p class="byline__meta">${site.role}${focus ? ` · ${focus}` : ''} · Zuletzt aktualisiert am ${longDate(c.medicallyReviewed ? c.reviewed : c.updated)}</p>
+      <p class="byline__meta">${site.role}${focus ? ` · ${focus}` : ''} · ${c.showReviewed ? `Geprüft am ${longDate(c.reviewed)}` : `Stand: ${longDate(c.updated)}`}</p>
     </div>
   </div>
 </aside>`;
 }
+
+// Link card to one of the in-depth guides (Kniearthrose, Hüftarthrose).
+export const guideLink = (g) => html`<a class="guide-link" href="/beschwerden/${g.slug}/" data-reveal>
+  <span class="guide-link__label">Ausführlich erklärt</span>
+  <span class="guide-link__title">${g.name}: Beschwerden, Diagnose und Behandlung</span>
+  <span class="guide-link__go" aria-hidden="true">${icons.arrow}</span>
+</a>`;
+
+// Phones and tablets: the sticky contents column is hidden there, so the article opens with a folded "Auf dieser Seite".
+export const tocMobile = (toc) => html`<details class="toc-mobile">
+  <summary>${icons.plus}<span>Auf dieser Seite</span></summary>
+  <ol>${toc.map(([id, title]) => html`<li><a href="#${id}">${title}</a></li>`)}</ol>
+</details>`;
 
 // What to bring to the first appointment – shown on the costs and contact pages.
 export const firstVisit = [

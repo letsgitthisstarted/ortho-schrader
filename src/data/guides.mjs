@@ -45,7 +45,7 @@ export const guides = [
         html: `<p>Die Grundlage ist fast immer dieselbe – und sie wirkt am besten, wenn sie zu Ihrem Alltag passt:</p>
 <ul>
 <li><strong>Bewegung und Kräftigung</strong> – gezieltes Training der Oberschenkel- und Hüftmuskulatur entlastet das Gelenk. Physiotherapie und Trainingstherapie sind im healthlab im selben Haus.</li>
-<li><strong>Gewicht</strong> – jedes Kilo weniger entlastet das Knie bei jedem Schritt.</li>
+<li><strong>Gewicht</strong> – bei Übergewicht entlastet jedes Kilo weniger das Knie bei jedem Schritt.</li>
 <li><strong>Medikamente</strong> – gezielt und zeitlich begrenzt, wenn Schmerzen die Bewegung verhindern.</li>
 <li><strong>Injektionen</strong> – <a href="/behandlungen/kortison-infiltration/">Kortison</a> kann einen akuten Reizzustand beruhigen; <a href="/behandlungen/hyaluronsaeure/">Hyaluronsäure</a> oder <a href="/behandlungen/eigenbluttherapie/">Eigenblut</a> besprechen wir je nach Befund.</li>
 <li><strong>Hilfsmittel</strong> – Einlagen, Bandagen oder eine entlastende Orthese, angepasst von der Orthopädietechnik.</li>
@@ -116,7 +116,7 @@ export const guides = [
         html: `<ul>
 <li><strong>Bewegung und Kräftigung</strong> – gezieltes Training der Hüft- und Gesäßmuskulatur und Übungen für die Beweglichkeit. Physiotherapie und Trainingstherapie sind im healthlab im selben Haus.</li>
 <li><strong>Gelenkschonender Sport</strong> – Radfahren, Schwimmen oder Aquagymnastik sind meist gut verträglich.</li>
-<li><strong>Gewicht</strong> – weniger Körpergewicht entlastet das Gelenk.</li>
+<li><strong>Gewicht</strong> – bei Übergewicht entlastet schon etwas weniger Körpergewicht das Gelenk.</li>
 <li><strong>Medikamente</strong> – gezielt und zeitlich begrenzt, wenn Schmerzen die Bewegung verhindern.</li>
 <li><strong>Injektionen</strong> – ultraschallgezielt ins Hüftgelenk: <a href="/behandlungen/kortison-infiltration/">Kortison</a> bei einem Reizzustand, <a href="/behandlungen/hyaluronsaeure/">Hyaluronsäure</a> je nach Befund.</li>
 </ul>

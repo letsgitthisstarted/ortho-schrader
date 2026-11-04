@@ -5,6 +5,13 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const fine = matchMedia('(pointer: fine)').matches;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  // Tab lists: arrows move to the neighbour (wrapping), Home/End to the first/last tab.
+  const tabKey = (e, i, n) => {
+    if (e.key === 'Home') return 0;
+    if (e.key === 'End') return n - 1;
+    const dir = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+    return dir ? (i + dir + n) % n : null;
+  };
 
   /* Native scrolling keeps wheel, touch and keyboard behavior predictable. */
   const headerOffset = () => -(($('[data-header]')?.offsetHeight ?? 72) + 20);
@@ -23,6 +30,8 @@
     const target = id && document.getElementById(id);
     if (!target) return;
     e.preventDefault();
+    const toc = a.closest('.toc-mobile');
+    if (toc) toc.open = false;
     if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
     target.focus({ preventScroll: true });
     scrollToEl(target);
@@ -116,7 +125,7 @@
       items[e.shiftKey ? items.length - 1 : 0].focus();
     }
   });
-  matchMedia('(min-width: 1021px)').addEventListener('change', (e) => {
+  matchMedia('(min-width: 1181px)').addEventListener('change', (e) => {
     if (e.matches && menuOpen()) { setMenu(false, false); $('.brand').focus(); }
   });
 
@@ -210,10 +219,10 @@
     tabs.forEach((t, i) => {
       t.addEventListener('click', () => select(t.dataset.region));
       t.addEventListener('keydown', (e) => {
-        const dir = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
-        if (!dir) return;
+        const n = tabKey(e, i, tabs.length);
+        if (n === null) return;
         e.preventDefault();
-        select(tabs[(i + dir + tabs.length) % tabs.length].dataset.region, true);
+        select(tabs[n].dataset.region, true);
       });
       if (fine) {
         t.addEventListener('mouseenter', () => { touched = true; preview(t.dataset.region); });
@@ -288,18 +297,35 @@
   const orbitEl = story && $('[data-story-orbit]', story);
   const orbitStep = orbitEl ? Number(orbitEl.dataset.storyOrbit) : -1;
   let storyIdx = 0;
-  const onScrollStory = () => {
-    if (!story || innerWidth <= 760) return;
-    const r = story.getBoundingClientRect();
-    const total = story.offsetHeight - innerHeight;
-    const p = clamp(-r.top / total, 0, 0.9999);
-    const idx = Math.floor(p * storyTexts.length);
-    if (idx === storyIdx) return;
+  // Same query as the CSS: there the story is a plain list, nothing to drive.
+  const storyFlat = matchMedia('(max-width: 760px), (prefers-reduced-motion: reduce), (max-height: 620px)');
+  const showStory = (idx) => {
     storyIdx = idx;
     [storyTexts, storyArts, storyDots].forEach((list) => list.forEach((el, i) => el.classList.toggle('is-active', i === idx)));
     storyTicks.forEach((el, i) => el.classList.toggle('is-active', i <= idx));
     storyProgress.style.strokeDasharray = `${idx + 1} ${storyTexts.length}`;
     storyVisual?.classList.toggle('is-orbit', idx === orbitStep);
+  };
+  // Scrolling only sets the target step. The visible step moves one at a time and stays at least
+  // STORY_MIN ms, so a quick scroll plays through every step instead of flickering past them.
+  const STORY_MIN = 520;
+  let storyTarget = 0, storyTimer = 0, storyLast = 0;
+  const stepStory = () => {
+    storyTimer = 0;
+    if (storyIdx === storyTarget) return;
+    const wait = STORY_MIN - (performance.now() - storyLast);
+    if (wait > 0) { storyTimer = setTimeout(stepStory, wait); return; }
+    showStory(storyIdx + Math.sign(storyTarget - storyIdx));
+    storyLast = performance.now();
+    if (storyIdx !== storyTarget) storyTimer = setTimeout(stepStory, STORY_MIN);
+  };
+  const onScrollStory = () => {
+    if (!story || storyFlat.matches) return;
+    const r = story.getBoundingClientRect();
+    const total = story.offsetHeight - innerHeight;
+    const p = clamp(-r.top / total, 0, 0.9999);
+    storyTarget = Math.floor(p * storyTexts.length);
+    if (!storyTimer) stepStory();
   };
 
   /* ───────────── count-up numbers (e.g. "bis 80 %") – the ring next to them fills along */
@@ -309,17 +335,22 @@
     const ring = card && $('[data-count-ring]', card);
     const set = (v) => { el.textContent = String(Math.round(v)); ring?.style.setProperty('--ring', v.toFixed(2)); };
     if (reduced) return;
+    // Screen readers get the real number straight away; only the visible digits count up.
+    const sr = document.createElement('span');
+    sr.className = 'sr'; sr.textContent = String(to);
+    el.after(sr);
+    el.setAttribute('aria-hidden', 'true');
     set(0);
     const cio = new IntersectionObserver(([en]) => {
       if (!en.isIntersecting) return;
       cio.disconnect();
-      const t0 = performance.now(), dur = 1600;
+      const t0 = performance.now(), dur = 1100;
       const tick = (t) => {
         const k = clamp((t - t0) / dur, 0, 1);
         set(to * (1 - Math.pow(1 - k, 4)));
         if (k < 1) requestAnimationFrame(tick);
       };
-      setTimeout(() => requestAnimationFrame(tick), 250);
+      setTimeout(() => requestAnimationFrame(tick), 120);
     }, { threshold: 0.6 });
     cio.observe(el);
   });
@@ -335,9 +366,9 @@
     opts.forEach((o, i) => {
       o.addEventListener('click', () => pick(i));
       o.addEventListener('keydown', (e) => {
-        const dir = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
-        if (!dir) return;
-        e.preventDefault(); pick((i + dir + opts.length) % opts.length, true);
+        const n = tabKey(e, i, opts.length);
+        if (n === null) return;
+        e.preventDefault(); pick(n, true);
       });
     });
   });
@@ -466,7 +497,10 @@
     const err = $('[data-bk-error]', form);
     const count = $('[data-bk-count]', form);
     let step = 1;
+    let autoTimer = 0;
+    let lastHref = '';
     const go = (n, moveFocus = true) => {
+      clearTimeout(autoTimer);
       step = n;
       stepsEls.forEach((s) => {
         const active = +s.dataset.bkStep === n;
@@ -498,7 +532,9 @@
     // so a recent pointerdown counts as a tap too.
     let pointerAt = 0;
     form.addEventListener('pointerdown', () => { pointerAt = Date.now(); });
-    const auto = (e, n) => { if (e.detail > 0 || Date.now() - pointerAt < 1500) setTimeout(() => go(n), 180); };
+    const auto = (e, n) => {
+      if (e.detail > 0 || Date.now() - pointerAt < 1500) { clearTimeout(autoTimer); autoTimer = setTimeout(() => go(n), 180); }
+    };
     $$('[data-bk-auto]', form).forEach((r) => r.addEventListener('click', (e) => auto(e, 2)));
     const fieldError = (name, message) => {
       const input = form.elements[name];
@@ -547,11 +583,15 @@
       const msg = (fd.get('nachricht') || '').trim();
       if (msg) lines.push('', msg);
       lines.push('', 'Vielen Dank!');
-      const href = `mailto:schrader@healthlab.at?subject=${encodeURIComponent(`Terminanfrage – ${name}`)}&body=${encodeURIComponent(lines.join('\n'))}`;
+      const href = `mailto:${form.dataset.mail}?subject=${encodeURIComponent(`Terminanfrage – ${name}`)}&body=${encodeURIComponent(lines.join('\n'))}`;
       $('[data-bk-name]', form).textContent = `, ${name.split(' ')[0]}`;
+      lastHref = href;
       go(total + 1);
       window.location.href = href;
     });
+    // After the hand-off: open the e-mail again, or go back to the filled-in form to change something.
+    $('[data-bk-retry]', form)?.addEventListener('click', () => { if (lastHref) window.location.href = lastHref; });
+    $('[data-bk-edit]', form)?.addEventListener('click', () => go(total));
     go(1, false);
   });
 
